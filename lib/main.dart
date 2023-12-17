@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
-import 'classes/custom_table.dart';
+import 'classes/custom_table_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 Container testBox() {
-  // Rastgele bir renk seçmek için
   Color randomColor() {
     final Random random = Random();
     return Color.fromARGB(
@@ -63,7 +61,6 @@ Container testBox() {
     );
   }
 
-  // Düzeltme: Bir Container döndürüyoruz
   return Container(
     color: randomColor(),
     width: 100.0,
