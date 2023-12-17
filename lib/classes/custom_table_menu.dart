@@ -23,13 +23,49 @@ class CustomTableMenu extends StatelessWidget {
             child: Container(
               color: Colors.lime,
               padding: const EdgeInsets.all(8.0),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("6tost"),
-                  Text("24 çay"),
-                  Text("7 feleğin sillesi"),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      color: Colors.deepPurple.shade200,
+                      child: const SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text("6tost"),
+                            Text("24 çay"),
+                            Text("7 feleğin sillesi"),
+                            Text("6tost"),
+                            Text("24 çay"),
+                            Text("7 feleğin sillesi"),
+                            Text("6tost"),
+                            Text("24 çay"),
+                            Text("7 feleğin sillesi"),
+                            Text("6tost"),
+                            Text("24 çay"),
+                            Text("7 feleğin sillesi"),
+                            Text("6tost"),
+                            Text("24 çay"),
+                            Text("7 feleğin sillesi"),
+                            Text("6tost"),
+                            Text("24 çay"),
+                            Text("7 feleğin sillesi"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      color: Colors.redAccent,
+                      child: Text("Toplam Hesap: 973 ₺"),
+                    ),
+                  ),
                 ],
               ),
             ),
