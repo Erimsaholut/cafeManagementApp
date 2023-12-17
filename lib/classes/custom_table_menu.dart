@@ -14,11 +14,52 @@ class CustomTableMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: isTableNameNull(tableName, tableNum),
-        backgroundColor: Colors.lime,
+        backgroundColor: Color(0XFFACBCFF),
       ),
-      body: const Column(
-        children: [Text("6tost\n24 çay\n7 feleğin sillesi")],
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Colors.lime,
+              padding: const EdgeInsets.all(8.0),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("6tost"),
+                  Text("24 çay"),
+                  Text("7 feleğin sillesi"),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Colors.tealAccent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Ekle Sipariş"),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Azalt Sipariş"),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Masa Ödendi"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
+      backgroundColor: Color(0xFFAEE2FF),
     );
   }
 }
