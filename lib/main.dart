@@ -1,6 +1,6 @@
 import 'dart:math';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/table_button.dart';
 import 'package:flutter/material.dart';
-import 'classes/custom_table_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,20 +50,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Container testBox() {
-  Color randomColor() {
-    final Random random = Random();
-    return Color.fromARGB(
-      255,
-      random.nextInt(256),
-      random.nextInt(256),
-      random.nextInt(256),
-    );
-  }
-
-  return Container(
-    color: randomColor(),
-    width: 100.0,
-    height: 100.0,
-  );
-}/*sil bunu lazım olmazsa*/

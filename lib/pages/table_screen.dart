@@ -1,5 +1,8 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/custom_menu_button.dart';
 
 class CustomTableMenu extends StatelessWidget {
   CustomTableMenu(
@@ -31,30 +34,12 @@ class CustomTableMenu extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
-                      child: const SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text("6tost"),
-                            Text("24 çay"),
-                            Text("7 feleğin sillesi"),
-                            Text("6tost"),
-                            Text("24 çay"),
-                            Text("7 feleğin sillesi"),
-                            Text("6tost"),
-                            Text("24 çay"),
-                            Text("7 feleğin sillesi"),
-                            Text("6tost"),
-                            Text("24 çay"),
-                            Text("7 feleğin sillesi"),
-                            Text("6tost"),
-                            Text("24 çay"),
-                            Text("7 feleğin sillesi"),
-                            Text("6tost"),
-                            Text("24 çay"),
-                            Text("7 feleğin sillesi"),
-                          ],
-                        ),
+                      child: ListView(
+                        children: [
+                          Text("6tost"),
+                          Text("24 çay"),
+                          Text("7 feleğin sillesi"),
+                        ],
                       ),
                     ),
                   ),
@@ -63,7 +48,7 @@ class CustomTableMenu extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       color: Colors.redAccent,
-                      child: Text("Toplam Hesap: 973 ₺"),
+                      child: const Text("Toplam Hesap: 973 ₺"),
                     ),
                   ),
                 ],
@@ -77,25 +62,30 @@ class CustomTableMenu extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: Text("Ekle Sipariş"),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text("Azalt Sipariş"),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text("Masa Ödendi"),
-                  ),
+                  CustomMenuButton("Ekle Sipariş", onPressedFunction: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => MenuScreen(),
+                        transitionsBuilder: (_, anim, __, child) {
+                          return ScaleTransition(
+                            scale: anim,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                    );
+                  }),
+                  CustomMenuButton("Azalt Sipariş"),
+                  CustomMenuButton("Masa Ödendi"),
                 ],
               ),
             ),
           ),
         ],
       ),
-      backgroundColor: Color(0xFFAEE2FF),
+      backgroundColor: const Color(0xFFAEE2FF),
     );
   }
 }
