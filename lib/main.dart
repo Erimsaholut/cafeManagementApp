@@ -1,5 +1,5 @@
-import 'dart:math';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/table_button.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/settings_button.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,6 +32,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Widget> mylist =
+  List.generate(23, (index) => CustomTable(tableNum: index + 1))
+    ..add(SettingsButton());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: GridView.count(
         crossAxisCount: 4,
-        children: List.generate(
-          24,
-          (index) => CustomTable(tableNum: index + 1),
-        ),
+        children: mylist,
       ),
     );
   }
 }
-

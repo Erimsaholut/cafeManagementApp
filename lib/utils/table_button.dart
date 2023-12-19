@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../utils/is_table_name_null.dart';
-import 'table_screen.dart';
+import 'is_table_name_null.dart';
+import '../pages/table_screen.dart';
 
 /*Siparişlerin değerleri burada mı tutulacak ayrı dosyadan mı çekilecek ona bak
  sistem oluştuğuda*/
