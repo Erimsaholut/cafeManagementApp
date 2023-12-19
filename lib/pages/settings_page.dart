@@ -20,10 +20,12 @@ class SettingsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
+              CustomMenuButton("Kafe Bilgilerini düzenle"), // isim ve masa sayısı
               CustomMenuButton("Yeni İçecek Ekle"),
               CustomMenuButton("Yeni Yiyecek Ekle"),
               CustomMenuButton("Ürünleri Düzenle"),
               CustomMenuButton("Eski Verilere Ulaş"),
+              CustomMenuButton("Bütün verileri resetle"), // 1 kere sor 1 kere metni yazdır.
             ],
           ),
         ),
