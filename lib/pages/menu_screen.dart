@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/read_json.dart';
 import 'package:flutter/material.dart';
 import '../utils/styles.dart';
 
@@ -75,7 +76,10 @@ List<Widget> testList2 = [
 ];
 
 class MenuScreen extends StatelessWidget {
-  const MenuScreen({Key? key});
+  MenuScreen({super.key});
+
+  ReadJson drinksJson = ReadJson("drinks");
+  ReadJson foodsJson = ReadJson("foods");
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +89,7 @@ class MenuScreen extends StatelessWidget {
         backgroundColor: Colors.redAccent,
       ),
       body: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         color: Colors.blueGrey,
         child: ListView(
           children: [
@@ -93,7 +97,18 @@ class MenuScreen extends StatelessWidget {
               "İçecekler",
               style: CustomStyles.menuTextStyle,
             ),
-            SizedBox(
+            const SizedBox(
+              height: 16,
+            ),
+            TextButton(
+                onPressed: () async {
+                  print(drinksJson.getItemCount());
+                  print(foodsJson.getItemCount());
+                  print(drinksJson.getItemNames());
+                  print(foodsJson.getItemNames());
+                },
+                child: Text("Test")),
+            const SizedBox(
               height: 16,
             ),
             buildGridView(testList),

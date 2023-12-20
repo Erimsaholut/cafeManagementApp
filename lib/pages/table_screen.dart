@@ -1,5 +1,6 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/custom_menu_button.dart';
@@ -48,7 +49,7 @@ class CustomTableMenu extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       color: Colors.redAccent,
-                      child: const Text("Toplam Hesap: 973 ₺"),
+                      child:  Text("Toplam Hesap: 973 ₺",style: CustomStyles.menuScreenButtonStyle,), //buna özel bi style çıkarabilirsin
                     ),
                   ),
                 ],
