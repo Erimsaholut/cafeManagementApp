@@ -36,6 +36,11 @@
         "id": 7,
         "name": "Türk Kahvesi",
         "price": 20
+      },
+      {
+        "id": 8,
+        "name": "Oralet",
+        "price": 5
       }
     ],
     "foods": [

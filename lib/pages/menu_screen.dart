@@ -1,91 +1,40 @@
-import 'dart:math';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/read_json.dart';
 import 'package:flutter/material.dart';
 import '../utils/styles.dart';
 
-Color randomColor() {
-  final Random random = Random();
-  return Color.fromARGB(
-    255,
-    random.nextInt(256),
-    random.nextInt(256),
-    random.nextInt(256),
-  );
-} /*sil bunu lazım olmazsa*/
+class MenuScreen extends StatefulWidget {
+  const MenuScreen({super.key});
 
-List<Widget> testList = [
-  Container(
-    color: randomColor(),
-    child: Text("çay"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Su"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Ayran"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("limonata"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Kefir"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Nescafe"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Türk Kahvesi"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Ice Chocolate Mocca"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Süryani Şarabı"),
-  ),
-];
-List<Widget> testList2 = [
-  Container(color: randomColor(), child: Text("Serpme Kahvaltı")),
-  Container(
-    color: randomColor(),
-    child: Text("Köfte ekmek"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Döner"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Ekmek arası ekmek"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Köfte arası Köfte"),
-  ),
-  Container(
-    color: randomColor(),
-    child: Text("Yetimin hakkı"),
-  ),
-];
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
 
-class MenuScreen extends StatelessWidget {
-  MenuScreen({super.key});
-
+class _MenuScreenState extends State<MenuScreen> {
   ReadJson drinksJson = ReadJson("drinks");
+
   ReadJson foodsJson = ReadJson("foods");
+
+  List<Widget> foodsWidgetList = [];
+
+  List<Widget> drinksWidgetList = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () {
+      stringToList(drinksJson, drinksWidgetList);
+      stringToList(foodsJson,foodsWidgetList);
+      print("initState Tamamlandı");
+      print(foodsWidgetList.length);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Menü"),
+        title: const Text("Menü"),
         backgroundColor: Colors.redAccent,
       ),
       body: Container(
@@ -96,34 +45,40 @@ class MenuScreen extends StatelessWidget {
             Text(
               "İçecekler",
               style: CustomStyles.menuTextStyle,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            TextButton(
-                onPressed: () async {
-                  print(drinksJson.getItemCount());
-                  print(foodsJson.getItemCount());
-                  print(drinksJson.getItemNames());
-                  print(foodsJson.getItemNames());
-                },
-                child: Text("Test")),
-            const SizedBox(
-              height: 16,
-            ),
-            buildGridView(testList),
+            ),//içecekler
+            buildGridView(drinksWidgetList),
+            buildSizedBox(),
             Text(
               "Yiyecekler",
               style: CustomStyles.menuTextStyle,
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            buildGridView(testList2),
+            ),//yiyecekler
+            buildSizedBox(),
+            buildGridView(foodsWidgetList),
+
           ],
         ),
       ),
     );
+  }
+
+  void stringToList(ReadJson classType,List<Widget> widgetList ) async {
+    //itemlerin ismini çekip container olarak listeye sallıyor
+    print("aaa");
+    setState(() {
+      List<String> itemNames = classType.getItemNames();
+      for (var item in itemNames) {
+        widgetList.add(
+          TextButton(
+            onPressed: () {  },
+            child: Container(
+              alignment: Alignment.center,
+              color: Colors.white,
+              child: Text(item,style: CustomStyles.menuScreenButtonStyle,),
+            ),
+          ),
+        );
+      }
+    });
   }
 
   Widget buildGridView(List<Widget> list) {
@@ -131,7 +86,7 @@ class MenuScreen extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+        crossAxisCount: 4,
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 18.0,
       ),
@@ -141,4 +96,10 @@ class MenuScreen extends StatelessWidget {
       },
     );
   }
+}
+
+SizedBox buildSizedBox() {
+  return const SizedBox(
+    height: 16,
+  );
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
@@ -15,7 +14,7 @@ class ReadJson {
           await rootBundle.loadString('lib/datas/menu.json');
       final data = await json.decode(response);
       _items = data["menu"][productType];
-      print('test: Loaded $productType');
+      print('read_json: okundu $productType');
     } catch (e) {
       print("Error reading JSON: $e");
     }
