@@ -1,29 +1,33 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_json.dart';
 
 class PrepareData {
-  late ReadJson readJson;
-  late List<dynamic> rawData;
-  late List<Map<String, dynamic>> foodRaw = [];
-  late List<Map<String, dynamic>> drinkRaw = [];
-  late List<String> drinksWithNoIngredients = [];
-  late List<String> drinksWithIngredients = [];
-  late List<String> foodsWithIngredients = [];
-  late List<String> foodsWithNoIngredients = [];
+  late ReadJson _readJson;
+  late List<dynamic> _rawData;
+  late List<Map<String, dynamic>> _foodRaw = [];
+  late List<Map<String, dynamic>> _drinkRaw = [];
+
+  late List<String> _drinksWithNoIngredients = [];
+  late List<String> _drinksWithIngredients = [];
+
+  late List<String> _foodsWithIngredients = [];
+  late List<String> _foodsWithNoIngredients = [];
 
   PrepareData() {
-    readJson = ReadJson();
+    _readJson = ReadJson();
+    print('PrepareData is working');
     initializeData();
   }
 
   Future<void> initializeData() async {
-    await readJson.loadJson(); // JSON dosyasını yükleyin
-    rawData = readJson.getItems();
-    separateData();
+    print("initialization is working");
+    await _readJson.loadJson(); // JSON dosyasını yükleyin
+    _rawData = _readJson.getItems();
+    _separateData();
   }
 
-  void separateData() {
-    for (int i = 0; i < readJson.getItemCount(); i++) {
-      Map<String, dynamic> item = rawData[i];
+  void _separateData() {
+    for (int i = 0; i < _rawData.length; i++) {
+      Map<String, dynamic> item = _rawData[i];
       String itemName = item["name"];
       String itemType = item["type"];
       List<String> ingredients = item["ingredients"] != null
@@ -31,26 +35,46 @@ class PrepareData {
           : [];
 
       if (itemType == "food") {
-        foodRaw.add(item);
+        _foodRaw.add(item);
         if (ingredients.isNotEmpty) {
-          foodsWithIngredients.add(itemName);
+          _foodsWithIngredients.add(itemName);
         } else {
-          foodsWithNoIngredients.add(itemName);
+          _foodsWithNoIngredients.add(itemName);
         }
       } else if (itemType == "drink") {
-        drinkRaw.add(item);
+        _drinkRaw.add(item);
         if (ingredients.isNotEmpty) {
-          drinksWithIngredients.add(itemName);
+          _drinksWithIngredients.add(itemName);
         } else {
-          drinksWithNoIngredients.add(itemName);
+          _drinksWithNoIngredients.add(itemName);
         }
       }
     }
+  }
 
-    print("Foods with Ingredients: $foodsWithIngredients");
-    print("Foods with No Ingredients: $foodsWithNoIngredients");
+  int? getItemPrice(String itemName) {
+    for (int i = 0; i < _rawData.length; i++) {
+      Map<String, dynamic> item = _rawData[i];
+      if (item["name"] == itemName) {
+        return item["price"];
+      }
+    }
+    return null;
+  }
 
-    print("Drinks with Ingredients: $drinksWithIngredients");
-    print("Drinks with No Ingredients: $drinksWithNoIngredients");
+  List<String> getDrinksWithIngredients() {
+    return _drinksWithIngredients;
+  }
+
+  List<String> getDrinksWithNoIngredients() {
+    return _drinksWithNoIngredients;
+  }
+
+  List<String> getFoodsWithIngredients() {
+    return _foodsWithIngredients;
+  }
+
+  List<String> getFoodsWithNoIngredients() {
+    return _foodsWithNoIngredients;
   }
 }

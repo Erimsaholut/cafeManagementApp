@@ -1,14 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/settings_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
-import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure that Flutter is initialized
+  PrepareData prepareData = PrepareData();
+  await prepareData.initializeData();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -33,20 +36,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> mylist =
-      List.generate(23, (index) => CustomTable(tableNum: index + 1))
-        ..add(SettingsButton());
+  List<Widget> mylist = List.generate(23, (index) => CustomTable(tableNum: index + 1))
+    ..add(SettingsButton());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            PrepareData();
-          },
-          child: const Text("TestData"),
-        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
