@@ -1,6 +1,7 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/read_json.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_json.dart';
 import 'package:flutter/material.dart';
-import '../utils/styles.dart';
+import '../constants/styles.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -10,9 +11,6 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  ReadJson drinksJson = ReadJson("drinks");
-
-  ReadJson foodsJson = ReadJson("foods");
 
   List<Widget> foodsWidgetList = [];
 
@@ -22,19 +20,17 @@ class _MenuScreenState extends State<MenuScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero, () {
-      stringToList(drinksJson, drinksWidgetList);
-      stringToList(foodsJson,foodsWidgetList);
-      print("initState Tamamlandı");
-      print(foodsWidgetList.length);
-    });
+    Future.delayed(Duration.zero, () {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Menü"),
+        title: Text(
+          "Menü",
+          style: CustomStyles.menuTextStyle,
+        ),
         backgroundColor: Colors.redAccent,
       ),
       body: Container(
@@ -42,38 +38,52 @@ class _MenuScreenState extends State<MenuScreen> {
         color: Colors.blueGrey,
         child: ListView(
           children: [
-            Text(
-              "İçecekler",
-              style: CustomStyles.menuTextStyle,
-            ),//içecekler
+            buildItemTypeTextContainer("İçecekler"), //içecekler
             buildGridView(drinksWidgetList),
-            buildSizedBox(),
-            Text(
-              "Yiyecekler",
-              style: CustomStyles.menuTextStyle,
-            ),//yiyecekler
-            buildSizedBox(),
+            buildItemTypeTextContainer("Yiyecekler"), //yiyecekler
             buildGridView(foodsWidgetList),
-
           ],
         ),
       ),
     );
   }
 
-  void stringToList(ReadJson classType,List<Widget> widgetList ) async {
-    //itemlerin ismini çekip container olarak listeye sallıyor
-    print("aaa");
+  Container buildItemTypeTextContainer(String text) {
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: CustomStyles.menuTextStyle,
+      ),
+    );
+  }
+
+  void stringToList(ReadJson classType, List<Widget> widgetList) async {
     setState(() {
       List<String> itemNames = classType.getItemNames();
       for (var item in itemNames) {
         widgetList.add(
           TextButton(
-            onPressed: () {  },
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.greenAccent,
+              padding: const EdgeInsets.all(15.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: const BorderSide(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ),
+            ),
+            onPressed: () {},
             child: Container(
               alignment: Alignment.center,
-              color: Colors.white,
-              child: Text(item,style: CustomStyles.menuScreenButtonStyle,),
+              color: Colors.transparent,
+              child: Text(
+                item,
+                style: CustomStyles.menuScreenButtonStyle,
+              ),
             ),
           ),
         );
@@ -87,8 +97,8 @@ class _MenuScreenState extends State<MenuScreen> {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 18.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: list.length,
       itemBuilder: (BuildContext context, int index) {
@@ -96,10 +106,4 @@ class _MenuScreenState extends State<MenuScreen> {
       },
     );
   }
-}
-
-SizedBox buildSizedBox() {
-  return const SizedBox(
-    height: 16,
-  );
 }

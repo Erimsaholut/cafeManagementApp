@@ -1,16 +1,22 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/styles.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/custom_menu_button.dart';
 
 class CustomTableMenu extends StatelessWidget {
-  CustomTableMenu(
-      {super.key, required int this.tableNum, required this.tableName});
+  CustomTableMenu({super.key, required this.tableNum, required this.tableName});
 
   final int tableNum;
   final String tableName;
+  final List<Widget> orders = [
+    Text("6 Tost"),
+    Text("24 Çay"),
+    Text("7 Oralet")
+  ];
+
+  /*test aşamasında*/
 
   //bunların final olması sıkıntı çıkarabilir dikkat et
   @override
@@ -18,7 +24,7 @@ class CustomTableMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: isTableNameNull(tableName, tableNum),
-        backgroundColor: Color(0XFFACBCFF),
+        backgroundColor: const Color(0XFFACBCFF),
       ),
       body: Row(
         children: [
@@ -33,13 +39,11 @@ class CustomTableMenu extends StatelessWidget {
                   Expanded(
                     flex: 4,
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
                       child: ListView(
                         children: [
-                          Text("6tost"),
-                          Text("24 çay"),
-                          Text("7 feleğin sillesi"),
+                          ...orders,
                         ],
                       ),
                     ),
@@ -49,7 +53,17 @@ class CustomTableMenu extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       color: Colors.redAccent,
-                      child:  Text("Toplam Hesap: 973 ₺",style: CustomStyles.menuScreenButtonStyle,), //buna özel bi style çıkarabilirsin
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            "Toplam Hesap: 973 ₺",
+                            style: CustomStyles.menuScreenButtonStyle,
+                          ),
+                        ],
+                      ), //buna özel bi style çıkarabilirsin
                     ),
                   ),
                 ],
@@ -67,7 +81,7 @@ class CustomTableMenu extends StatelessWidget {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => MenuScreen(),
+                        pageBuilder: (_, __, ___) => const MenuScreen(),
                         transitionsBuilder: (_, anim, __, child) {
                           return ScaleTransition(
                             scale: anim,

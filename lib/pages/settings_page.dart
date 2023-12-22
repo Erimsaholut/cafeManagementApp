@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/styles.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import '../utils/custom_menu_button.dart';
 

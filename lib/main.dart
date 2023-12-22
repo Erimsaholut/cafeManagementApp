@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/settings_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +34,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> mylist =
-  List.generate(23, (index) => CustomTable(tableNum: index + 1))
-    ..add(SettingsButton());
+      List.generate(23, (index) => CustomTable(tableNum: index + 1))
+        ..add(SettingsButton());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: TextButton(
+          onPressed: () {
+            PrepareData();
+          },
+          child: const Text("TestData"),
+        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),

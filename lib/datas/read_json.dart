@@ -3,9 +3,8 @@ import 'dart:convert';
 
 class ReadJson {
   List<dynamic> _items = [];
-  String productType;
 
-  ReadJson(this.productType) {
+  ReadJson() {
     loadJson();
   }
   Future<void> loadJson() async {
@@ -13,8 +12,8 @@ class ReadJson {
       final String response =
           await rootBundle.loadString('lib/datas/menu.json');
       final data = await json.decode(response);
-      _items = data["menu"][productType];
-      print('read_json: okundu $productType');
+      _items = data["menu"];
+      print('read_json: menu okundu');
     } catch (e) {
       print("Error reading JSON: $e");
     }
@@ -31,6 +30,10 @@ class ReadJson {
       itemNames.add(itemName);
     }
     return itemNames;
+  }
+
+  List<dynamic> getItems(){
+    return _items;
   }
 
 
