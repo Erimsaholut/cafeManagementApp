@@ -4,7 +4,8 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/settings_button
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure that Flutter is initialized
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure that Flutter is initialized
   PrepareData prepareData = PrepareData();
   runApp(const MyApp());
 }
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'DenemeDenemeDenemeDenemeDenemeDenemeDeneme',
+      title: 'Deneme',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
         useMaterial3: true,
@@ -35,8 +36,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> mylist = List.generate(23, (index) => CustomTable(tableNum: index + 1))
-    ..add(SettingsButton());
+  List<Widget> mylist =
+      List.generate(23, (index) => CustomTable(tableNum: index + 1))
+        ..add(SettingsButton());
 
   @override
   Widget build(BuildContext context) {

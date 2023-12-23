@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
 Text isTableNameNull(String tablename, int tableNum) {
@@ -5,12 +6,10 @@ Text isTableNameNull(String tablename, int tableNum) {
   return (tableName == "")
       ? Text(
           "Masa $tableNum",
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+          style: CustomStyles.boldAndBlack,
         )
       : Text(
           tableName,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),
+          style: CustomStyles.boldAndBlack,
         );
 }

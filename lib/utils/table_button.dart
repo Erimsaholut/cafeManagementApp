@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
 import 'is_table_name_null.dart';
@@ -24,8 +25,6 @@ class _CustomTableState extends State<CustomTable> {
       margin: const EdgeInsets.all(1.0),
       decoration: BoxDecoration(
           border: Border.all(width: 3.0),
-          // Set border width as needed
-          //borderRadius: BorderRadius.circular(30.0), // Set border radius as needed
           color: Colors.amber),
       child: TextButton(
           onPressed: () {
@@ -91,13 +90,7 @@ class _CustomTableState extends State<CustomTable> {
               },
             );
           },
-          style: TextButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            padding: const EdgeInsets.all(16.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-          ),
+          style: CustomStyles.transparentButtonStyle,
           child:isTableNameNull(widget.tableName,widget.tableNum),
       ),
     );

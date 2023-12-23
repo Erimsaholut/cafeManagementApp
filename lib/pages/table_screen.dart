@@ -2,7 +2,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dar
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
-
+import '../constants/colors.dart';
 import '../utils/custom_menu_button.dart';
 
 class CustomTableMenu extends StatelessWidget {
@@ -24,7 +24,7 @@ class CustomTableMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: isTableNameNull(tableName, tableNum),
-        backgroundColor: const Color(0XFFACBCFF),
+        backgroundColor: CustomColors.appbarBlue,
       ),
       body: Row(
         children: [
@@ -60,7 +60,7 @@ class CustomTableMenu extends StatelessWidget {
                           ),
                           Text(
                             "Toplam Hesap: 973 ₺",
-                            style: CustomStyles.menuScreenButtonStyle,
+                            style: CustomStyles.menuScreenButtonTextStyle,
                           ),
                         ],
                       ), //buna özel bi style çıkarabilirsin
