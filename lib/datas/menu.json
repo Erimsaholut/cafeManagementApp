@@ -78,6 +78,13 @@
       "price": 5.49,
       "type": "food",
       "ingredients": ["Acı", "Kimyon", "Kekik"]
+    },
+    {
+      "id": 12,
+      "name": "Ekmek",
+      "price": 7,
+      "type": "food",
+      "ingredients": []
     }
   ]
 }

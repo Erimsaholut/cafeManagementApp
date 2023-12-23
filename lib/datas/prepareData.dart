@@ -7,9 +7,9 @@ class PrepareData {
   late List<Map<String, dynamic>> _drinkRaw = [];
 
   static List<String> _drinksWithNoIngredients = [];
-  static List<String> _drinksWithIngredients = [];
+  static List<Map<String, dynamic>> _drinksWithIngredients = [];
 
-  static List<String> _foodsWithIngredients = [];
+  static List<Map<String, dynamic>> _foodsWithIngredients = [];
   static List<String> _foodsWithNoIngredients = [];
 
   PrepareData() {
@@ -38,14 +38,14 @@ class PrepareData {
       if (itemType == "food") {
         _foodRaw.add(item);
         if (ingredients.isNotEmpty) {
-          _foodsWithIngredients.add(itemName);
+          _foodsWithIngredients.add({"name": itemName, "ingredients": ingredients});
         } else {
           _foodsWithNoIngredients.add(itemName);
         }
       } else if (itemType == "drink") {
         _drinkRaw.add(item);
         if (ingredients.isNotEmpty) {
-          _drinksWithIngredients.add(itemName);
+          _drinksWithIngredients.add({"name": itemName, "ingredients": ingredients});
         } else {
           _drinksWithNoIngredients.add(itemName);
         }
@@ -63,7 +63,6 @@ class PrepareData {
     return null;
   }
 
-
   void clearLists() {
     _drinksWithIngredients.clear();
     _drinksWithNoIngredients.clear();
@@ -71,8 +70,7 @@ class PrepareData {
     _foodsWithNoIngredients.clear();
   }
 
-
-  List<String> getDrinksWithIngredients() {
+  List<Map<String, dynamic>> getDrinksWithIngredients() {
     return _drinksWithIngredients;
   }
 
@@ -80,13 +78,14 @@ class PrepareData {
     return _drinksWithNoIngredients;
   }
 
-  List<String> getFoodsWithIngredients() {
+  List<Map<String, dynamic>> getFoodsWithIngredients() {
     return _foodsWithIngredients;
   }
 
   List<String> getFoodsWithNoIngredients() {
     return _foodsWithNoIngredients;
   }
+
   List<dynamic> getRawData() {
     return _rawData;
   }

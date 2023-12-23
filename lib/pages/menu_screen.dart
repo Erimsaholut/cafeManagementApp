@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../datas/prepareData.dart';
@@ -30,16 +31,16 @@ class _MenuScreenState extends State<MenuScreen> {
 
   void test() {
     setState(() {
-      makeWidgets(
-          preparedData.getDrinksWithIngredients(), drinksIn, "drink", 1);
-      makeWidgets(
-          preparedData.getDrinksWithNoIngredients(), drinksNoIn, "drink", 0);
-      makeWidgets(preparedData.getFoodsWithIngredients(), foodsIn, "food", 1);
-      makeWidgets(
-          preparedData.getFoodsWithNoIngredients(), foodsNoIn, "food", 0);
-      //todo buraya gerekli widget çeviricileri gelecek;
+      makeWidgetsForNoInd(preparedData.getDrinksWithNoIngredients(), drinksNoIn);
+      makeWidgetsForInd(preparedData.getDrinksWithIngredients(), drinksIn);
+
+      makeWidgetsForNoInd(preparedData.getFoodsWithNoIngredients(), foodsNoIn);
+      makeWidgetsForInd(preparedData.getFoodsWithIngredients(), foodsIn);
+
+      print(preparedData.getDrinksWithIngredients());
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  /*Ekranın ortası yazı sallıyor bu*/
+/*Ekranın ortası yazı sallıyor bu*/
   Container buildItemTypeTextContainer(String text) {
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -81,17 +82,35 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  void makeWidgets(
-      List<String> items, List<Widget> widgets, String itemType, int hasInd) {
+  void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) {
     for (var item in items) {
       widgets.add(
         TextButton(
             onPressed: () {
-              print(item);
+              if (kDebugMode) {
+                print(item);
+              }
             },
             child: Text(item)),
       );
     }
   }
 }
+void makeWidgetsForInd(List<Map<String, dynamic>> items, List<Widget> widgets) {
+  for (var item in items) {
+    List<String> ingredients = List<String>.from(item["ingredients"]);
 
+    widgets.add(
+      MyCustomButton(
+        buttonText: item["name"],
+        checkboxTexts: ingredients,
+        onPressed: () {
+          if (kDebugMode) {
+            print("Button pressed for ${item["name"]}");
+          }
+          // Add any additional logic here if needed
+        },
+      ),
+    );
+  }
+}

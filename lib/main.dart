@@ -6,7 +6,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.da
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure that Flutter is initialized
   PrepareData prepareData = PrepareData();
-  await prepareData.initializeData();
   runApp(const MyApp());
 }
 

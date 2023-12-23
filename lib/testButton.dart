@@ -5,8 +5,7 @@ class MyCustomButton extends StatefulWidget {
   final List<dynamic>? checkboxTexts;
   final VoidCallback? onPressed;
 
-
-  MyCustomButton({required this.buttonText, required this.checkboxTexts,this.onPressed});
+  MyCustomButton({required this.buttonText, required this.checkboxTexts, this.onPressed});
 
   @override
   _MyCustomButtonState createState() => _MyCustomButtonState();
@@ -25,7 +24,7 @@ class _MyCustomButtonState extends State<MyCustomButton> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed:widget.onPressed,
+      onPressed: widget.onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -34,7 +33,7 @@ class _MyCustomButtonState extends State<MyCustomButton> {
             children: List.generate(widget.checkboxTexts!.length, (index) {
               return Row(
                 children: [
-                  Text(widget.checkboxTexts?[index]),
+                  Text(widget.checkboxTexts?[index].toString() ?? ""), // Cast to String
                   Checkbox(
                     value: checkboxValues[index],
                     onChanged: (value) {
