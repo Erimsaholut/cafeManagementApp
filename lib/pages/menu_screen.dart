@@ -1,6 +1,7 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
+import '../datas/prepareData.dart';
+import '../testButton.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -10,11 +11,34 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  PrepareData preparedData = PrepareData();
+  final PrepareData preparedData = PrepareData();
+
+  List<Widget> drinksNoIn = [];
+
+  List<Widget> drinksIn = [];
+
+  List<Widget> foodsNoIn = [];
+
+  List<Widget> foodsIn = [];
 
   @override
   void initState() {
     super.initState();
+    preparedData.initializeData();
+    test();
+  }
+
+  void test() {
+    setState(() {
+      makeWidgets(
+          preparedData.getDrinksWithIngredients(), drinksIn, "drink", 1);
+      makeWidgets(
+          preparedData.getDrinksWithNoIngredients(), drinksNoIn, "drink", 0);
+      makeWidgets(preparedData.getFoodsWithIngredients(), foodsIn, "food", 1);
+      makeWidgets(
+          preparedData.getFoodsWithNoIngredients(), foodsNoIn, "food", 0);
+      //todo buraya gerekli widget çeviricileri gelecek;
+    });
   }
 
   @override
@@ -33,13 +57,19 @@ class _MenuScreenState extends State<MenuScreen> {
         child: ListView(
           children: [
             buildItemTypeTextContainer("İçecekler"), //içecekler
+            ...drinksNoIn,
+            ...drinksIn,
+
             buildItemTypeTextContainer("Yiyecekler"), //yiyecekler
+            ...foodsNoIn,
+            ...foodsIn,
           ],
         ),
       ),
     );
   }
 
+  /*Ekranın ortası yazı sallıyor bu*/
   Container buildItemTypeTextContainer(String text) {
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -50,4 +80,18 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
     );
   }
+
+  void makeWidgets(
+      List<String> items, List<Widget> widgets, String itemType, int hasInd) {
+    for (var item in items) {
+      widgets.add(
+        TextButton(
+            onPressed: () {
+              print(item);
+            },
+            child: Text(item)),
+      );
+    }
+  }
 }
+

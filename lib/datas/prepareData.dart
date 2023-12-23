@@ -6,11 +6,11 @@ class PrepareData {
   late List<Map<String, dynamic>> _foodRaw = [];
   late List<Map<String, dynamic>> _drinkRaw = [];
 
-  late List<String> _drinksWithNoIngredients = [];
-  late List<String> _drinksWithIngredients = [];
+  static List<String> _drinksWithNoIngredients = [];
+  static List<String> _drinksWithIngredients = [];
 
-  late List<String> _foodsWithIngredients = [];
-  late List<String> _foodsWithNoIngredients = [];
+  static List<String> _foodsWithIngredients = [];
+  static List<String> _foodsWithNoIngredients = [];
 
   PrepareData() {
     _readJson = ReadJson();
@@ -20,12 +20,13 @@ class PrepareData {
 
   Future<void> initializeData() async {
     print("initialization is working");
-    await _readJson.loadJson(); // JSON dosyasını yükleyin
+    await _readJson.loadJson();
     _rawData = _readJson.getItems();
     _separateData();
   }
 
   void _separateData() {
+    clearLists();
     for (int i = 0; i < _rawData.length; i++) {
       Map<String, dynamic> item = _rawData[i];
       String itemName = item["name"];
@@ -62,6 +63,15 @@ class PrepareData {
     return null;
   }
 
+
+  void clearLists() {
+    _drinksWithIngredients.clear();
+    _drinksWithNoIngredients.clear();
+    _foodsWithIngredients.clear();
+    _foodsWithNoIngredients.clear();
+  }
+
+
   List<String> getDrinksWithIngredients() {
     return _drinksWithIngredients;
   }
@@ -76,5 +86,8 @@ class PrepareData {
 
   List<String> getFoodsWithNoIngredients() {
     return _foodsWithNoIngredients;
+  }
+  List<dynamic> getRawData() {
+    return _rawData;
   }
 }
