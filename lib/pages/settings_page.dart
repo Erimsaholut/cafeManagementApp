@@ -1,6 +1,5 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
-import '../utils/custom_button_with_checkboxes.dart';
 import '../utils/custom_menu_button.dart';
 
 class SettingsPage extends StatelessWidget {

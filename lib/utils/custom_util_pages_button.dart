@@ -1,15 +1,11 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
-import '../pages/settings_page.dart';
 
 
-class SettingsButton extends StatefulWidget {
-  SettingsButton({super.key});
-  @override
-  State<SettingsButton> createState() => _SettingsButtonState();
-}
-
-class _SettingsButtonState extends State<SettingsButton> {
+class CustomUtilPagesButton extends StatelessWidget {
+  const CustomUtilPagesButton({super.key,required this.buttonName,required this.goToPage});
+  final String buttonName;
+  final Widget goToPage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,8 +20,7 @@ class _SettingsButtonState extends State<SettingsButton> {
           Navigator.of(context).push(
             PageRouteBuilder(
               opaque: false,
-              pageBuilder: (_, __, ___) =>
-                  const SettingsPage(),
+              pageBuilder: (_, __, ___) =>goToPage,
               transitionsBuilder: (_, anim, __, child) {
                 return ScaleTransition(
                   scale: anim,
@@ -43,7 +38,7 @@ class _SettingsButtonState extends State<SettingsButton> {
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
-        child:Text("Ayarlar",style: CustomStyles.menuTextStyle,),
+        child:Text(buttonName,style: CustomStyles.menuTextStyle,),
       ),
     );
   }

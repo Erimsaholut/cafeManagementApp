@@ -1,12 +1,19 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyzes_page.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/settings_button.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure that Flutter is initialized
   PrepareData prepareData = PrepareData();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]).then((value) => runApp(const MyApp()));
   runApp(const MyApp());
 }
 
@@ -37,8 +44,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> mylist =
-      List.generate(23, (index) => CustomTable(tableNum: index + 1))
-        ..add(SettingsButton());
+      List.generate(22, (index) => CustomTable(tableNum: index + 1))
+        ..add(const CustomUtilPagesButton(
+            buttonName: "Analyzes", goToPage: AnalyzesPage()))
+        ..add(const CustomUtilPagesButton(
+            buttonName: 'Settings', goToPage: SettingsPage()));
 
   @override
   Widget build(BuildContext context) {
