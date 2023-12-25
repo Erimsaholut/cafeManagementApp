@@ -28,6 +28,18 @@ class CustomStyles {
     ),
   );
 
+  static final ButtonStyle customMenuItemButtonStyle = ElevatedButton.styleFrom(
+    primary: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      side: const BorderSide(
+        color: Colors.black,
+        width: 2.0,
+      ),
+    ),
+  );
+
+
   static final ButtonStyle transparentButtonStyle = TextButton.styleFrom(
     backgroundColor: Colors.transparent,
     padding: const EdgeInsets.all(16.0),

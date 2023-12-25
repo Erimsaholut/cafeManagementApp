@@ -11,9 +11,9 @@ class CustomTableMenu extends StatelessWidget {
   final int tableNum;
   final String tableName;
   final List<Widget> orders = [
-    Text("6 Tost"),
-    Text("24 Çay"),
-    Text("7 Oralet")
+    const Text("6 Tost"),
+    const Text("24 Çay"),
+    const Text("7 Oralet"),
   ];
 
   /*test aşamasında*/

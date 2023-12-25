@@ -26,6 +26,7 @@ class _MyCustomButtonState extends State<MyCustomButton> {
     return Column(
 
       children: [
+        const SizedBox(height:16.0,),
         ElevatedButton(
           onPressed: widget.onPressed,
           child: Row(

@@ -56,11 +56,11 @@ class _MenuScreenState extends State<MenuScreen> {
         child: ListView(
           children: [
             buildItemTypeTextContainer("İçecekler"), //içecekler
-            ...drinksNoIn,
+            buildGridView(drinksNoIn),
             ...drinksIn,
 
             buildItemTypeTextContainer("Yiyecekler"), //yiyecekler
-            ...foodsNoIn,
+            buildGridView(foodsNoIn),
             ...foodsIn,
           ],
         ),
@@ -83,19 +83,14 @@ class _MenuScreenState extends State<MenuScreen> {
   void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) {
     for (var item in items) {
       widgets.add(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextButton(
-                style: CustomStyles.customButtonStyle,
-                onPressed: () {
-                  if (kDebugMode) {
-                    print(item);
-                  }
-                },
-                child: Text(item)),
-          ],
-        ),
+        TextButton(
+            style: CustomStyles.customMenuItemButtonStyle,
+            onPressed: () {
+              if (kDebugMode) {
+                print(item);
+              }
+            },
+            child: Text(item)),
       );
     }
   }
@@ -118,4 +113,20 @@ void makeWidgetsForInd(List<Map<String, dynamic>> items, List<Widget> widgets) {
       ),
     );
   }
+}
+
+Widget buildGridView(List<Widget> list) {
+  return GridView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 4,
+      crossAxisSpacing: 32.0,
+      mainAxisSpacing: 32.0,
+    ),
+    itemCount: list.length,
+    itemBuilder: (BuildContext context, int index) {
+      return list[index];
+    },
+  );
 }
