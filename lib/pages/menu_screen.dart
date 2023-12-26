@@ -130,3 +130,9 @@ Widget buildGridView(List<Widget> list) {
     },
   );
 }
+
+//todo only one checkboxlu customWidget
+//todo settings sayfasındaki ayarlar
+//todo analiz sayfası ve dışarı aktarabilme özelliği
+//todo sipariş alam verme
+//todo tasarım

@@ -92,8 +92,8 @@ class CustomTableMenu extends StatelessWidget {
                       ),
                     );
                   }),
-                  CustomMenuButton("Azalt Sipariş"),
-                  CustomMenuButton("Masa Ödendi"),
+                  CustomMenuButton( "Azalt Sipariş",),
+                  CustomMenuButton("Masa Ödendi",),
                 ],
               ),
             ),
