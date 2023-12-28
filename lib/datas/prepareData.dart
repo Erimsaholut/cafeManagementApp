@@ -97,7 +97,7 @@ class PrepareData {
 
   set cafeName(String name) {
     _readJson.cafeName = name;
-    print("CAFE NAME ");
+    print("üstteki"+_readJson.cafeName);
     _updateSettingsInJSON();
   }
 
@@ -110,21 +110,17 @@ class PrepareData {
     final String response = await rootBundle.loadString('lib/datas/menu.json');
     final data = await json.decode(response);
 
-    // Yeni ayarları ekle
     data["cafe_name"] = _readJson.cafeName;
     data["table_count"] = _readJson.tableCount;
+    print("alttaki${_readJson.cafeName}");
     print(data);
 
-// Güncellenmiş içeriği dosyaya yaz
     final String jsonString = json.encode(data);
 
-    // Specify the path to the JSON file
     const String filePath = '/Users/erimsaholut/StudioProjects/cafe_management_system_for_camalti_kahvesi/lib/datas/menu.json';
 
-    // Create a File object
     final File file = File(filePath);
 
-    // Write the updated JSON content to the file
     file.writeAsStringSync(jsonString);
   }
 }
