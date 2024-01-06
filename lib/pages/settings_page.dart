@@ -57,6 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> showChangeNameDialog(
+    //todo dışarı salla bunu
     String mainTitle,
     String textFieldTitle,
     String secondTextFieldTitle,
@@ -118,6 +119,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               if (updateName) {
                                 setState(() {
                                   data.cafeName = _controller.text;
+                                  print("data.cafeName = _controller.text; calisti");
                                 });
                                 _controller.clear();
                               }
@@ -126,8 +128,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                 int masaSayisi =
                                     int.parse(_secondController.text);
                                 data.tableCount = masaSayisi;
+                                print(" data.tableCount = masaSayisi; calisti");
                                 //todo daha profesyonel bir görünüm için ing variable
                                 _secondController.clear();
+                                Navigator.of(context).pop();
                               }
 
                               Navigator.of(context).pop();

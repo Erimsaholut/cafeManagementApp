@@ -97,7 +97,6 @@ class PrepareData {
 
   set cafeName(String name) {
     _readJson.cafeName = name;
-    print("üstteki"+_readJson.cafeName);
     _updateSettingsInJSON();
   }
 
@@ -107,20 +106,20 @@ class PrepareData {
   }
 
   Future<void> _updateSettingsInJSON() async {
-    final String response = await rootBundle.loadString('lib/datas/menu.json');
-    final data = await json.decode(response);
+    try {
+      String jsonString = await rootBundle.loadString('assets/menu/menu.json');
+      Map<String, dynamic> data = json.decode(jsonString);
 
-    data["cafe_name"] = _readJson.cafeName;
-    data["table_count"] = _readJson.tableCount;
-    print("alttaki${_readJson.cafeName}");
-    print(data);
+      data["cafe_name"] = _readJson.cafeName;
+      data["table_count"] = _readJson.tableCount;
+      String lastJsonString = json.encode(data);
+      print(data);
 
-    final String jsonString = json.encode(data);
-
-    const String filePath = '/Users/erimsaholut/StudioProjects/cafe_management_system_for_camalti_kahvesi/lib/datas/menu.json';
-
-    final File file = File(filePath);
-
-    file.writeAsStringSync(jsonString);
+      final file =
+          await File("lib/"
+              "menu/menu.json").writeAsString(lastJsonString);
+    } catch (e) {
+      print("Hata oluşt: $e");
+    }
   }
 }

@@ -45,7 +45,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> mylist =
       List.generate(22, (index) => CustomTable(tableNum: index + 1))
-        ..add(const CustomUtilPagesButton(
+        ..add(CustomUtilPagesButton(
             buttonName: "Analyzes", goToPage: AnalyzesPage()))
         ..add(const CustomUtilPagesButton(
             buttonName: 'Settings', goToPage: SettingsPage()));

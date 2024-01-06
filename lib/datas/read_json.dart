@@ -13,7 +13,7 @@ class ReadJson {
   Future<void> loadJson() async {
     try {
       final String response =
-          await rootBundle.loadString('lib/datas/menu.json');
+          await rootBundle.loadString('assets/menu/menu.json');
       final data = await json.decode(response);
       _items = data["menu"];
       cafeName = data["cafe_name"];
@@ -40,4 +40,10 @@ class ReadJson {
   List<dynamic> getItems() {
     return _items;
   }
+
+  void updateSettings(String cafeName, int tableCount) {
+    this.cafeName = cafeName;
+    this.tableCount = tableCount;
+  }
+
 }

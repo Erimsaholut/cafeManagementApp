@@ -4,6 +4,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/custom_menu_button.dart';
+import 'orders_page.dart';
 
 class CustomTableMenu extends StatelessWidget {
   CustomTableMenu({super.key, required this.tableNum, required this.tableName});
@@ -92,8 +93,26 @@ class CustomTableMenu extends StatelessWidget {
                       ),
                     );
                   }),
-                  CustomMenuButton( "Azalt Sipariş",),
-                  CustomMenuButton("Masa Ödendi",),
+                  CustomMenuButton("Azalt Sipariş", onPressedFunction: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => OrdersPage(
+                          orders: orders,
+                        ),
+                        transitionsBuilder: (_, anim, __, child) {
+                          return ScaleTransition(
+                            scale: anim,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                    );
+                  }),
+                  CustomMenuButton(
+                    "Masa Ödendi",
+                  ),
                 ],
               ),
             ),
