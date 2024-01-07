@@ -1,8 +1,12 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_json.dart';
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_new_data.dart';
 
 class AnalyzesPage extends StatelessWidget {
   final ReadNewData readNewData = ReadNewData();
+  ReadJson readJson = ReadJson();
+
+  bool isMenuSeparated = true;
 
   AnalyzesPage({Key? key}) : super(key: key);
 
@@ -20,10 +24,43 @@ class AnalyzesPage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () async {
-              String counter = await readNewData.readCounter();
-              print('Counter: $counter');
+              Object counter = (await readNewData.readJsonData()) as Object;
+              print(counter);
+
+              // Fonksiyon sadece bir kere çağrılacak şekilde kontrol
+              if (!isMenuSeparated) {
+                readNewData.separateAndInitData();
+                isMenuSeparated = true;
+              }
+
+              int menuItemCount = await readNewData.getMenuItemCount();
+              print('Menüdeki öğe sayısı: $menuItemCount');
             },
             child: const Text("Oku Test"),
+          ),
+          TextButton(
+            onPressed: () async {
+              print(readJson.getItemCount());
+            },
+            child: const Text("önceki fonksiyondan getItemCount"),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (isMenuSeparated) {
+                print("x");
+                readNewData.separateMenuItems();
+                isMenuSeparated = false;
+              }
+              print(isMenuSeparated);
+              print(
+                  'İçecekler (İçerikli): ${readNewData.drinksWithIngredients}');
+              print(
+                  'İçecekler (İçeriksiz): ${readNewData.drinksWithNoIngredients}');
+              print('Yemekler (İçerikli): ${readNewData.foodsWithIngredients}');
+              print(
+                  'Yemekler (İçeriksiz): ${readNewData.foodsWithNoIngredients}');
+            },
+            child: const Text("Olsa Elim Kanda"),
           ),
         ],
       ),

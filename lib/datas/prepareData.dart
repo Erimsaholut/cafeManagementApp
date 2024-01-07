@@ -116,7 +116,7 @@ class PrepareData {
       print(data);
 
       final file =
-          await File("lib/"
+          await File("assets/"
               "menu/menu.json").writeAsString(lastJsonString);
     } catch (e) {
       print("Hata oluşt: $e");
