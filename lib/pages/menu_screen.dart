@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../datas/prepareData.dart';
+import '../datas/read_new_data.dart';
 import '../utils/custom_button_with_checkboxes.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -12,7 +12,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  final PrepareData preparedData = PrepareData();
+  final ReadNewData readNewData = ReadNewData();
 
   List<Widget> drinksNoIn = [];
 
@@ -25,18 +25,16 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    preparedData.initializeData();
     createButtons();
   }
 
   void createButtons() {
     setState(() {
-      makeWidgetsForNoInd(
-          preparedData.getDrinksWithNoIngredients(), drinksNoIn);
-      makeWidgetsForInd(preparedData.getDrinksWithIngredients(), drinksIn);
+      makeWidgetsForNoInd(readNewData.drinksWithNoIngredients, drinksNoIn);
+      makeWidgetsForInd(readNewData.drinksWithIngredients, drinksIn);
 
-      makeWidgetsForNoInd(preparedData.getFoodsWithNoIngredients(), foodsNoIn);
-      makeWidgetsForInd(preparedData.getFoodsWithIngredients(), foodsIn);
+      makeWidgetsForNoInd(readNewData.foodsWithNoIngredients, foodsNoIn);
+      makeWidgetsForInd(readNewData.foodsWithIngredients, foodsIn);
     });
   }
 
@@ -84,53 +82,54 @@ class _MenuScreenState extends State<MenuScreen> {
     for (var item in items) {
       widgets.add(
         TextButton(
-            style: CustomStyles.customMenuItemButtonStyle,
-            onPressed: () {
-              if (kDebugMode) {
-                print(item);
-              }
-            },
-            child: Text(item)),
+          style: CustomStyles.customMenuItemButtonStyle,
+          onPressed: () {
+            if (kDebugMode) {
+              print(item);
+            }
+          },
+          child: Text(item),
+        ),
       );
     }
   }
-}
 
-void makeWidgetsForInd(List<Map<String, dynamic>> items, List<Widget> widgets) {
-  for (var item in items) {
-    List<String> ingredients = List<String>.from(item["ingredients"]);
+  void makeWidgetsForInd(
+      List<Map<String, dynamic>> items, List<Widget> widgets) {
+    for (var item in items) {
+      List<String> ingredients = List<String>.from(item["ingredients"]);
 
-    widgets.add(
-      MyCustomButton(
-        buttonText: item["name"],
-        checkboxTexts: ingredients,
-        onPressed: () {
-          if (kDebugMode) {
-            print("Button pressed for ${item["name"]}");
-          }
-          // Add any additional logic here if needed
-        },
+      widgets.add(
+        MyCustomButton(
+          buttonText: item["name"],
+          checkboxTexts: ingredients,
+          onPressed: () {
+            if (kDebugMode) {
+              print("Button pressed for ${item["name"]}");
+            }
+            // Add any additional logic here if needed
+          },
+        ),
+      );
+    }
+  }
+
+  Widget buildGridView(List<Widget> list) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: 32.0,
+        mainAxisSpacing: 32.0,
       ),
+      itemCount: list.length,
+      itemBuilder: (BuildContext context, int index) {
+        return list[index];
+      },
     );
   }
 }
-
-Widget buildGridView(List<Widget> list) {
-  return GridView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 4,
-      crossAxisSpacing: 32.0,
-      mainAxisSpacing: 32.0,
-    ),
-    itemCount: list.length,
-    itemBuilder: (BuildContext context, int index) {
-      return list[index];
-    },
-  );
-}
-
 //todo only one checkboxlu customWidget
 //todo settings sayfasındaki ayarlar
 //todo analiz sayfası ve dışarı aktarabilme özelliği

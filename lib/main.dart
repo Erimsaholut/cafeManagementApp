@@ -6,10 +6,15 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pag
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 import 'package:flutter/services.dart';
 
+import 'datas/read_new_data.dart';
+
 void main() async {
   WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure that Flutter is initialized
-  PrepareData prepareData = PrepareData();
+      .ensureInitialized();
+  ReadNewData readNewData = ReadNewData();
+  readNewData.readJsonData();
+  readNewData.separateMenuItems();
+  print("newJsonDataReaded");
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,

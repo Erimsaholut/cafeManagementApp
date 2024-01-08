@@ -7,7 +7,6 @@ class ReadJson {
   int tableCount = 22;
 
   ReadJson() {
-    loadJson();
   }
 
   Future<void> loadJson() async {

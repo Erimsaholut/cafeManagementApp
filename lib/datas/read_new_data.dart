@@ -2,7 +2,15 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
+//todo en son burası new değil normal data olacak
+
 class ReadNewData {
+
+  ReadNewData() {
+    readJsonData();
+    print("newJsonDataReaded");
+  }
+
   static List<String> _drinksWithNoIngredients = [];
   static List<Map<String, dynamic>> _drinksWithIngredients = [];
 
@@ -43,14 +51,10 @@ class ReadNewData {
   void separateAndInitData() async {
     Map<String, dynamic>? rawData = await readJsonData();
     if (rawData != null) {
-      // rawData'ı işleyin
-      // Örnek: cafe_name, table_count ve menu'ya erişim
       String cafeName = rawData["cafe_name"];
       int tableCount = rawData["table_count"];
       List<dynamic> menu = rawData["menu"];
       print("cafename = $cafeName , tableCount = $tableCount, menu = $menu");
-
-      // İleriki işleme mantığınız buraya gelecek
     }
   }
 
@@ -110,13 +114,12 @@ class ReadNewData {
     }
   }
 
-  List<Map<String, dynamic>> get drinksWithIngredients => _drinksWithIngredients;
+  List<Map<String, dynamic>> get drinksWithIngredients =>
+      _drinksWithIngredients;
 
   List<String> get drinksWithNoIngredients => _drinksWithNoIngredients;
 
   List<Map<String, dynamic>> get foodsWithIngredients => _foodsWithIngredients;
 
   List<String> get foodsWithNoIngredients => _foodsWithNoIngredients;
-
-
 }

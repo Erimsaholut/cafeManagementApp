@@ -2,13 +2,20 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_json.dart'
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_new_data.dart';
 
-class AnalyzesPage extends StatelessWidget {
+class AnalyzesPage extends StatefulWidget {
+
+  AnalyzesPage({Key? key}) : super(key: key);
+
+  @override
+  State<AnalyzesPage> createState() => _AnalyzesPageState();
+}
+
+class _AnalyzesPageState extends State<AnalyzesPage> {
   final ReadNewData readNewData = ReadNewData();
+
   ReadJson readJson = ReadJson();
 
   bool isMenuSeparated = true;
-
-  AnalyzesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +31,8 @@ class AnalyzesPage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () async {
-              Object counter = (await readNewData.readJsonData()) as Object;
-              print(counter);
+              Object menu = (await readNewData.readJsonData()) as Object;
+              print(menu);
 
               // Fonksiyon sadece bir kere çağrılacak şekilde kontrol
               if (!isMenuSeparated) {
@@ -36,7 +43,7 @@ class AnalyzesPage extends StatelessWidget {
               int menuItemCount = await readNewData.getMenuItemCount();
               print('Menüdeki öğe sayısı: $menuItemCount');
             },
-            child: const Text("Oku Test"),
+            child: const Text("menuraw + ogeSayisi"),
           ),
           TextButton(
             onPressed: () async {
@@ -48,9 +55,11 @@ class AnalyzesPage extends StatelessWidget {
             onPressed: () async {
               if (isMenuSeparated) {
                 print("x");
-                readNewData.separateMenuItems();
                 isMenuSeparated = false;
               }
+              setState(() {
+
+
               print(isMenuSeparated);
               print(
                   'İçecekler (İçerikli): ${readNewData.drinksWithIngredients}');
@@ -59,6 +68,7 @@ class AnalyzesPage extends StatelessWidget {
               print('Yemekler (İçerikli): ${readNewData.foodsWithIngredients}');
               print(
                   'Yemekler (İçeriksiz): ${readNewData.foodsWithNoIngredients}');
+              });
             },
             child: const Text("Olsa Elim Kanda"),
           ),
