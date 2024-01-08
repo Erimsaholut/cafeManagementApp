@@ -1,6 +1,6 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
 import 'package:flutter/material.dart';
 import '../utils/custom_menu_button.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -10,8 +10,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  TextEditingController _controller = TextEditingController();
-  PrepareData data = PrepareData();
+  final TextEditingController _controller = TextEditingController();
+
+  WriteData writeData = WriteData();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   CustomMenuButton(
                     "Yeni İçecek Ekle",
                     onPressedFunction: () {
-                      // Başka bir showDialog kullanılabilir
                     },
                   ),
                   CustomMenuButton("Yeni Yiyecek Ekle"),
@@ -118,18 +118,18 @@ class _SettingsPageState extends State<SettingsPage> {
                             onPressed: () {
                               if (updateName) {
                                 setState(() {
-                                  data.cafeName = _controller.text;
-                                  print("data.cafeName = _controller.text; calisti");
+                                  writeData.setCafeName(_controller.text);
+                                  print(
+                                      "data.cafeName = _controller.text; calisti");
                                 });
                                 _controller.clear();
                               }
 
                               if (updateMasaSayisi) {
-                                int masaSayisi =
+                                int tableCount =
                                     int.parse(_secondController.text);
-                                data.tableCount = masaSayisi;
+                                writeData.setTableCount(tableCount);
                                 print(" data.tableCount = masaSayisi; calisti");
-                                //todo daha profesyonel bir görünüm için ing variable
                                 _secondController.clear();
                                 Navigator.of(context).pop();
                               }

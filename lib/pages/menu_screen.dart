@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../datas/read_new_data.dart';
+import '../datas/read_data.dart';
 import '../utils/custom_button_with_checkboxes.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -12,7 +12,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  final ReadNewData readNewData = ReadNewData();
+  final ReadData readNewData = ReadData();
 
   List<Widget> drinksNoIn = [];
 

@@ -1,18 +1,20 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyzes_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/prepareData.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 import 'package:flutter/services.dart';
 
-import 'datas/read_new_data.dart';
+import 'datas/read_data.dart';
 
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized();
-  ReadNewData readNewData = ReadNewData();
-  readNewData.readJsonData();
+  ReadData readNewData = ReadData();
+  WriteData writeData = WriteData();
+  //writeData.resetData();
+  //readNewData.readJsonData();
   readNewData.separateMenuItems();
   print("newJsonDataReaded");
   SystemChrome.setPreferredOrientations([

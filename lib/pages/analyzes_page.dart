@@ -1,6 +1,5 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_json.dart';
 import 'package:flutter/material.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_new_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_data.dart';
 
 class AnalyzesPage extends StatefulWidget {
 
@@ -11,11 +10,7 @@ class AnalyzesPage extends StatefulWidget {
 }
 
 class _AnalyzesPageState extends State<AnalyzesPage> {
-  final ReadNewData readNewData = ReadNewData();
-
-  ReadJson readJson = ReadJson();
-
-  bool isMenuSeparated = true;
+  final ReadData readNewData = ReadData();
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +30,6 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
               print(menu);
 
               // Fonksiyon sadece bir kere çağrılacak şekilde kontrol
-              if (!isMenuSeparated) {
-                readNewData.separateAndInitData();
-                isMenuSeparated = true;
-              }
 
               int menuItemCount = await readNewData.getMenuItemCount();
               print('Menüdeki öğe sayısı: $menuItemCount');
@@ -47,20 +38,9 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
           ),
           TextButton(
             onPressed: () async {
-              print(readJson.getItemCount());
-            },
-            child: const Text("önceki fonksiyondan getItemCount"),
-          ),
-          TextButton(
-            onPressed: () async {
-              if (isMenuSeparated) {
-                print("x");
-                isMenuSeparated = false;
-              }
+
               setState(() {
 
-
-              print(isMenuSeparated);
               print(
                   'İçecekler (İçerikli): ${readNewData.drinksWithIngredients}');
               print(

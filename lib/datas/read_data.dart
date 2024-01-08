@@ -2,11 +2,8 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-//todo en son burası new değil normal data olacak
-
-class ReadNewData {
-
-  ReadNewData() {
+class ReadData {
+  ReadData() {
     readJsonData();
     print("newJsonDataReaded");
   }
@@ -29,9 +26,13 @@ class ReadNewData {
 
   Future<void> writeJsonData(String jsonData) async {
     final file = await _localFile;
-    await file.writeAsString(jsonData);
+    try {
+      await file.writeAsString(jsonData);
+      print("Settings updated successfully.");
+    } catch (e) {
+      print('JSON verisi yazılırken hata oluştu: $e');
+    }
   }
-
   Future<Map<String, dynamic>?> readJsonData() async {
     try {
       final file = await _localFile;
@@ -111,6 +112,15 @@ class ReadNewData {
       }
     } catch (e) {
       print('Menü öğeleri ayrıştırılırken hata oluştu: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>?> getRawData() async {
+    try {
+      return await readJsonData();
+    } catch (e) {
+      print('Raw data okunurken hata oluştu: $e');
+      return null;
     }
   }
 
