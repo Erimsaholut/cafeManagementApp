@@ -8,11 +8,12 @@ class ReadData {
     print("newJsonDataReaded");
   }
 
-  static List<String> _drinksWithNoIngredients = [];
-  static List<Map<String, dynamic>> _drinksWithIngredients = [];
+  static final List<String> _drinksWithNoIngredients = [];
+  static final List<Map<String, dynamic>> _drinksWithIngredients = [];
 
-  static List<Map<String, dynamic>> _foodsWithIngredients = [];
-  static List<String> _foodsWithNoIngredients = [];
+//final yaptık
+  static final List<Map<String, dynamic>> _foodsWithIngredients = [];
+  static final List<String> _foodsWithNoIngredients = [];
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -33,6 +34,7 @@ class ReadData {
       print('JSON verisi yazılırken hata oluştu: $e');
     }
   }
+
   Future<Map<String, dynamic>?> readJsonData() async {
     try {
       final file = await _localFile;
@@ -122,6 +124,20 @@ class ReadData {
       print('Raw data okunurken hata oluştu: $e');
       return null;
     }
+  }
+
+  Future<String?> getCafeName() async {
+    try {
+      Map<String, dynamic>? rawData = await getRawData();
+
+      if (rawData != null) {
+        // rawData haritasından cafe_name'i al ve geri döndür
+        return rawData["cafe_name"];
+      }
+    } catch (e) {
+      print('Cafe adı okunurken hata oluştu: $e');
+    }
+    return null;
   }
 
   List<Map<String, dynamic>> get drinksWithIngredients =>

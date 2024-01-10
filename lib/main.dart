@@ -1,4 +1,3 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyzes_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_data.dart';
 
 class AnalyzesPage extends StatefulWidget {
-
   AnalyzesPage({Key? key}) : super(key: key);
 
   @override
@@ -28,9 +27,6 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
             onPressed: () async {
               Object menu = (await readNewData.readJsonData()) as Object;
               print(menu);
-
-              // Fonksiyon sadece bir kere çağrılacak şekilde kontrol
-
               int menuItemCount = await readNewData.getMenuItemCount();
               print('Menüdeki öğe sayısı: $menuItemCount');
             },
@@ -38,19 +34,28 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
           ),
           TextButton(
             onPressed: () async {
-
               setState(() {
-
-              print(
-                  'İçecekler (İçerikli): ${readNewData.drinksWithIngredients}');
-              print(
-                  'İçecekler (İçeriksiz): ${readNewData.drinksWithNoIngredients}');
-              print('Yemekler (İçerikli): ${readNewData.foodsWithIngredients}');
-              print(
-                  'Yemekler (İçeriksiz): ${readNewData.foodsWithNoIngredients}');
+                print(
+                    'İçecekler (İçerikli): ${readNewData
+                        .drinksWithIngredients}');
+                print(
+                    'İçecekler (İçeriksiz): ${readNewData
+                        .drinksWithNoIngredients}');
+                print(
+                    'Yemekler (İçerikli): ${readNewData.foodsWithIngredients}');
+                print(
+                    'Yemekler (İçeriksiz): ${readNewData
+                        .foodsWithNoIngredients}');
               });
             },
-            child: const Text("Olsa Elim Kanda"),
+            child: const Text("separeted menu items"),
+          ),
+          TextButton(
+            onPressed: () async {
+              String? cafeName = await readNewData.getCafeName();
+              print(cafeName);
+            },
+            child: const Text("sadece kafe ismi"),
           ),
         ],
       ),
