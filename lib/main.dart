@@ -9,13 +9,10 @@ import 'package:flutter/services.dart';
 import 'datas/read_data.dart';
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   ReadData readNewData = ReadData();
-  WriteData writeData = WriteData();
-  //writeData.resetData();
-  //readNewData.readJsonData();
   readNewData.separateMenuItems();
+  readNewData.readJsonData();
   print("newJsonDataReaded");
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
@@ -23,6 +20,8 @@ void main() async {
   ]).then((value) => runApp(const MyApp()));
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -50,12 +49,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> mylist =
-      List.generate(22, (index) => CustomTable(tableNum: index + 1))
-        ..add(CustomUtilPagesButton(
-            buttonName: "Analyzes", goToPage: AnalyzesPage()))
-        ..add(const CustomUtilPagesButton(
-            buttonName: 'Settings', goToPage: SettingsPage()));
+  List<Widget> mylist = List.generate(
+      22, (index) => CustomTable(tableNum: index + 1))
+    ..add(
+        CustomUtilPagesButton(buttonName: "Analyzes", goToPage: AnalyzesPage()))
+    ..add(const CustomUtilPagesButton(
+        buttonName: 'Settings', goToPage: SettingsPage()));
 
   @override
   Widget build(BuildContext context) {

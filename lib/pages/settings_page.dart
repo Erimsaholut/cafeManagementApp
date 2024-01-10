@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/reset_all_json_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
 import 'package:flutter/material.dart';
 import '../utils/custom_menu_button.dart';
@@ -32,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     "Kafe Bilgilerini düzenle",
                     onPressedFunction: () {
                       showChangeNameDialog(
-                        "Kafe İsmini Değiştir",
+                        "Kafe Bilgilerini Değiştir",
                         "Kafe ismini değiştir:",
                         "Masa Sayısını Değiştir",
                       ); // showDialog metodu burada çağrılır
@@ -40,13 +41,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   CustomMenuButton(
                     "Yeni İçecek Ekle",
-                    onPressedFunction: () {
-                    },
+                    onPressedFunction: () {},
                   ),
                   CustomMenuButton("Yeni Yiyecek Ekle"),
                   CustomMenuButton("Ürünleri Düzenle"),
                   CustomMenuButton("Eski Verilere Ulaş"),
-                  CustomMenuButton("Bütün verileri resetle"),
+                  CustomMenuButton(
+                    "Bütün verileri resetle",
+                    onPressedFunction: () {
+                      ResetAllJsonData resetAllJsonData = ResetAllJsonData();
+                      resetAllJsonData.resetJsonFile();
+                    },
+                  ),
                 ],
               ),
             ],

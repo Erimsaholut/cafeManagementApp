@@ -14,7 +14,7 @@ class WriteData {
         rawData["cafe_name"] = newCafeName;
         rawData["table_count"] = newTableCount;
 
-        await readData.writeJsonData(rawData.toString());
+        await readData.writeJsonData(json.encode(rawData));
         print("Settings updated successfully.");
       }
     } catch (e) {
@@ -26,14 +26,12 @@ class WriteData {
     Map<String, dynamic>? rawData = await readData.getRawData();
     int currentTableCount = rawData?["table_count"] ?? 0;
     await _updateSettingsInJSON(newCafeName, currentTableCount);
-    print(readData.getRawData()); // test amaçlı hep
   }
 
   Future<void> setTableCount(int newTableCount) async {
     Map<String, dynamic>? rawData = await readData.getRawData();
     String currentCafeName = rawData?["cafe_name"] ?? "";
     await _updateSettingsInJSON(currentCafeName, newTableCount);
-    print(readData.getRawData()); // test amaçlı hep
   }
 
   Future<void> resetData() async {
