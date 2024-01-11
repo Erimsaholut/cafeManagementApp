@@ -78,7 +78,7 @@ class ReadData {
     return 0;
   }
 
-  void separateMenuItems() async {
+  Future<void> separateMenuItems() async {
     try {
       final file = await _localFile;
       if (await file.exists()) {
@@ -126,18 +126,30 @@ class ReadData {
     }
   }
 
-  Future<String?> getCafeName() async {
+  Future<String> getCafeName() async {
     try {
       Map<String, dynamic>? rawData = await getRawData();
 
       if (rawData != null) {
-        // rawData haritasından cafe_name'i al ve geri döndür
         return rawData["cafe_name"];
       }
     } catch (e) {
       print('Cafe adı okunurken hata oluştu: $e');
     }
-    return null;
+    return "";
+  }
+
+  Future<int> getTableCount() async {
+    try {
+      Map<String, dynamic>? rawData = await getRawData();
+
+      if (rawData != null) {
+        return rawData["table_count"];
+      }
+    } catch (e) {
+      print('Masa sayisi hata oluştu: $e');
+    }
+    return 2;
   }
 
   List<Map<String, dynamic>> get drinksWithIngredients =>

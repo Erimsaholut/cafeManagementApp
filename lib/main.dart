@@ -1,29 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'datas/read_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyzes_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
-import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
-import 'package:flutter/services.dart';
-
-import 'datas/read_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   ReadData readNewData = ReadData();
-  readNewData.separateMenuItems();
-  readNewData.readJsonData();
+  await readNewData.separateMenuItems();
+  await readNewData.readJsonData();
   print("newJsonDataReaded");
+
+  String cafeName = await readNewData.getCafeName();
+  int tableCount = await readNewData.getTableCount(); // Masa sayısını al
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
-  ]).then((value) => runApp(const MyApp()));
-  runApp(const MyApp());
+  ]).then((value) => runApp(MyApp(cafeName: cafeName, tableCount: tableCount)));
 }
 
-
-
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String cafeName;
+  final int tableCount; // Yeni eklenen alan
+
+  const MyApp({Key? key, required this.cafeName, required this.tableCount}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,27 +37,33 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Çamaltı Kahvehanesi'),
+      home: MyHomePage(title: cafeName, tableCount: tableCount), // Yeni eklenen parametre
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
+  final int tableCount; // Yeni eklenen alan
+
+  const MyHomePage({Key? key, required this.title, required this.tableCount}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> mylist = List.generate(
-      22, (index) => CustomTable(tableNum: index + 1))
-    ..add(
-        CustomUtilPagesButton(buttonName: "Analyzes", goToPage: AnalyzesPage()))
-    ..add(const CustomUtilPagesButton(
-        buttonName: 'Settings', goToPage: SettingsPage()));
+  late List<Widget> mylist;
+
+  @override
+  void initState() {
+    super.initState();
+    mylist = List.generate(
+        widget.tableCount, (index) => CustomTable(tableNum: index + 1))
+      ..add(CustomUtilPagesButton(buttonName: "Analyzes", goToPage: AnalyzesPage()))
+      ..add(const CustomUtilPagesButton(
+          buttonName: 'Settings', goToPage: SettingsPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
