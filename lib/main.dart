@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
   final String cafeName;
   final int tableCount; // Yeni eklenen alan
 
-  const MyApp({Key? key, required this.cafeName, required this.tableCount}) : super(key: key);
+  const MyApp({Key? key, required this.cafeName, required this.tableCount})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: cafeName, tableCount: tableCount), // Yeni eklenen parametre
+      home: MyHomePage(
+          title: cafeName, tableCount: tableCount), // Yeni eklenen parametre
     );
   }
 }
@@ -46,7 +48,8 @@ class MyHomePage extends StatefulWidget {
   final String title;
   final int tableCount; // Yeni eklenen alan
 
-  const MyHomePage({Key? key, required this.title, required this.tableCount}) : super(key: key);
+  const MyHomePage({Key? key, required this.title, required this.tableCount})
+      : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -60,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     mylist = List.generate(
         widget.tableCount, (index) => CustomTable(tableNum: index + 1))
-      ..add(CustomUtilPagesButton(buttonName: "Analyzes", goToPage: AnalyzesPage()))
+      ..add(CustomUtilPagesButton(
+          buttonName: "Analyzes", goToPage: AnalyzesPage()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()));
   }

@@ -1,7 +1,8 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/reset_all_json_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page_functions/show_change_name_and_table_count_dialog.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_sub_pages/create_new_drink_page.dart';
 import 'package:flutter/material.dart';
-import '../settings_page_functions/show_change_name_and_table_count_dialog.dart';
 import '../utils/custom_menu_button.dart';
 
 //todo isim ve nuamra güncellemesi için kapat aç knk denilecek onu ayarla bi ara
@@ -61,9 +62,24 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   CustomMenuButton(
                     "Yeni İçecek Ekle",
+                    onPressedFunction: (){
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => const CreateBeverage(),
+                          transitionsBuilder: (_, anim, __, child) {
+                            return ScaleTransition(
+                              scale: anim,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 150),
+                        ),
+                      );
+                    }
                   ),
                   CustomMenuButton(
-                    "Yeni Yiyecek Ekle",
+                    "Yeni yiyecek Ekle",
                   ),
                   CustomMenuButton(
                     "Ürünleri Düzenle",
