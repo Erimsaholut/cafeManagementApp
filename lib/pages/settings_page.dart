@@ -11,10 +11,10 @@ class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage> {
   final TextEditingController _controller = TextEditingController();
   ReadData readNewData = ReadData();
 
@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ayarlar"),
+        title: const Text("Ayarlar"),
         backgroundColor: Colors.amberAccent,
       ),
       body: Container(
@@ -60,24 +60,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
                     },
                   ),
-                  CustomMenuButton(
-                    "Yeni İçecek Ekle",
-                    onPressedFunction: (){
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (_, __, ___) => const CreateBeverage(),
-                          transitionsBuilder: (_, anim, __, child) {
-                            return ScaleTransition(
-                              scale: anim,
-                              child: child,
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 150),
-                        ),
-                      );
-                    }
-                  ),
+                  CustomMenuButton("Yeni İçecek Ekle", onPressedFunction: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => const CreateBeverage(),
+                        transitionsBuilder: (_, anim, __, child) {
+                          return ScaleTransition(
+                            scale: anim,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 150),
+                      ),
+                    );
+                  }),
                   CustomMenuButton(
                     "Yeni yiyecek Ekle",
                   ),
@@ -97,6 +94,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     onPressedFunction: () {
                       ResetAllJsonData resetAllJsonData = ResetAllJsonData();
                       resetAllJsonData.resetJsonFile();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Bütün veriler başarı ile resetlendi'),
+                        ),
+                      );
                     },
                   ),
                 ],

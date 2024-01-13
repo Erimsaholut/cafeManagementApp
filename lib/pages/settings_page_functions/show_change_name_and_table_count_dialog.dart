@@ -43,9 +43,8 @@ class _ChangeTableCountDialogState extends State<ChangeTableCountDialog> {
         ),
         TextButton(
           onPressed: () async {
-            bool updateMasaSayisi =
-                _controller.text.isNotEmpty &&
-                    RegExp(r'^[0-9]+$').hasMatch(_controller.text);
+            bool updateMasaSayisi = _controller.text.isNotEmpty &&
+                RegExp(r'^[0-9]+$').hasMatch(_controller.text);
 
             if (updateMasaSayisi) {
               await showDialog(
@@ -68,9 +67,16 @@ class _ChangeTableCountDialogState extends State<ChangeTableCountDialog> {
                             int tableCount = int.parse(_controller.text);
                             writeData.setTableCount(tableCount);
                             print("data.tableCount = masaSayisi; calisti");
+
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Seçimlerinizin uygulanabilmesi için uygulamayı yeniden başlatmanız gerekmektedir'),
+                              ),
+                            );
                             _controller.clear();
                           });
-                          Navigator.of(context).pop();
                         },
                         child: const Text('Evet'),
                       ),
@@ -168,6 +174,13 @@ class _ChangeCafeNameDialogState extends State<ChangeCafeNameDialog> {
                           setState(() {
                             writeData.setCafeName(_controller.text);
                             print("data.cafeName = _controller.text; calisti");
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Seçimlerinizin uygulanabilmesi için uygulamayı yeniden başlatmanız gerekmektedir'),
+                              ),
+                            );
                             _controller.clear();
                           });
                           Navigator.of(context).pop();
@@ -184,7 +197,8 @@ class _ChangeCafeNameDialogState extends State<ChangeCafeNameDialog> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Uyarı'),
-                    content: const Text('İsim güncellemek için bir değer girin.'),
+                    content:
+                        const Text('İsim güncellemek için bir değer girin.'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
