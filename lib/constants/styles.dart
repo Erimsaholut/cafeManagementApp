@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 class CustomStyles {
   static TextStyle menuScreenButtonTextStyle = const TextStyle(
-    color: Colors.black, // Text color
-    fontWeight: FontWeight.bold, // Bold text
-    fontSize: 18.0, // Font size
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+    fontSize: 18.0,
   );
   static TextStyle boldAndBlack = const TextStyle(
       fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24);
 
   static TextStyle menuTextStyle = const TextStyle(
     //todo find usages ile adam gibi isim ve şuna
-    color: Colors.black, // Text color
-    fontWeight: FontWeight.bold, // Bold text
-    fontSize: 24.0, // Font size
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+    fontSize: 24.0,
   );
 
   static final ButtonStyle customButtonStyle = TextButton.styleFrom(

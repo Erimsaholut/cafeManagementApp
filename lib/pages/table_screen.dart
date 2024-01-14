@@ -1,9 +1,9 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
-import '../utils/custom_menu_button.dart';
 import 'orders_page.dart';
 
 class CustomTableMenu extends StatelessWidget {
@@ -12,9 +12,9 @@ class CustomTableMenu extends StatelessWidget {
   final int tableNum;
   final String tableName;
   final List<Widget> orders = [
-    const Text("6 Tost"),
-    const Text("24 Çay"),
-    const Text("7 Oralet"),
+    Order(count: 6, name: "Tost"),
+    Order(count: 24, name: "Çay"),
+    Order(count: 7, name: "Oralet"),
   ];
 
   /*test aşamasında*/
@@ -121,5 +121,60 @@ class CustomTableMenu extends StatelessWidget {
       ),
       backgroundColor: const Color(0xFFAEE2FF),
     );
+  }
+}
+
+class Order extends StatefulWidget {
+  Order({Key? key, required this.count, required this.name}) : super(key: key);
+
+  int count;
+  String name;
+
+  @override
+  _OrderState createState() => _OrderState();
+}
+
+class _OrderState extends State<Order> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+
+      },
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                // Decrement count when the remove button is pressed
+                widget.count = widget.count - 1;
+              });
+            },
+            icon: const Icon(Icons.remove),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
+            ),
+          ),
+          Text("${widget.count} ${widget.name}",
+              style: const TextStyle(fontSize: 16)),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                // Increment count when the add button is pressed
+                widget.count = widget.count + 1;
+              });
+            },
+            icon: const Icon(Icons.add),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String getName(){
+    return widget.name;
   }
 }

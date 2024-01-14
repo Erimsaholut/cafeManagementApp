@@ -154,68 +154,13 @@ class _IngredientsState extends State<Ingredients> {
   }
 
   Widget _buildEmptyIngredientsMessage() {
-    return Column(
+    return const Column(
       children: [
-        const Text(
+        Text(
           "Malzeme eklemek için aşağıdaki butona basabilirsiniz.",
           style: TextStyle(color: Colors.black),
         ),
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Seçenek İsmi"),
-                  content: Column(
-                    children: [
-                      TextField(
-                        controller: _controller,
-                      ),
-                    ],
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('İptal'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        bool updateName = _controller.text.isNotEmpty;
-                        if (updateName) {
-                          setState(() {
-                            indWidgets.add(
-                              Ingredient(
-                                name: _controller.text,
-                                onDelete: () =>
-                                    _removeIngredient(indWidgets.length),
-                              ),
-                            );
-                            _controller.clear();
-                            Navigator.of(context).pop();
-                          });
-                        } else {
-                          Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text('Seçenek eklemek için bir değer girin.'),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Kaydet'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: const Text("Malzeme ekle"),
-        ),
+        SizedBox(height: 16),
       ],
     );
   }
@@ -237,8 +182,9 @@ class Ingredient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0), // İstediğiniz yuvarlaklık derecesini burada belirleyebilirsiniz
+        borderRadius: BorderRadius.circular(10.0),
         color: Colors.white,
       ),
       child: Row(
@@ -246,7 +192,7 @@ class Ingredient extends StatelessWidget {
         children: [
           Text(name),
           IconButton(
-            onPressed: onDelete, // Call the onDelete callback
+            onPressed: onDelete,
             icon: const Icon(Icons.clear),
           ),
         ],

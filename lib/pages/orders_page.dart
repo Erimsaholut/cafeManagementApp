@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 
@@ -13,25 +14,39 @@ class OrdersPage extends StatelessWidget {
         title: const Text("Sipariş Öde"),
         backgroundColor: CustomColors.appbarBlue,
       ),
-      body: Container(
-        color: Colors.lime,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
+      body: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Container(
+              color: Colors.lime,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [...orders],
               ),
             ),
-            const Expanded(
-                child: Column(
-              children: [
-                Text("Öde"),
-                Text("ya da "),
-                Text("Ödeme"),
-              ],
-            )),
-          ],
-        ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              color: Colors.blue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Ödenecek hesap:  x ₺",
+                    style: CustomStyles.menuTextStyle,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Onayla"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
