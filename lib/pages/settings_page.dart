@@ -64,14 +64,14 @@ class SettingsPageState extends State<SettingsPage> {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => const CreateBeverage(),
+                        pageBuilder: (_, __, ___) => CreateBeverage(),
                         transitionsBuilder: (_, anim, __, child) {
                           return ScaleTransition(
                             scale: anim,
                             child: child,
                           );
                         },
-                        transitionDuration: const Duration(milliseconds: 150),
+                        transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
                   }),

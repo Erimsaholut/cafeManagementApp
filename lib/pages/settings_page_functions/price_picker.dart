@@ -1,15 +1,26 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
-class IntegerExample extends StatefulWidget {
-  final String name;
 
-  IntegerExample({required this.name});
+class PricePicker extends StatefulWidget {
+  final String name;
+  final int moneyValue;
+  final int pennyValue;
+  final Function(int, int) onValueChanged;
+
+  PricePicker({
+    Key? key,
+    required this.name,
+    this.moneyValue = 0, // Added default value
+    this.pennyValue = 0, // Added default value
+    required this.onValueChanged,
+  }) : super(key: key);
 
   @override
-  _IntegerExampleState createState() => _IntegerExampleState();
+  _PricePickerState createState() => _PricePickerState();
 }
 
-class _IntegerExampleState extends State<IntegerExample> {
+class _PricePickerState extends State<PricePicker> {
   int _currentMoneyValue = 15;
   int _currentPennyValue = 0;
 
@@ -18,7 +29,7 @@ class _IntegerExampleState extends State<IntegerExample> {
     return Column(
       children: <Widget>[
         const SizedBox(height: 16),
-        Text(widget.name, style: Theme.of(context).textTheme.titleLarge),
+        Text(widget.name, style: CustomStyles.menuTextStyle),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -30,8 +41,10 @@ class _IntegerExampleState extends State<IntegerExample> {
                   maxValue: 300,
                   step: 1,
                   haptics: true,
-                  onChanged: (value) =>
-                      setState(() => _currentMoneyValue = value),
+                  onChanged: (value) {
+                    setState(() => _currentMoneyValue = value);
+                    widget.onValueChanged(_currentMoneyValue, _currentPennyValue);
+                  },
                 ),
               ],
             ),
@@ -43,8 +56,10 @@ class _IntegerExampleState extends State<IntegerExample> {
                   maxValue: 75,
                   step: 25,
                   haptics: true,
-                  onChanged: (value) =>
-                      setState(() => _currentPennyValue = value),
+                  onChanged: (value) {
+                    setState(() => _currentPennyValue = value);
+                    widget.onValueChanged(_currentMoneyValue, _currentPennyValue);
+                  },
                 ),
               ],
             ),
@@ -57,4 +72,3 @@ class _IntegerExampleState extends State<IntegerExample> {
     );
   }
 }
-

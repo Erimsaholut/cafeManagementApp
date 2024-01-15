@@ -138,15 +138,12 @@ class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-
-      },
+      onPressed: () {},
       child: Row(
         children: [
           IconButton(
             onPressed: () {
               setState(() {
-                // Decrement count when the remove button is pressed
                 widget.count = widget.count - 1;
               });
             },
@@ -160,7 +157,6 @@ class _OrderState extends State<Order> {
           IconButton(
             onPressed: () {
               setState(() {
-                // Increment count when the add button is pressed
                 widget.count = widget.count + 1;
               });
             },
@@ -174,7 +170,7 @@ class _OrderState extends State<Order> {
     );
   }
 
-  String getName(){
+  String getName() {
     return widget.name;
   }
 }

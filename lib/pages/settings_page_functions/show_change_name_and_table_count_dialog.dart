@@ -28,9 +28,7 @@ class _ChangeTableCountDialogState extends State<ChangeTableCountDialog> {
           TextField(
             controller: _controller,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              labelText: widget.textFieldTitle,
-            ),
+            decoration: InputDecoration(labelText: widget.textFieldTitle,),
           ),
         ],
       ),
