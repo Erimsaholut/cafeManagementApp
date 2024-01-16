@@ -6,7 +6,7 @@ import '../pages/table_screen.dart';
 
 /*Siparişlerin değerleri burada mı tutulacak ayrı dosyadan mı çekilecek ona bak
  sistem oluştuğuda*/
-//todo yazı stillerini ve constları taşı hep
+
 
 class CustomTable extends StatefulWidget {
   CustomTable({super.key, required this.tableNum, this.tableName = ""});

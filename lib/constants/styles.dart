@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 class CustomStyles {
-  static TextStyle menuScreenButtonTextStyle = const TextStyle(
+
+  static TextStyle blackAndBoldTextStyleM = const TextStyle(
+      fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15);
+
+
+
+  static TextStyle blackAndBoldTextStyleL = const TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.bold,
     fontSize: 18.0,
   );
-  static TextStyle boldAndBlack = const TextStyle(
+
+  static TextStyle blackAndBoldTextStyleXl = const TextStyle(
       fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24);
 
-  static TextStyle menuTextStyle = const TextStyle(
-    //todo find usages ile adam gibi isim ve şuna
-    color: Colors.black,
-    fontWeight: FontWeight.bold,
-    fontSize: 24.0,
-  );
 
   static final ButtonStyle customButtonStyle = TextButton.styleFrom(
     backgroundColor: Colors.white,
@@ -38,7 +39,6 @@ class CustomStyles {
       ),
     ),
   );
-
 
   static final ButtonStyle transparentButtonStyle = TextButton.styleFrom(
     backgroundColor: Colors.transparent,

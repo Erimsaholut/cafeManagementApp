@@ -44,7 +44,7 @@ class _MenuScreenState extends State<MenuScreen> {
       appBar: AppBar(
         title: Text(
           "Menü",
-          style: CustomStyles.menuTextStyle,
+          style: CustomStyles.blackAndBoldTextStyleXl,
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
@@ -73,7 +73,7 @@ class _MenuScreenState extends State<MenuScreen> {
       alignment: Alignment.center,
       child: Text(
         text,
-        style: CustomStyles.menuTextStyle,
+        style: CustomStyles.blackAndBoldTextStyleXl,
       ),
     );
   }
@@ -131,7 +131,8 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 }
 //todo only one checkboxlu customWidget
-//todo settings sayfasındaki ayarlar
 //todo analiz sayfası ve dışarı aktarabilme özelliği
-//todo sipariş alam verme
 //todo tasarım
+//todo firebase (dlc olarak sunucam onu)
+//todo menüye item ekle bitir
+//todo sip ödeme ekranı hallet

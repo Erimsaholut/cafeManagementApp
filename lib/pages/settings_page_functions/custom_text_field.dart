@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../constants/styles.dart';
 
-Widget buildCustomTextField(String labelText, TextEditingController controller) {
+Widget buildCustomTextField(String labelText, TextEditingController controller, BuildContext context) {
+  // FocusNode oluşturun
+  FocusNode focusNode = FocusNode();
+
   return Column(
     children: [
       Text(
         labelText,
-        style: CustomStyles.menuTextStyle,
+        style: CustomStyles.blackAndBoldTextStyleXl,
       ),
       const SizedBox(
         height: 16,
@@ -15,13 +18,25 @@ Widget buildCustomTextField(String labelText, TextEditingController controller) 
         padding: const EdgeInsets.symmetric(vertical: 18.0),
         child: TextField(
           controller: controller,
+          focusNode: focusNode, // FocusNode'u TextField'a atanır
           decoration: InputDecoration(
             labelText: labelText,
             border: const OutlineInputBorder(),
           ),
           onSubmitted: (String value) {
-            // var enteredText = controller.text;
+            // TextField'a bir şey yazıldığında
           },
+        ),
+      ),
+      // Column'a tıklandığında focusu kaybetmek için GestureDetector kullanılır
+      GestureDetector(
+        onTap: () {
+          // Focus'u kaybet
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+          height: 0,
+          width: 0,
         ),
       ),
     ],

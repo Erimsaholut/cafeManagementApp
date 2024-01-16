@@ -36,7 +36,7 @@ class OrdersPage extends StatelessWidget {
                 children: [
                   Text(
                     "Ödenecek hesap:  x ₺",
-                    style: CustomStyles.menuTextStyle,
+                    style: CustomStyles.blackAndBoldTextStyleXl,
                   ),
                   ElevatedButton(
                     onPressed: () {},

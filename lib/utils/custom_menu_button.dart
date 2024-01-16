@@ -9,7 +9,7 @@ Column CustomMenuButton(String buttonText, {VoidCallback? onPressedFunction}) {
         style: CustomStyles.customButtonStyle,
         child: Text(
           buttonText,
-          style: CustomStyles.menuScreenButtonTextStyle,
+          style: CustomStyles.blackAndBoldTextStyleL,
         ),
       ),
       const SizedBox(height: 16,),

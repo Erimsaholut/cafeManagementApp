@@ -13,7 +13,7 @@ class CreateBeverage extends StatefulWidget {
 
 class _CreateBeverageState extends State<CreateBeverage> {
   final TextEditingController beverageNameController = TextEditingController();
-  Ingredients ingredients = Ingredients();
+  List<String> indList = [];
   int moneyValue = 15;
   int pennyValue = 0;
   late String beverageName;
@@ -32,7 +32,8 @@ class _CreateBeverageState extends State<CreateBeverage> {
           children: [
             Column(
               children: [
-                buildCustomTextField("İçecek İsmi", beverageNameController),
+                buildCustomTextField(
+                    "İçecek İsmi", beverageNameController, context),
                 customDivider(),
                 PricePicker(
                   name: "İçecek Fiyatı Belirle",
@@ -44,19 +45,23 @@ class _CreateBeverageState extends State<CreateBeverage> {
                   },
                 ),
                 customDivider(),
-                Ingredients(),
+                Ingredients(indList: indList),
                 customDivider(),
                 ElevatedButton(
                   onPressed: () {
                     beverageName = beverageNameController.text;
                     print("$beverageName,$moneyValue,$pennyValue");
-
+                    print(indList);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("$beverageName,$moneyValue,$pennyValue $indList"),
+                        )
+                    );
                     //List<String> ingredientNames = ingredients.getIngredientNames();
-                    print("Ingredient Names: $ingredientNames");
+                    //print("Ingredient Names: $ingredientNames");
                   },
                   child: const Text("Kaydet"),
                 ),
-
               ],
             ),
           ],

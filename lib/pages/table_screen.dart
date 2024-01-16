@@ -61,7 +61,7 @@ class CustomTableMenu extends StatelessWidget {
                           ),
                           Text(
                             "Toplam Hesap: 973 ₺",
-                            style: CustomStyles.menuScreenButtonTextStyle,
+                            style: CustomStyles.blackAndBoldTextStyleL,
                           ),
                         ],
                       ), //buna özel bi style çıkarabilirsin

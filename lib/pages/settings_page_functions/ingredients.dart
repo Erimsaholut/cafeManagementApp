@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import '../../constants/styles.dart';
 
 class Ingredients extends StatefulWidget {
-  Ingredients({Key? key}) : super(key: key);
+  Ingredients({super.key, required this.indList});
+
+  List<String> indList;
 
   @override
-  State<Ingredients> createState() => _IngredientsState();
+  State<Ingredients> createState() => _IngredientsState(indList: indList);
 }
 
 class _IngredientsState extends State<Ingredients> {
   final List<Widget> indWidgets = [];
   final TextEditingController _controller = TextEditingController();
+  List<String> indList;
+
+  _IngredientsState({required this.indList});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Malzemeler", style: CustomStyles.menuTextStyle),
+        Text("Malzemeler", style: CustomStyles.blackAndBoldTextStyleXl),
         const SizedBox(height: 32),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -51,6 +56,7 @@ class _IngredientsState extends State<Ingredients> {
                         bool updateName = _controller.text.isNotEmpty;
                         if (updateName) {
                           setState(() {
+                            indList.add(_controller.text);
                             indWidgets.add(
                               Ingredient(
                                 name: _controller.text,
@@ -66,7 +72,7 @@ class _IngredientsState extends State<Ingredients> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content:
-                              Text('Seçenek eklemek için bir değer girin.'),
+                                  Text('Seçenek eklemek için bir değer girin.'),
                             ),
                           );
                         }
@@ -110,10 +116,6 @@ class _IngredientsState extends State<Ingredients> {
     );
   }
 
-  List<String> getIngredientNames() {
-    return indWidgets.map((widget) => (widget as Ingredient).getName()).toList();
-  }
-
   void _removeIngredient(int index) {
     setState(() {
       indWidgets.removeAt(index);
@@ -148,6 +150,7 @@ class Ingredient extends StatelessWidget {
       ),
     );
   }
+
   String getName() {
     return name;
   }

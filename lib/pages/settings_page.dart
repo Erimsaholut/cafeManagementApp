@@ -5,8 +5,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_sub_pa
 import 'package:flutter/material.dart';
 import '../utils/custom_menu_button.dart';
 
-//todo isim ve nuamra güncellemesi için kapat aç knk denilecek onu ayarla bi ara
-
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 

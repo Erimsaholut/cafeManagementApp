@@ -29,7 +29,7 @@ class _PricePickerState extends State<PricePicker> {
     return Column(
       children: <Widget>[
         const SizedBox(height: 16),
-        Text(widget.name, style: CustomStyles.menuTextStyle),
+        Text(widget.name, style: CustomStyles.blackAndBoldTextStyleXl),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
