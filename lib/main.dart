@@ -56,12 +56,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late List<Widget> mylist;
+  late List<Widget> myList;
 
   @override
   void initState() {
     super.initState();
-    mylist = List.generate(
+    myList = List.generate(
         widget.tableCount, (index) => CustomTable(tableNum: index + 1))
       ..add(CustomUtilPagesButton(
           buttonName: "Analyzes", goToPage: AnalyzesPage()))
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: GridView.count(
         crossAxisCount: 4,
-        children: mylist,
+        children: myList,
       ),
     );
   }

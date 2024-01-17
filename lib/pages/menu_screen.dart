@@ -66,7 +66,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-/*Ekranın ortası yazı sallıyor bu*/
+
   Container buildItemTypeTextContainer(String text) {
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -107,7 +107,7 @@ class _MenuScreenState extends State<MenuScreen> {
             if (kDebugMode) {
               print("Button pressed for ${item["name"]}");
             }
-            // Add any additional logic here if needed
+            // ekleme buraya gelecek
           },
         ),
       );
@@ -135,4 +135,4 @@ class _MenuScreenState extends State<MenuScreen> {
 //todo tasarım
 //todo firebase (dlc olarak sunucam onu)
 //todo menüye item ekle bitir
-//todo sip ödeme ekranı hallet
+//todo sipariş ödeme ekranı hallet

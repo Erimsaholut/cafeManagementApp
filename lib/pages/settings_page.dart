@@ -58,11 +58,11 @@ class SettingsPageState extends State<SettingsPage> {
                       );
                     },
                   ),
-                  CustomMenuButton("Yeni İçecek Ekle", onPressedFunction: () {
+                  CustomMenuButton("Menüye Yeni Ürün Ekle", onPressedFunction: () {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => CreateBeverage(),
+                        pageBuilder: (_, __, ___) => const AddNewItemToMenu(),
                         transitionsBuilder: (_, anim, __, child) {
                           return ScaleTransition(
                             scale: anim,
@@ -73,9 +73,6 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                     );
                   }),
-                  CustomMenuButton(
-                    "Yeni yiyecek Ekle",
-                  ),
                   CustomMenuButton(
                     "Ürünleri Düzenle",
                     onPressedFunction: () async {

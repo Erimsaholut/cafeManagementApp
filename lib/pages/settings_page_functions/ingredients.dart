@@ -21,7 +21,7 @@ class _IngredientsState extends State<Ingredients> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Malzemeler", style: CustomStyles.blackAndBoldTextStyleXl),
+        Text("Seçenekler", style: CustomStyles.blackAndBoldTextStyleXl),
         const SizedBox(height: 32),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -105,13 +105,20 @@ class _IngredientsState extends State<Ingredients> {
   }
 
   Widget _buildEmptyIngredientsMessage() {
-    return const Column(
+    return Column(
       children: [
-        Text(
-          "Malzeme eklemek için aşağıdaki butona basabilirsiniz.",
-          style: TextStyle(color: Colors.black),
+        Container(
+          color: Colors.white,
+          padding: EdgeInsets.all(16),
+          child: const Text(
+                "Seçenekler menüsünü içecekler için farklı türleri belirtmek için kullanabilirsiniz"
+                "\nÖrneğin: Nescafe -> Sade, ikisi bir arada, üçü bir arada "
+                "\n\nYiyecekler için ise malzemeleri belirlemek için kullanabilirsiniz"
+                "\nÖrneğin: Karışık Tost -> Ketçap, Mayonez, Soğan, Domates",
+            style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 16),
+          ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }
