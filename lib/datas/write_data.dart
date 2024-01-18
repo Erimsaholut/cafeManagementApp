@@ -82,6 +82,8 @@ class WriteData {
 
         await readData.writeJsonData(json.encode(rawData));
         print("Yeni ürün başarıyla eklendi: $itemName");
+        readData.readJsonData();
+        readData.separateMenuItems();
       }
     } catch (e) {
       print('Yeni ürün eklenirken hata oluştu: $e');

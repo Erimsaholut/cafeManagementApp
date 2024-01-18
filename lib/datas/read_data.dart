@@ -11,7 +11,6 @@ class ReadData {
   static final List<String> _drinksWithNoIngredients = [];
   static final List<Map<String, dynamic>> _drinksWithIngredients = [];
 
-//final yaptık
   static final List<Map<String, dynamic>> _foodsWithIngredients = [];
   static final List<String> _foodsWithNoIngredients = [];
 
@@ -83,6 +82,7 @@ class ReadData {
       final file = await _localFile;
       if (await file.exists()) {
         String content = await file.readAsString();
+
         if (content.isNotEmpty) {
           Map<String, dynamic> jsonData = jsonDecode(content);
           List<dynamic> menu = jsonData["menu"];
@@ -94,19 +94,23 @@ class ReadData {
                 ? List<String>.from(item["ingredients"])
                 : [];
 
-            if (itemType == "drink") {
-              if (ingredients.isNotEmpty) {
-                _drinksWithIngredients
-                    .add({"name": itemName, "ingredients": ingredients});
-              } else {
-                _drinksWithNoIngredients.add(itemName);
-              }
-            } else if (itemType == "food") {
-              if (ingredients.isNotEmpty) {
-                _foodsWithIngredients
-                    .add({"name": itemName, "ingredients": ingredients});
-              } else {
-                _foodsWithNoIngredients.add(itemName);
+            bool itemExists = _menuItemExists(itemName);
+
+            if (!itemExists) {
+              if (itemType == "drink") {
+                if (ingredients.isNotEmpty) {
+                  _drinksWithIngredients
+                      .add({"name": itemName, "ingredients": ingredients});
+                } else {
+                  _drinksWithNoIngredients.add(itemName);
+                }
+              } else if (itemType == "food") {
+                if (ingredients.isNotEmpty) {
+                  _foodsWithIngredients
+                      .add({"name": itemName, "ingredients": ingredients});
+                } else {
+                  _foodsWithNoIngredients.add(itemName);
+                }
               }
             }
           }
@@ -116,6 +120,36 @@ class ReadData {
       print('Menü öğeleri ayrıştırılırken hata oluştu: $e');
     }
   }
+
+  bool _menuItemExists(String itemName) {
+
+    for (var existingItem in _drinksWithIngredients) {
+      if (existingItem["name"] == itemName) {
+        return true;
+      }
+    }
+
+    for (var existingItem in _drinksWithNoIngredients) {
+      if (existingItem == itemName) {
+        return true;
+      }
+    }
+
+    for (var existingItem in _foodsWithIngredients) {
+      if (existingItem["name"] == itemName) {
+        return true;
+      }
+    }
+
+    for (var existingItem in _foodsWithNoIngredients) {
+      if (existingItem == itemName) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 
   Future<Map<String, dynamic>?> getRawData() async {
     try {
