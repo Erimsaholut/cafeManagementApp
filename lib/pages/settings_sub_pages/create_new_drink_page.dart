@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
 import 'package:flutter/material.dart';
 import '../../utils/custom_divider.dart';
 import '../settings_page_functions/ingredients.dart';
@@ -14,6 +15,7 @@ class AddNewItemToMenu extends StatefulWidget {
 
 class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
   final TextEditingController beverageNameController = TextEditingController();
+  WriteData writeData = WriteData();
   CustomItemTypeSelector customItemTypeSelector = CustomItemTypeSelector(
     question: 'Ürün tipini seçin',
     option1: 'Yiyecek',
@@ -68,16 +70,18 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                     print("Selected Item Type: $selectedItemType");
 
                     // TODO: Add your validation logic here
+                    if(beverageName.isEmpty){
+                      scaffoldMessage("Ürün ismi boş olamaz", context);
+                    }
+                    else{
+                      //emin misiniz diye sor ve seçilen bilgileri gönder.
+                      writeData.addNewItemToMenu(beverageName,moneyValue, pennyValue, indList, selectedItemType);
+                      scaffoldMessage("Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType", context);
+                    }
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("$beverageName, $moneyValue, $pennyValue $indList, $selectedItemType"),
-                      ),
-                    );
                   },
                   child: const Text("Kaydet"),
                 ),
-
               ],
             ),
           ],
@@ -85,4 +89,13 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
       ),
     );
   }
+}
+
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason> scaffoldMessage(
+    String message, BuildContext context) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+    ),
+  );
 }

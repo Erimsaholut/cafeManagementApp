@@ -66,7 +66,6 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-
   Container buildItemTypeTextContainer(String text) {
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -136,3 +135,4 @@ class _MenuScreenState extends State<MenuScreen> {
 //todo firebase (dlc olarak sunucam onu)
 //todo menüye item ekle bitir
 //todo sipariş ödeme ekranı hallet
+//todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
