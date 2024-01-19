@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
+
+import '../datas/table_orders_data/read_table_data.dart';
 
 class AnalyzesPage extends StatefulWidget {
   AnalyzesPage({Key? key}) : super(key: key);
@@ -36,16 +38,13 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
             onPressed: () async {
               setState(() {
                 print(
-                    'İçecekler (İçerikli): ${readNewData
-                        .drinksWithIngredients}');
+                    'İçecekler (İçerikli): ${readNewData.drinksWithIngredients}');
                 print(
-                    'İçecekler (İçeriksiz): ${readNewData
-                        .drinksWithNoIngredients}');
+                    'İçecekler (İçeriksiz): ${readNewData.drinksWithNoIngredients}');
                 print(
                     'Yemekler (İçerikli): ${readNewData.foodsWithIngredients}');
                 print(
-                    'Yemekler (İçeriksiz): ${readNewData
-                        .foodsWithNoIngredients}');
+                    'Yemekler (İçeriksiz): ${readNewData.foodsWithNoIngredients}');
               });
             },
             child: const Text("separeted menu items"),
@@ -57,6 +56,25 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
             },
             child: const Text("sadece kafe ismi"),
           ),
+          TextButton(
+            onPressed: () async {
+              try {
+                TableDataHandler readTableData = TableDataHandler(1);
+                Map<String, dynamic>? tableData =
+                    await readTableData.getRawData();
+                if (tableData != null) {
+                  print("Table data read successfully:");
+                  print(tableData);
+                } else {
+                  print("Table data is null or couldn't be read.");
+                }
+              } catch (e) {
+                print("Error reading table data: $e");
+              }
+            },
+            child: Text("test Table item"),
+          ),
+
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data.dart';
 
 class ResetAllJsonData{
   void resetJsonFile() {

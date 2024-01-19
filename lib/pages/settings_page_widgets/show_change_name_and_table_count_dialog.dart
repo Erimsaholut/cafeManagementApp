@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../datas/write_data.dart';
+import '../../datas/menu_data/write_data.dart';
 
 class ChangeTableCountDialog extends StatefulWidget {
   final String mainTitle;

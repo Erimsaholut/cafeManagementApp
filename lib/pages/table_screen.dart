@@ -11,13 +11,7 @@ class CustomTableMenu extends StatelessWidget {
 
   final int tableNum;
   final String tableName;
-  final List<Widget> orders = [
-    Order(count: 6, name: "Tost"),
-    Order(count: 24, name: "Çay"),
-    Order(count: 7, name: "Oralet"),
-  ];
-
-  /*test aşamasında*/
+  final List<String> orders = ["a", "b","c"];
 
   //bunların final olması sıkıntı çıkarabilir dikkat et
   @override
@@ -43,8 +37,8 @@ class CustomTableMenu extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
                       child: ListView(
-                        children: [
-                          ...orders,
+                        children: const [
+                          Text("str list to text gelecek buraya"),
                         ],
                       ),
                     ),
@@ -64,7 +58,7 @@ class CustomTableMenu extends StatelessWidget {
                             style: CustomStyles.blackAndBoldTextStyleL,
                           ),
                         ],
-                      ), //buna özel bi style çıkarabilirsin
+                      ),
                     ),
                   ),
                 ],
@@ -98,7 +92,7 @@ class CustomTableMenu extends StatelessWidget {
                       PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (_, __, ___) => OrdersPage(
-                          orders: orders,
+                          initialOrders: orders,
                         ),
                         transitionsBuilder: (_, anim, __, child) {
                           return ScaleTransition(
@@ -121,56 +115,5 @@ class CustomTableMenu extends StatelessWidget {
       ),
       backgroundColor: const Color(0xFFAEE2FF),
     );
-  }
-}
-
-class Order extends StatefulWidget {
-  Order({Key? key, required this.count, required this.name}) : super(key: key);
-
-  int count;
-  String name;
-
-  @override
-  _OrderState createState() => _OrderState();
-}
-
-class _OrderState extends State<Order> {
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                widget.count = widget.count - 1;
-              });
-            },
-            icon: const Icon(Icons.remove),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
-            ),
-          ),
-          Text("${widget.count} ${widget.name}",
-              style: const TextStyle(fontSize: 16)),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                widget.count = widget.count + 1;
-              });
-            },
-            icon: const Icon(Icons.add),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String getName() {
-    return widget.name;
   }
 }

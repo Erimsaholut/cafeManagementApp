@@ -1,0 +1,26 @@
+ {
+      "tableNum": 1,
+      "totalPrice": 24,
+      "orders": [
+        {
+          "name": "tea",
+          "quantity": 1,
+          "price": 5
+        },
+        {
+          "name": "coke",
+          "quantity": 1,
+          "price": 6
+        },
+        {
+          "name": "toast with cheese",
+          "quantity": 1,
+          "price": 8
+        },
+        {
+          "name": "beer",
+          "quantity": 1,
+          "price": 5
+        }
+      ]
+    }

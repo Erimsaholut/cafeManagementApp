@@ -1,12 +1,24 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
+import '../constants/styles.dart';
 import '../constants/colors.dart';
 
-class OrdersPage extends StatelessWidget {
-  const OrdersPage({super.key, required this.orders});
+class OrdersPage extends StatefulWidget {
+  const OrdersPage({super.key, required this.initialOrders});
 
-  final List<Widget> orders;
+  final List<String> initialOrders;
 
+  @override
+  _OrdersPageState createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+  late List<String> orders;
+
+  @override
+  void initState() {
+    super.initState();
+    orders = widget.initialOrders;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +32,11 @@ class OrdersPage extends StatelessWidget {
             flex: 3,
             child: Container(
               color: Colors.lime,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [...orders],
+              child: ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(orders[index]),
+                ),
               ),
             ),
           ),
@@ -35,7 +49,7 @@ class OrdersPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Ödenecek hesap:  x ₺",
+                    "Ödenecek hesap: ${calculateTotal()} ₺",
                     style: CustomStyles.blackAndBoldTextStyleXl,
                   ),
                   ElevatedButton(
@@ -49,5 +63,12 @@ class OrdersPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double calculateTotal() {
+    // Burada siparişlerin toplam tutarı hesaplanabilir.
+    // Örneğin, orders listesindeki ürün fiyatları üzerinden bir toplama yapılabilir.
+    // Bu örnekte basitçe bir sabit değeri döndürüyorum.
+    return 100.0;
   }
 }

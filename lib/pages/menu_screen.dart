@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../datas/read_data.dart';
+import '../datas/menu_data/read_data.dart';
 import '../utils/custom_button_with_checkboxes.dart';
+
+/*itemlerin seçilip eklendiği o sayfa*/
+
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});

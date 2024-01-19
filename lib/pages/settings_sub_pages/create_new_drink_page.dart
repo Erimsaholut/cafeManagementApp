@@ -1,10 +1,11 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/write_data.dart';
+
 import 'package:flutter/material.dart';
+import '../../datas/menu_data/write_data.dart';
 import '../../utils/custom_divider.dart';
-import '../settings_page_functions/ingredients.dart';
-import '../settings_page_functions/item_type_selector.dart';
-import '../settings_page_functions/price_picker.dart';
-import '../settings_page_functions/custom_text_field.dart';
+import '../settings_page_widgets/custom_text_field.dart';
+import '../settings_page_widgets/ingredients.dart';
+import '../settings_page_widgets/item_type_selector.dart';
+import '../settings_page_widgets/price_picker.dart';
 
 class AddNewItemToMenu extends StatefulWidget {
   const AddNewItemToMenu({Key? key}) : super(key: key);

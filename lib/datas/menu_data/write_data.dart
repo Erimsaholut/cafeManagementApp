@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/reset_datas.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/read_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/reset_datas.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
 
 class WriteData {
   ReadData readData = ReadData();
