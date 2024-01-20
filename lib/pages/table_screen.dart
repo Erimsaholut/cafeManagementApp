@@ -9,6 +9,8 @@ import 'orders_page.dart';
 class CustomTableMenu extends StatelessWidget {
   CustomTableMenu({super.key, required this.tableNum, required this.tableName});
 
+  /* genel bakışların olduğu sayfa*/
+
   final int tableNum;
   final String tableName;
   final List<String> orders = ["a", "b","c"];

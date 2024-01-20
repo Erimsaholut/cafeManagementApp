@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
-
 import '../datas/table_orders_data/read_table_data.dart';
 
 class AnalyzesPage extends StatefulWidget {

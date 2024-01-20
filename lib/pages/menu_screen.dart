@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../datas/menu_data/read_data.dart';
 import '../utils/custom_button_with_checkboxes.dart';
 
 /*itemlerin seçilip eklendiği o sayfa*/
-
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -16,6 +14,10 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   final ReadData readNewData = ReadData();
+
+  List<String> orders = [];
+
+  double totalPrice = 0;
 
   List<Widget> drinksNoIn = [];
 
@@ -44,29 +46,109 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Menü",
-          style: CustomStyles.blackAndBoldTextStyleXl,
+        appBar: AppBar(
+          title: Text(
+            "Menü",
+            style: CustomStyles.blackAndBoldTextStyleXl,
+          ),
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .inversePrimary,
         ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        color: Colors.blueGrey,
-        child: ListView(
+        body: Column(
           children: [
-            buildItemTypeTextContainer("İçecekler"), //içecekler
-            buildGridView(drinksNoIn),
-            ...drinksIn,
+            Expanded(
+              flex: 5,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                color: Colors.blueGrey,
+                child: ListView(
+                  children: [
+                    buildItemTypeTextContainer("İçecekler"),
+                    customSizedBox(),
+                    buildGridView(drinksNoIn),
+                    customSizedBox(rate: 2),
+                    ...drinksIn,
+                    customSizedBox(),
+                    buildItemTypeTextContainer("Yiyecekler"),
+                    customSizedBox(),
+                    buildGridView(foodsNoIn),
+                    customSizedBox(rate: 2),
 
-            buildItemTypeTextContainer("Yiyecekler"), //yiyecekler
-            buildGridView(foodsNoIn),
-            ...foodsIn,
+                    ...foodsIn,
+                  ],
+                ),
+              ),
+            ),
+
+
+            Visibility(
+              visible: (orders.isNotEmpty),
+              child: Expanded(
+                flex: 1,
+                child: Container(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: _buildOrderWidgets(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          color: Colors.greenAccent,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+
+                              children: [
+                                Text('Toplam Fiyat: $totalPrice'),
+                              ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+
           ],
-        ),
-      ),
-    );
+        ));
+  }
+
+  List<Widget> _buildOrderWidgets() {
+    // Map'i null olmayan bir şekilde başlat
+    Map<String, int> itemCounts = {};
+
+    for (String order in orders) {
+      if (itemCounts.containsKey(order)) {
+        // Null check ekleyin ve null değilse artırın
+        itemCounts[order] = (itemCounts[order] ?? 0) + 1;
+      } else {
+        // Eğer order henüz eklenmemişse, 1 ile başlat
+        itemCounts[order] = 1;
+      }
+    }
+
+    // Widget listesini oluştur
+    List<Widget> orderWidgets = [];
+    itemCounts.forEach((item, count) {
+      orderWidgets.add(Text('$count $item    '));
+    });
+
+    return orderWidgets;
   }
 
   Container buildItemTypeTextContainer(String text) {
@@ -80,40 +162,57 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) {
-    for (var item in items) {
+  void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) async {
+    for (var itemName in items) {
       widgets.add(
         TextButton(
           style: CustomStyles.customMenuItemButtonStyle,
           onPressed: () {
-            if (kDebugMode) {
-              print(item);
-            }
+            // Asenkron işlemleri burada gerçekleştirin
+            _performAsyncOperations(itemName);
           },
-          child: Text(item),
+          child: Text(itemName),
         ),
       );
     }
   }
 
-  void makeWidgetsForInd(
-      List<Map<String, dynamic>> items, List<Widget> widgets) {
+  Future<void> _performAsyncOperations(String itemName) async {
+    double itemPrice = await readNewData.getItemPrice(itemName);
+    print('Price of $itemName: $itemPrice');
+    setState(() {
+      print(itemName);
+      orders.add(itemName);
+      totalPrice += itemPrice;
+    });
+  }
+
+  void makeWidgetsForInd(List<Map<String, dynamic>> items,
+      List<Widget> widgets) {
     for (var item in items) {
       List<String> ingredients = List<String>.from(item["ingredients"]);
-
+      String name = item["name"];
       widgets.add(
         MyCustomButton(
-          buttonText: item["name"],
+          buttonText: name,
           checkboxTexts: ingredients,
           onPressed: () {
-            if (kDebugMode) {
-              print("Button pressed for ${item["name"]}");
-            }
-            // ekleme buraya gelecek
+            _performAsyncOperationsForInd(name);
           },
         ),
       );
     }
+  }
+
+  Future<void> _performAsyncOperationsForInd(String name) async {
+    print("Button pressed for $name");
+    double itemPrice = await readNewData.getItemPrice(name);
+    print('Price of $name: $itemPrice');
+
+    setState(() {
+      orders.add(name);
+      totalPrice += itemPrice;
+    });
   }
 
   Widget buildGridView(List<Widget> list) {
@@ -132,10 +231,15 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 }
+
+
+SizedBox customSizedBox({int rate = 1}) {
+  return SizedBox(height: 16 * rate.toDouble());
+}
+
 //todo only one checkboxlu customWidget
 //todo analiz sayfası ve dışarı aktarabilme özelliği
 //todo tasarım
 //todo firebase (dlc olarak sunucam onu)
-//todo menüye item ekle bitir
 //todo sipariş ödeme ekranı hallet
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy

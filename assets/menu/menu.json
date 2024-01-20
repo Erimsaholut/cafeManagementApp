@@ -5,42 +5,42 @@
     {
       "id": 1,
       "name": "Çay",
-      "price": 5,
+      "price": 5.0,
       "type": "drink",
       "ingredients": []
     },
     {
       "id": 2,
       "name": "Su",
-      "price": 5,
+      "price": 5.0,
       "type": "drink",
       "ingredients": []
     },
     {
       "id": 3,
       "name": "Ayran",
-      "price": 10,
+      "price": 10.0,
       "type": "drink",
       "ingredients": []
     },
     {
       "id": 4,
       "name": "Limonata",
-      "price": 15,
+      "price": 15.0,
       "type": "drink",
       "ingredients": []
     },
     {
       "id": 5,
       "name": "Kefir",
-      "price": 20,
+      "price": 20.0,
       "type": "drink",
       "ingredients": []
     },
     {
       "id": 6,
       "name": "Nescafe",
-      "price": 10,
+      "price": 10.0,
       "type": "drink",
       "ingredients": [
         "Sade",
@@ -51,7 +51,7 @@
     {
       "id": 7,
       "name": "Türk Kahvesi",
-      "price": 20,
+      "price": 20.0,
       "type": "drink",
       "ingredients": [
         "Sade",
@@ -63,7 +63,7 @@
     {
       "id": 8,
       "name": "Oralet",
-      "price": 5,
+      "price": 5.0,
       "type": "drink",
       "ingredients": [
         "Portakal",
@@ -75,7 +75,7 @@
     {
       "id": 9,
       "name": "Sucuklu Tost",
-      "price": 45,
+      "price": 45.0,
       "type": "food",
       "ingredients": [
         "Ketçap",
@@ -111,7 +111,7 @@
     {
       "id": 12,
       "name": "Ekmek",
-      "price": 7,
+      "price": 7.0,
       "type": "food",
       "ingredients": []
     }

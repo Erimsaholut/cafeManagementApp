@@ -122,7 +122,6 @@ class ReadData {
   }
 
   bool _menuItemExists(String itemName) {
-
     for (var existingItem in _drinksWithIngredients) {
       if (existingItem["name"] == itemName) {
         return true;
@@ -150,7 +149,6 @@ class ReadData {
     return false;
   }
 
-
   Future<Map<String, dynamic>?> getRawData() async {
     try {
       return await readJsonData();
@@ -171,6 +169,37 @@ class ReadData {
       print('Cafe adı okunurken hata oluştu: $e');
     }
     return "";
+  }
+
+  Future<double> getItemPrice(String ItemName) async {
+    try {
+      final file = await _localFile;
+
+      if (await file.exists()) {
+
+        String content = await file.readAsString();
+
+        if (content.isNotEmpty) {
+
+          Map<String, dynamic> jsonData = jsonDecode(content);
+
+          List<dynamic> menu = jsonData["menu"];
+
+          for(var i in menu){
+            if(i["name"]==ItemName){
+              print(i["price"]);
+              return i["price"];
+            }
+          }
+          return 0;
+
+        }
+
+      }
+    } catch (e) {
+      print('ürünün fiyatı alınırken hata oluştu: $e');
+    }
+    return 0;
   }
 
   Future<int> getTableCount() async {
