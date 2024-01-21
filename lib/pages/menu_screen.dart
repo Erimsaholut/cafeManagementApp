@@ -109,11 +109,11 @@ class _MenuScreenState extends State<MenuScreen> {
                           color: Colors.greenAccent,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
 
-                              children: [
-                                Text('Toplam Fiyat: $totalPrice'),
-                              ],
+                            children: [
+                              Text('Toplam Fiyat: $totalPrice'),
+                            ],
                           ),
                         ),
                       ),

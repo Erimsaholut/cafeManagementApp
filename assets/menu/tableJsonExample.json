@@ -1,4 +1,6 @@
- {
+{
+  "tables": [
+    {
       "tableNum": 1,
       "totalPrice": 24,
       "orders": [
@@ -23,4 +25,26 @@
           "price": 5
         }
       ]
+    },
+    {
+      "tableNum": 2,
+      "totalPrice": 0,
+      "orders": []
+    },
+    {
+      "tableNum": 3,
+      "totalPrice": 0,
+      "orders": []
+    },
+    {
+      "tableNum": 4,
+      "totalPrice": 0,
+      "orders": []
+    },
+    {
+      "tableNum": 5,
+      "totalPrice": 0,
+      "orders": []
     }
+  ]
+}

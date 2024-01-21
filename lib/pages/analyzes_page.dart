@@ -58,7 +58,7 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
           TextButton(
             onPressed: () async {
               try {
-                TableDataHandler readTableData = TableDataHandler(1);
+                TableDataHandler readTableData = TableDataHandler();
                 Map<String, dynamic>? tableData =
                     await readTableData.getRawData();
                 if (tableData != null) {

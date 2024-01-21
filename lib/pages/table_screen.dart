@@ -13,7 +13,7 @@ class CustomTableMenu extends StatelessWidget {
 
   final int tableNum;
   final String tableName;
-  final List<String> orders = ["a", "b","c"];
+  final List<String> orders = ["a", "b","c","d"];
 
   //bunların final olması sıkıntı çıkarabilir dikkat et
   @override
@@ -39,8 +39,8 @@ class CustomTableMenu extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
                       child: ListView(
-                        children: const [
-                          Text("str list to text gelecek buraya"),
+                        children: [
+                          ...textWidgetsFromList(orders),
                         ],
                       ),
                     ),
@@ -118,4 +118,18 @@ class CustomTableMenu extends StatelessWidget {
       backgroundColor: const Color(0xFFAEE2FF),
     );
   }
+}
+
+List<Widget> textWidgetsFromList(List<String> textList) {
+  List<Widget> newList = [];
+  for (var i in textList) {
+    newList.add(
+      Text(
+        i,
+        style: CustomStyles.blackAndBoldTextStyleM,
+      ),
+    );
+  }
+
+  return newList;
 }

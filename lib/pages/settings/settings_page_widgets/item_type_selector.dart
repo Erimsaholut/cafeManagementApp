@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/styles.dart';
+import '../../../constants/styles.dart';
 
 class CustomItemTypeSelector extends StatefulWidget {
   CustomItemTypeSelector({super.key,required this.question,required this.option1,required this.option2,required this.itemType});

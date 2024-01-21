@@ -38,6 +38,7 @@ class ReadData {
     try {
       final file = await _localFile;
       if (await file.exists()) {
+
         String content = await file.readAsString();
         if (content.isNotEmpty) {
           Map<String, dynamic> jsonData = jsonDecode(content);
@@ -48,16 +49,6 @@ class ReadData {
       print('JSON verisi okunurken hata oluştu: $e');
     }
     return null;
-  }
-
-  void separateAndInitData() async {
-    Map<String, dynamic>? rawData = await readJsonData();
-    if (rawData != null) {
-      String cafeName = rawData["cafe_name"];
-      int tableCount = rawData["table_count"];
-      List<dynamic> menu = rawData["menu"];
-      print("cafename = $cafeName , tableCount = $tableCount, menu = $menu");
-    }
   }
 
   Future<int> getMenuItemCount() async {
@@ -171,7 +162,7 @@ class ReadData {
     return "";
   }
 
-  Future<double> getItemPrice(String ItemName) async {
+  Future<double> getItemPrice(String itemName) async {
     try {
       final file = await _localFile;
 
@@ -186,7 +177,7 @@ class ReadData {
           List<dynamic> menu = jsonData["menu"];
 
           for(var i in menu){
-            if(i["name"]==ItemName){
+            if(i["name"]==itemName){
               print(i["price"]);
               return i["price"];
             }

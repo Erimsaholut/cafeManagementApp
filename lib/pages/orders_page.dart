@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../constants/colors.dart';
 
-/*  azalt butonlarının olduğu o sayfa*/
+/*  sadece azalt butonlarının olduğu o sayfa*/
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key, required this.initialOrders});

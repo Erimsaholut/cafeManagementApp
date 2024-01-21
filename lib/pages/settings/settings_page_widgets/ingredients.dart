@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/styles.dart';
+import '../../../constants/styles.dart';
 
 class Ingredients extends StatefulWidget {
   Ingredients({super.key, required this.indList});
