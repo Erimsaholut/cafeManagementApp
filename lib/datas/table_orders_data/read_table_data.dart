@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TableDataHandler {
-  final int tableNum = 1;
+
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -23,6 +23,7 @@ class TableDataHandler {
       if (await file.exists()) {
         String content = await file.readAsString();
         if (content.isNotEmpty) {
+          print("tableData okundu");
           return jsonDecode(content);
         }
       }
@@ -34,6 +35,7 @@ class TableDataHandler {
 
   Future<Map<String, dynamic>?> getRawData() async {
     try {
+      print('Inside getRawData');
       return await readJsonData();
     } catch (e) {
       print('Raw data read error: $e');
@@ -45,7 +47,8 @@ class TableDataHandler {
     try {
       Map<String, dynamic>? rawData = await getRawData();
       if (rawData != null) {
-        List<Map<String, dynamic>> tables = List<Map<String, dynamic>>.from(rawData["tables"]);
+        List<Map<String, dynamic>> tables =
+            List<Map<String, dynamic>>.from(rawData["tables"]);
         for (var table in tables) {
           if (table["tableNum"] == tableNum) {
             return Future.value(table);
@@ -63,7 +66,6 @@ class TableDataHandler {
     final file = await _localFile;
     try {
       await file.writeAsString(jsonData);
-      print("Table $tableNum data updated successfully.");
     } catch (e) {
       print('JSON data write error: $e');
     }

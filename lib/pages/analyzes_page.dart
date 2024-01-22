@@ -1,3 +1,5 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
 import '../datas/table_orders_data/read_table_data.dart';
@@ -5,12 +7,19 @@ import '../datas/table_orders_data/read_table_data.dart';
 class AnalyzesPage extends StatefulWidget {
   AnalyzesPage({Key? key}) : super(key: key);
 
+/* For now I'm using this page to test data files */
   @override
   State<AnalyzesPage> createState() => _AnalyzesPageState();
 }
 
 class _AnalyzesPageState extends State<AnalyzesPage> {
   final ReadData readNewData = ReadData();
+
+  TableDataHandler tableDataHandler = TableDataHandler();
+
+  ResetAllTableJsonData resetAllTableJsonData = ResetAllTableJsonData();
+
+  WriteTableData writeTableData = WriteTableData();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +31,7 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
         ),
         backgroundColor: Colors.amberAccent,
       ),
-      body: Column(
+      body: ListView(
         children: [
           TextButton(
             onPressed: () async {
@@ -57,23 +66,46 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
           ),
           TextButton(
             onPressed: () async {
-              try {
-                TableDataHandler readTableData = TableDataHandler();
-                Map<String, dynamic>? tableData =
-                    await readTableData.getRawData();
-                if (tableData != null) {
-                  print("Table data read successfully:");
-                  print(tableData);
-                } else {
-                  print("Table data is null or couldn't be read.");
-                }
-              } catch (e) {
-                print("Error reading table data: $e");
-              }
+              Map<String, dynamic>? cafeTables =
+                  await tableDataHandler.getRawData();
+              print(cafeTables);
             },
             child: Text("test Table item"),
           ),
-
+          TextButton(
+            onPressed: () async {
+              Map<String, dynamic>? tableData =
+                  await tableDataHandler.getTableSet(1);
+              print(tableData);
+            },
+            child: Text("1 numaralı masanın set datasını çek"),
+          ),
+          TextButton(
+            onPressed: () async {
+              resetAllTableJsonData.resetTableJsonFile();
+            },
+            child: Text("Resetle table datalarını"),
+          ),
+          TextButton(
+            onPressed: () async {
+              await writeTableData.addItemToTable(2, "Çay", 2, 10);
+            },
+            child: const Text("masa 2 ye yeni çay salla"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Map<String, dynamic>? tableData =
+                  await tableDataHandler.getTableSet(2);
+              print(tableData);
+            },
+            child: const Text("2 numaralı masanın set datasını çek"),
+          ),
+          TextButton(
+            onPressed: () async {
+              await writeTableData.addItemToTable(2, "Yeni Rakı", 1, 100);
+            },
+            child: const Text("masa 2 ye yeni yeni rakı"),
+          ),
         ],
       ),
     );

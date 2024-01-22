@@ -1,10 +1,12 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 
 class ResetAllTableJsonData {
-  void resetJsonFile() {
+
+  void resetTableJsonFile() {
     WriteTableData writeTableData = WriteTableData();
     writeTableData.resetData();
   }
+
 }
 
 class ResetTableDatas {

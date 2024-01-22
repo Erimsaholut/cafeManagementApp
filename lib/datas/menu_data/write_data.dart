@@ -7,6 +7,7 @@ class WriteData {
   ResetDatas resetDatas = ResetDatas();
 
   Future<void> _updateSettingsInJSON(
+
       String newCafeName, int newTableCount) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
@@ -44,6 +45,7 @@ class WriteData {
   }
 
   Future<void> resetData() async {
+
     try {
       Map<String, dynamic> initialMenu = resetDatas.jsonRawDataFirst;
       await readData.writeJsonData(jsonEncode(initialMenu));
@@ -51,6 +53,7 @@ class WriteData {
     } catch (e) {
       print("Resetlenemedi $e");
     }
+
   }
 
   Future<void> addNewItemToMenu(String itemName, int moneyValue,

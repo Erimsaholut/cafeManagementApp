@@ -10,31 +10,68 @@ class WriteTableData {
   Future<void> addItemToTable(
       int tableNum, String itemName, int quantity, int price) async {
     Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
+    bool isItemExits = false;
 
-    if (rawData != null) {
-      Map<String, dynamic> newItem = {
-        "name": itemName,
-        "quantity": quantity,
-        "price": price,
-      };
+    try {
+      if (rawData != null) {
+        for (var i in rawData["tables"]) {
+          if (i["tableNum"] == tableNum) {
+            /*doğru mekanı bul*/
+            print("Doğru tableNum aranıyor ve ordersına item ekleniyor");
+            print(i);
 
-      for (var i in rawData["tables"]) {
-        if (i["tableNum"] == tableNum) {
-          i["orders"].add(newItem);
+            /*buldun ama o itemden var mı */
+            for (var j in i["orders"]) {
+              if (j["name"] == itemName) {
+                isItemExits = true;
+              }
+            }
+            /*o itemden yoksa yenisini ekle*/
+            if (!isItemExits) {
+              Map<String, dynamic> newItem = {
+                "name": itemName,
+                "quantity": quantity,
+                "price": price,
+              };
+              i["orders"].add(newItem); // önce bi kontrol
+              int oldPrice = i["totalPrice"];
+              oldPrice += price;
+              i["totalPrice"] = oldPrice;
+            }
+          }
         }
-      }
 
-      num totalPrice = 0;
-      for (var i in rawData["tables"]) {
-        i["totalPrice"] = i["orders"].fold(0, (sum, order) => sum + order["price"]);
-        totalPrice += i["totalPrice"];
-      }
+        if (isItemExits) {
+          for (var i in rawData["tables"]) {
+            if (i["tableNum"] == tableNum) {
 
-      for (var i in rawData["tables"]) {
-        if (i["tableNum"] == tableNum) {
-          i["totalPrice"] = totalPrice;
+
+              for (var j in i["orders"]) {
+                if (j["name"] == itemName) {}
+                int oldQuantity = j["quantity"];
+                oldQuantity += quantity;
+                j["quantity"] = oldQuantity;
+
+                int oldPrice = j["price"];
+                oldPrice += price;
+                j["price"] = oldPrice;
+
+                int oldTotalPrice = i["totalPrice"];
+                oldTotalPrice += price;
+                i["totalPrice"] = oldTotalPrice;
+
+              }
+
+
+
+            }
+          }
         }
+        await tableDataHandler.writeJsonData(jsonEncode(rawData));
+        print("Ekledik galiba");
       }
+    } catch (e) {
+      print('Yeni ürün eklenirken hata oluştu: $e');
     }
   }
 
