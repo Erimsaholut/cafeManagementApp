@@ -51,10 +51,7 @@ class _MenuScreenState extends State<MenuScreen> {
             "Menü",
             style: CustomStyles.blackAndBoldTextStyleXl,
           ),
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .inversePrimary,
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
         body: Column(
           children: [
@@ -75,30 +72,29 @@ class _MenuScreenState extends State<MenuScreen> {
                     customSizedBox(),
                     buildGridView(foodsNoIn),
                     customSizedBox(rate: 2),
-
                     ...foodsIn,
                   ],
                 ),
               ),
             ),
-
-
             Visibility(
               visible: (orders.isNotEmpty),
               child: Expanded(
                 flex: 1,
                 child: Container(
                   color: Theme.of(context).colorScheme.inversePrimary,
-
                   child: Row(
                     children: [
                       Expanded(
                         flex: 4,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: _buildOrderWidgets(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: _buildOrderWidgets(),
+                            ),
                           ),
                         ),
                       ),
@@ -110,7 +106,6 @@ class _MenuScreenState extends State<MenuScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.center,
-
                             children: [
                               Text('Toplam Fiyat: $totalPrice'),
                             ],
@@ -122,8 +117,6 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
               ),
             ),
-
-
           ],
         ));
   }
@@ -187,8 +180,8 @@ class _MenuScreenState extends State<MenuScreen> {
     });
   }
 
-  void makeWidgetsForInd(List<Map<String, dynamic>> items,
-      List<Widget> widgets) {
+  void makeWidgetsForInd(
+      List<Map<String, dynamic>> items, List<Widget> widgets) {
     for (var item in items) {
       List<String> ingredients = List<String>.from(item["ingredients"]);
       String name = item["name"];
@@ -232,7 +225,6 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 }
 
-
 SizedBox customSizedBox({int rate = 1}) {
   return SizedBox(height: 16 * rate.toDouble());
 }
@@ -243,3 +235,4 @@ SizedBox customSizedBox({int rate = 1}) {
 //todo firebase (dlc olarak sunucam onu)
 //todo sipariş ödeme ekranı hallet
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
+//todo masa sayısı denetleyen bir kod yaz denetleme (maks mas sayısı döndürme falan) data klasöründeki datalrda olsun.

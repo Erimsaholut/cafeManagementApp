@@ -62,6 +62,18 @@ class TableDataHandler {
     return null;
   }
 
+  Future<int> getTableTotalPrice(int tableNum) async {
+    try {
+      Map<String, dynamic>? tableSet = await getTableSet(tableNum);
+
+      return tableSet?["totalPrice"];
+
+    } catch (e) {
+      print('Raw data read error: $e');
+      return -1;
+    }
+  }
+
   Future<void> writeJsonData(String jsonData) async {
     final file = await _localFile;
     try {

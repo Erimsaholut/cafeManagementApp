@@ -7,19 +7,19 @@ import '../constants/colors.dart';
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key, required this.initialOrders});
 
-  final List<String> initialOrders;
+  final List<Widget> initialOrders;
 
   @override
   _OrdersPageState createState() => _OrdersPageState();
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  late List<String> orders;
+  late List<Widget> orders;
 
   @override
   void initState() {
     super.initState();
-    orders = widget.initialOrders;
+    //orders = widget.initialOrders.cast<Widget>;
   }
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,8 @@ class _OrdersPageState extends State<OrdersPage> {
               color: Colors.lime,
               child: ListView.builder(
                 itemCount: orders.length,
-                itemBuilder: (context, index) => ListTile(
-                  title: Text(orders[index]),
+                itemBuilder: (context, index) => const ListTile(
+                  title: Text("orders[index]"),
                 ),
               ),
             ),

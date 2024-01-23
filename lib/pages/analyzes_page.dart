@@ -70,7 +70,7 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
                   await tableDataHandler.getRawData();
               print(cafeTables);
             },
-            child: Text("test Table item"),
+            child: const Text("test Table item"),
           ),
           TextButton(
             onPressed: () async {
@@ -78,13 +78,13 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
                   await tableDataHandler.getTableSet(1);
               print(tableData);
             },
-            child: Text("1 numaralı masanın set datasını çek"),
+            child: const Text("1 numaralı masanın set datasını çek"),
           ),
           TextButton(
             onPressed: () async {
               resetAllTableJsonData.resetTableJsonFile();
             },
-            child: Text("Resetle table datalarını"),
+            child: const Text("Resetle table datalarını"),
           ),
           TextButton(
             onPressed: () async {
