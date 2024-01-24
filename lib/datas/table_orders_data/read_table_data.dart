@@ -62,7 +62,7 @@ class TableDataHandler {
     return null;
   }
 
-  Future<int> getTableTotalPrice(int tableNum) async {
+  Future<double> getTableTotalPrice(int tableNum) async {
     try {
       Map<String, dynamic>? tableSet = await getTableSet(tableNum);
 

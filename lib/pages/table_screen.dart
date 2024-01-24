@@ -7,14 +7,12 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import 'orders_page.dart';
 
-class CustomTableMenu extends StatelessWidget {
+class CustomTableMenu extends StatefulWidget {
   /* genel bakışların olduğu sayfa*/
 
   final int tableNum;
   final String tableName;
-  final List<Widget> orders = [];
-  late Future<int> totalPrice;
-
+  late Future<double> totalPrice;
 
   CustomTableMenu(
       {super.key, required this.tableNum, required this.tableName}) {
@@ -22,10 +20,17 @@ class CustomTableMenu extends StatelessWidget {
   }
 
   @override
+  State<CustomTableMenu> createState() => _CustomTableMenuState();
+}
+
+class _CustomTableMenuState extends State<CustomTableMenu> {
+  final List<Widget> orders = [];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: isTableNameNull(tableName, tableNum),
+        title: isTableNameNull(widget.tableName, widget.tableNum),
         backgroundColor: CustomColors.appbarBlue,
       ),
       body: Row(
@@ -44,7 +49,7 @@ class CustomTableMenu extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
                       child: FutureBuilder<void>(
-                        future: setTableData(tableNum, orders),
+                        future: setTableData(widget.tableNum, orders),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
@@ -55,7 +60,7 @@ class CustomTableMenu extends StatelessWidget {
                               },
                             );
                           } else {
-                            return const CircularProgressIndicator(); // ya da başka bir yükleme göstergesi
+                            return const CircularProgressIndicator();
                           }
                         },
                       ),
@@ -71,8 +76,8 @@ class CustomTableMenu extends StatelessWidget {
                           const SizedBox(
                             width: 8.0,
                           ),
-                          FutureBuilder<int>(
-                            future: totalPrice,
+                          FutureBuilder<double>(
+                            future: widget.totalPrice,
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
@@ -81,7 +86,7 @@ class CustomTableMenu extends StatelessWidget {
                                   style: CustomStyles.blackAndBoldTextStyleL,
                                 );
                               } else {
-                                return const CircularProgressIndicator(); // You can replace this with a loading indicator
+                                return const CircularProgressIndicator();
                               }
                             },
                           ),
@@ -104,7 +109,13 @@ class CustomTableMenu extends StatelessWidget {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => const MenuScreen(),
+                        pageBuilder: (_, __, ___) => MenuScreen(
+                          tableNum: widget.tableNum,
+                          customFunction: () {
+                            print("Naber");
+                            manualSetState();
+                          },
+                        ),
                         transitionsBuilder: (_, anim, __, child) {
                           return ScaleTransition(
                             scale: anim,
@@ -145,6 +156,13 @@ class CustomTableMenu extends StatelessWidget {
       backgroundColor: const Color(0xFFAEE2FF),
     );
   }
+
+  void manualSetState() {
+    setState(() {
+      orders.clear();
+      widget.totalPrice = getTotalPrice(widget.tableNum);
+    });
+  }
 }
 
 List<Widget> textWidgetsFromList(List<String> textList) {
@@ -165,18 +183,21 @@ Future<void> setTableData(int tableNum, List<Widget> orders) async {
   TableDataHandler tableDataHandler = TableDataHandler();
   Map<String, dynamic>? tableData =
       await tableDataHandler.getTableSet(tableNum);
+
+  print(tableData);
+
   for (var i in tableData?["orders"]) {
     orders.add(orderShown(i["quantity"], i["name"], i["price"]));
   }
 }
 
-Future<int> getTotalPrice(int tableNum) async {
+Future<double> getTotalPrice(int tableNum) async {
   TableDataHandler tableDataHandler = TableDataHandler();
-  int tableTotalPrice = await tableDataHandler.getTableTotalPrice(tableNum);
+  double tableTotalPrice = await tableDataHandler.getTableTotalPrice(tableNum);
   return tableTotalPrice;
 }
 
-Widget orderShown(int quantity, String itemName, int price) {
+Widget orderShown(int quantity, String itemName, double price) {
   return Column(
     children: [
       Container(
@@ -185,23 +206,23 @@ Widget orderShown(int quantity, String itemName, int price) {
         child: Row(
           children: [
             Expanded(
-              flex:1,
+              flex: 1,
               child: Text(
                 "$quantity",
                 style: CustomStyles.blackAndBoldTextStyleM,
               ),
             ),
             Expanded(
-              flex:5,
+              flex: 5,
               child: Text(
                 itemName,
                 style: CustomStyles.blackAndBoldTextStyleM,
               ),
             ),
             Expanded(
-              flex:2,
+              flex: 2,
               child: Text(
-                "$price TL",
+                "$price ₺",
                 style: CustomStyles.blackAndBoldTextStyleM,
               ),
             ),

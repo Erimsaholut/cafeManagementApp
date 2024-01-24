@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../datas/menu_data/read_data.dart';
@@ -6,7 +7,10 @@ import '../utils/custom_button_with_checkboxes.dart';
 /*itemlerin seçilip eklendiği o sayfa*/
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+  const MenuScreen({super.key,required this.tableNum,required this.customFunction});
+
+  final int tableNum;
+  final Function customFunction;
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
@@ -26,6 +30,7 @@ class _MenuScreenState extends State<MenuScreen> {
   List<Widget> foodsNoIn = [];
 
   List<Widget> foodsIn = [];
+
 
   @override
   void initState() {
@@ -47,6 +52,7 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(onPressed: () {Navigator.pop(context); widget.customFunction();  }, icon: const Icon(Icons.arrow_back_ios_new)),
           title: Text(
             "Menü",
             style: CustomStyles.blackAndBoldTextStyleXl,
@@ -101,7 +107,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           color: Colors.greenAccent,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,20 +128,15 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   List<Widget> _buildOrderWidgets() {
-    // Map'i null olmayan bir şekilde başlat
     Map<String, int> itemCounts = {};
 
     for (String order in orders) {
       if (itemCounts.containsKey(order)) {
-        // Null check ekleyin ve null değilse artırın
         itemCounts[order] = (itemCounts[order] ?? 0) + 1;
       } else {
-        // Eğer order henüz eklenmemişse, 1 ile başlat
         itemCounts[order] = 1;
       }
     }
-
-    // Widget listesini oluştur
     List<Widget> orderWidgets = [];
     itemCounts.forEach((item, count) {
       orderWidgets.add(Text('$count $item    '));
@@ -144,16 +145,6 @@ class _MenuScreenState extends State<MenuScreen> {
     return orderWidgets;
   }
 
-  Container buildItemTypeTextContainer(String text) {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      alignment: Alignment.center,
-      child: Text(
-        text,
-        style: CustomStyles.blackAndBoldTextStyleXl,
-      ),
-    );
-  }
 
   void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) async {
     for (var itemName in items) {
@@ -161,23 +152,12 @@ class _MenuScreenState extends State<MenuScreen> {
         TextButton(
           style: CustomStyles.customMenuItemButtonStyle,
           onPressed: () {
-            // Asenkron işlemleri burada gerçekleştirin
             _performAsyncOperations(itemName);
           },
           child: Text(itemName),
         ),
       );
     }
-  }
-
-  Future<void> _performAsyncOperations(String itemName) async {
-    double itemPrice = await readNewData.getItemPrice(itemName);
-    print('Price of $itemName: $itemPrice');
-    setState(() {
-      print(itemName);
-      orders.add(itemName);
-      totalPrice += itemPrice;
-    });
   }
 
   void makeWidgetsForInd(
@@ -190,22 +170,52 @@ class _MenuScreenState extends State<MenuScreen> {
           buttonText: name,
           checkboxTexts: ingredients,
           onPressed: () {
-            _performAsyncOperationsForInd(name);
+            _performAsyncOperationsForInd(name,widget.tableNum);
           },
         ),
       );
     }
   }
 
-  Future<void> _performAsyncOperationsForInd(String name) async {
+
+  Future<void> _performAsyncOperations(String itemName) async {
+    WriteTableData writeTableData = WriteTableData();
+    double itemPrice = await readNewData.getItemPrice(itemName);
+    print('Price of $itemName: $itemPrice');
+    setState(() {
+      print(itemName);
+      orders.add(itemName);
+      totalPrice += itemPrice;
+      writeTableData.addItemToTable(widget.tableNum, itemName, 1, itemPrice);
+      //widget.customFunction();
+    });
+  }
+
+
+  Future<void> _performAsyncOperationsForInd(String name,tableNum) async {
     print("Button pressed for $name");
     double itemPrice = await readNewData.getItemPrice(name);
     print('Price of $name: $itemPrice');
 
+    WriteTableData writeTableData = WriteTableData();
+
     setState(() {
       orders.add(name);
       totalPrice += itemPrice;
+      writeTableData.addItemToTable(tableNum, name, 1, itemPrice);
+      //widget.customFunction();
     });
+  }
+
+  Container buildItemTypeTextContainer(String text) {
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: CustomStyles.blackAndBoldTextStyleXl,
+      ),
+    );
   }
 
   Widget buildGridView(List<Widget> list) {

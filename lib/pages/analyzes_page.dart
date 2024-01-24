@@ -106,6 +106,12 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
             },
             child: const Text("masa 2 ye yeni yeni rakı"),
           ),
+          TextButton(
+            onPressed: () async {
+              await writeTableData.addItemToTable(2, "Kırmızı Tuborg", 2, 75);
+            },
+            child: const Text("masa 2 ye kırmızı tuborg"),
+          ),
         ],
       ),
     );
