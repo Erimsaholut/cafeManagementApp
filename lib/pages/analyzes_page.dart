@@ -82,7 +82,7 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
           ),
           TextButton(
             onPressed: () async {
-              resetAllTableJsonData.resetTableJsonFile();
+              resetAllTableJsonData.resetAllTableJsonFiles();
             },
             child: const Text("Resetle table datalarını"),
           ),

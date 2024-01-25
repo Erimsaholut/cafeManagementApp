@@ -2,9 +2,9 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_da
 
 class ResetAllTableJsonData {
 
-  void resetTableJsonFile() {
+  void resetAllTableJsonFiles() {
     WriteTableData writeTableData = WriteTableData();
-    writeTableData.resetData();
+    writeTableData.resetAllData();
   }
 
 }

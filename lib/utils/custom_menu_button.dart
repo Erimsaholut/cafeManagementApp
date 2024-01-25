@@ -1,18 +1,23 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
-Column CustomMenuButton(String buttonText, {VoidCallback? onPressedFunction}) {
+import '../constants/styles.dart';
+Column CustomMenuButton(
+    String buttonText, {
+      VoidCallback? onPressedFunction,
+      VoidCallback? onLongPressFunction,
+    }) {
   return Column(
     children: [
       TextButton(
         onPressed: onPressedFunction ?? () {},
+        onLongPress: onLongPressFunction,
         style: CustomStyles.customButtonStyle,
         child: Text(
           buttonText,
           style: CustomStyles.blackAndBoldTextStyleL,
         ),
       ),
-      const SizedBox(height: 16,),
+      const SizedBox(height: 16),
     ],
   );
 }

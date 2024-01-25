@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../constants/colors.dart';
@@ -7,20 +8,21 @@ import '../constants/colors.dart';
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key, required this.initialOrders});
 
-  final List<Widget> initialOrders;
+  final Map<String, dynamic>? initialOrders;
 
   @override
   _OrdersPageState createState() => _OrdersPageState();
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  late List<Widget> orders;
+  List<Widget> orders = [];
 
   @override
   void initState() {
     super.initState();
-    //orders = widget.initialOrders.cast<Widget>;
+    print(widget.initialOrders);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +36,21 @@ class _OrdersPageState extends State<OrdersPage> {
             flex: 3,
             child: Container(
               color: Colors.lime,
-              child: ListView.builder(
-                itemCount: orders.length,
-                itemBuilder: (context, index) => const ListTile(
-                  title: Text("orders[index]"),
-                ),
+              child: FutureBuilder<List<Widget>>(
+                future: setTableData(widget.initialOrders),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    orders = snapshot.data ?? [];
+                    return ListView.builder(
+                      itemCount: orders.length,
+                      itemBuilder: (context, index) {
+                        return orders[index];
+                      },
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
             ),
           ),
@@ -68,9 +80,18 @@ class _OrdersPageState extends State<OrdersPage> {
   }
 
   double calculateTotal() {
-    // Burada siparişlerin toplam tutarı hesaplanabilir.
-    // Örneğin, orders listesindeki ürün fiyatları üzerinden bir toplama yapılabilir.
-    // Bu örnekte basitçe bir sabit değeri döndürüyorum.
     return 100.0;
+  }
+
+  Future<List<Widget>> setTableData(Map<String, dynamic>? tableData) async {
+    List<Widget> list = [];
+
+    print(tableData);
+    if (tableData?["orders"] != null) {
+      for (var i in tableData?["orders"]!) {
+        list.add(Order(initialCount: i["quantity"], name: i["name"]));
+      }
+    }
+    return list;
   }
 }

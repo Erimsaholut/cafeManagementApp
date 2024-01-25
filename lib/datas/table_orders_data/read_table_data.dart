@@ -4,8 +4,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TableDataHandler {
-
-
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -64,10 +62,16 @@ class TableDataHandler {
 
   Future<double> getTableTotalPrice(int tableNum) async {
     try {
+
+
       Map<String, dynamic>? tableSet = await getTableSet(tableNum);
+print(1);
 
-      return tableSet?["totalPrice"];
-
+      if (tableSet != null) {
+        return tableSet["totalPrice"];
+      } else {
+        return 0;
+      }
     } catch (e) {
       print('Raw data read error: $e');
       return -1;

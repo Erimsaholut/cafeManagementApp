@@ -1,4 +1,5 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
@@ -25,6 +26,7 @@ class CustomTableMenu extends StatefulWidget {
 
 class _CustomTableMenuState extends State<CustomTableMenu> {
   final List<Widget> orders = [];
+  Map<String, dynamic>? test;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       padding: const EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
                       child: FutureBuilder<void>(
-                        future: setTableData(widget.tableNum, orders),
+                        future: setTableData(widget.tableNum, orders, test),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
@@ -112,7 +114,6 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                         pageBuilder: (_, __, ___) => MenuScreen(
                           tableNum: widget.tableNum,
                           customFunction: () {
-                            print("Naber");
                             manualSetState();
                           },
                         ),
@@ -133,7 +134,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                         PageRouteBuilder(
                           opaque: false,
                           pageBuilder: (_, __, ___) => OrdersPage(
-                            initialOrders: orders,
+                            initialOrders: test,
                           ),
                           transitionsBuilder: (_, anim, __, child) {
                             return ScaleTransition(
@@ -146,7 +147,14 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       );
                     },
                   ),
-                  CustomMenuButton("Masa Ödendi", onPressedFunction: () {}),
+                  CustomMenuButton("Masa Ödendi", onPressedFunction: () {
+                    setState(() {
+                      WriteTableData writeTableData = WriteTableData();
+                      writeTableData.resetOneTable(widget.tableNum);
+                      orders.clear();
+                      Navigator.pop(context);
+                    });
+                  }),
                 ],
               ),
             ),
@@ -165,24 +173,12 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
   }
 }
 
-List<Widget> textWidgetsFromList(List<String> textList) {
-  List<Widget> newList = [];
-  for (var i in textList) {
-    newList.add(
-      Text(
-        i,
-        style: CustomStyles.blackAndBoldTextStyleM,
-      ),
-    );
-  }
-
-  return newList;
-}
-
-Future<void> setTableData(int tableNum, List<Widget> orders) async {
+Future<void> setTableData(
+    int tableNum, List<Widget> orders, Map<String, dynamic>? test) async {
   TableDataHandler tableDataHandler = TableDataHandler();
   Map<String, dynamic>? tableData =
       await tableDataHandler.getTableSet(tableNum);
+  test = tableData;
 
   print(tableData);
 
