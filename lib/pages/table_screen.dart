@@ -134,7 +134,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                         PageRouteBuilder(
                           opaque: false,
                           pageBuilder: (_, __, ___) => OrdersPage(
-                            initialOrders: test,
+                            tableNum: widget.tableNum,
                           ),
                           transitionsBuilder: (_, anim, __, child) {
                             return ScaleTransition(
@@ -153,7 +153,10 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       writeTableData.resetOneTable(widget.tableNum);
                       orders.clear();
                       Navigator.pop(context);
+                      //Todo buraya da istatistik sallama gelecek ama içeride de gelebilir
                     });
+                  }, onLongPressFunction: () {
+                    //Todo (buraya indirimli parametre gelecek)
                   }),
                 ],
               ),

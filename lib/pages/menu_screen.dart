@@ -95,13 +95,16 @@ class _MenuScreenState extends State<MenuScreen> {
                         flex: 4,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
+
                           child: Padding(
                             padding: const EdgeInsets.all(8),
+
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: _buildOrderWidgets(),
                             ),
                           ),
+
                         ),
                       ),
                       Expanded(
@@ -187,7 +190,6 @@ class _MenuScreenState extends State<MenuScreen> {
       orders.add(itemName);
       totalPrice += itemPrice;
       writeTableData.addItemToTable(widget.tableNum, itemName, 1, itemPrice);
-      //widget.customFunction();
     });
   }
 
@@ -203,7 +205,6 @@ class _MenuScreenState extends State<MenuScreen> {
       orders.add(name);
       totalPrice += itemPrice;
       writeTableData.addItemToTable(tableNum, name, 1, itemPrice);
-      //widget.customFunction();
     });
   }
 
@@ -246,3 +247,4 @@ SizedBox customSizedBox({int rate = 1}) {
 //todo sipariş ödeme ekranı hallet
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
 //todo masa sayısı denetleyen bir kod yaz denetleme (maks mas sayısı döndürme falan) data klasöründeki datalrda olsun.
+//todo dil desteği gelecek ama nasıl gelecek bilmiyorum

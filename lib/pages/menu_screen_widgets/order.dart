@@ -1,34 +1,54 @@
 import 'package:flutter/material.dart';
 
 class Order extends StatefulWidget {
-  Order({Key? key, required this.initialCount, required this.name}) : super(key: key);
+  Order({
+    super.key,
+    required this.manualSetState,
+    required this.toplamHesap,
+    required this.maxCount,
+    required this.textList,
+    required this.price,
+    required this.name,
+  });
 
-  int initialCount;
-  String name;
+  final String name;
+  final double price;
+
+  final Function manualSetState;
+  final int maxCount;
+  List<String> textList;
+  double toplamHesap;
 
   @override
   _OrderState createState() => _OrderState();
 }
 
 class _OrderState extends State<Order> {
-  late int count;
+  late int initialValue;
+  late String widgetName; // Added variable to store widget name
 
   @override
   void initState() {
     super.initState();
-    count = widget.initialCount;
+    initialValue = widget.maxCount;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
+    return Container(
       child: Row(
         children: [
           IconButton(
             onPressed: () {
               setState(() {
-                count = count - 1;
+                if (initialValue - 1 >= 0) {
+                  initialValue = (initialValue - 1).clamp(0, widget.maxCount);
+                  widgetName = widget.name;
+                  widget.textList.add(widgetName);
+                  widget.toplamHesap += widget.price;
+                  print(widget.toplamHesap);
+                  widget.manualSetState();
+                }
               });
             },
             icon: const Icon(Icons.remove),
@@ -36,12 +56,18 @@ class _OrderState extends State<Order> {
               backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
             ),
           ),
-          Text("$count ${widget.name}",
+          Text("$initialValue ${widget.name}",
               style: const TextStyle(fontSize: 16)),
           IconButton(
             onPressed: () {
               setState(() {
-                count = count + 1;
+                if (initialValue + 1 <= widget.maxCount) {
+                  initialValue = (initialValue + 1).clamp(0, widget.maxCount);
+                  widget.manualSetState();
+                  widget.toplamHesap -= widget.price;
+                  print(widget.toplamHesap);
+                  widget.textList.remove(widgetName); // Remove widget name
+                }
               });
             },
             icon: const Icon(Icons.add),

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
@@ -6,21 +9,28 @@ import '../constants/colors.dart';
 /*  sadece azalt butonlarının olduğu o sayfa*/
 
 class OrdersPage extends StatefulWidget {
-  const OrdersPage({super.key, required this.initialOrders});
+  OrdersPage({super.key, required this.tableNum});
 
-  final Map<String, dynamic>? initialOrders;
+  late Map<String, dynamic>? initialOrders;
+  final int tableNum;
 
   @override
   _OrdersPageState createState() => _OrdersPageState();
 }
 
 class _OrdersPageState extends State<OrdersPage> {
+  TableDataHandler tableDataHandler = TableDataHandler();
   List<Widget> orders = [];
+
+  List<String> bottomStrings = [];
+  List<Widget> bottomWidgets = [];
+
+  double toplamHesap = 0;
 
   @override
   void initState() {
     super.initState();
-    print(widget.initialOrders);
+    _loadTableData();
   }
 
   @override
@@ -36,21 +46,11 @@ class _OrdersPageState extends State<OrdersPage> {
             flex: 3,
             child: Container(
               color: Colors.lime,
-              child: FutureBuilder<List<Widget>>(
-                future: setTableData(widget.initialOrders),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    orders = snapshot.data ?? [];
-                    return ListView.builder(
-                      itemCount: orders.length,
-                      itemBuilder: (context, index) {
-                        return orders[index];
-                      },
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
+              child: GridView.count(
+                mainAxisSpacing: 1.0,
+                crossAxisSpacing: 1.0,
+                crossAxisCount: 4,
+                children: orders,
               ),
             ),
           ),
@@ -60,15 +60,37 @@ class _OrdersPageState extends State<OrdersPage> {
               padding: const EdgeInsets.all(10.0),
               color: Colors.blue,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Ödenecek hesap: ${calculateTotal()} ₺",
-                    style: CustomStyles.blackAndBoldTextStyleXl,
+                  Expanded(
+                    flex: 7,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Row(
+                          children: [
+                            ...buildOrderWidgets(bottomStrings),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text("Onayla"),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Hesap: $toplamHesap ₺",
+                      style: CustomStyles.blackAndBoldTextStyleM,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+
+                        });
+                      },
+                      child: const Text("Onayla"),
+                    ),
                   ),
                 ],
               ),
@@ -79,19 +101,58 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 
-  double calculateTotal() {
-    return 100.0;
+  Future<void> _loadTableData() async {
+    try {
+      Map<String, dynamic>? data =
+          await tableDataHandler.getTableSet(widget.tableNum);
+      setTableData(data);
+    } catch (error) {
+      print("Error loading table data: $error");
+    }
   }
 
-  Future<List<Widget>> setTableData(Map<String, dynamic>? tableData) async {
-    List<Widget> list = [];
+  void manualSetState() {
+    setState(() {});
+  }
 
-    print(tableData);
-    if (tableData?["orders"] != null) {
-      for (var i in tableData?["orders"]!) {
-        list.add(Order(initialCount: i["quantity"], name: i["name"]));
+  void setTableData(Map<String, dynamic>? tableData) {
+    if (tableData != null && tableData.containsKey("orders")) {
+      for (var orderData in tableData["orders"] as List<dynamic>) {
+        final int? quantity = orderData["quantity"];
+        final String? name = orderData["name"];
+        final double price = orderData["price"];
+
+        if (quantity != null && name != null) {
+          orders.add(Order(
+            maxCount: quantity,
+            name: name,
+            textList: bottomStrings,
+            toplamHesap: toplamHesap,
+            manualSetState: () {
+              manualSetState();
+            },
+            price: price,
+          ));
+        }
       }
     }
-    return list;
+  }
+
+  List<Widget> buildOrderWidgets(orders) {
+    Map<String, int> itemCounts = {};
+
+    for (String order in orders) {
+      if (itemCounts.containsKey(order)) {
+        itemCounts[order] = (itemCounts[order] ?? 0) + 1;
+      } else {
+        itemCounts[order] = 1;
+      }
+    }
+    List<Widget> orderWidgets = [];
+    itemCounts.forEach((item, count) {
+      orderWidgets.add(Text('$count $item    '));
+    });
+
+    return orderWidgets;
   }
 }

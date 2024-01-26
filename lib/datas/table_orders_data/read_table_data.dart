@@ -21,7 +21,6 @@ class TableDataHandler {
       if (await file.exists()) {
         String content = await file.readAsString();
         if (content.isNotEmpty) {
-          print("tableData okundu");
           return jsonDecode(content);
         }
       }
@@ -33,7 +32,6 @@ class TableDataHandler {
 
   Future<Map<String, dynamic>?> getRawData() async {
     try {
-      print('Inside getRawData');
       return await readJsonData();
     } catch (e) {
       print('Raw data read error: $e');
@@ -65,8 +63,6 @@ class TableDataHandler {
 
 
       Map<String, dynamic>? tableSet = await getTableSet(tableNum);
-print(1);
-
       if (tableSet != null) {
         return tableSet["totalPrice"];
       } else {
