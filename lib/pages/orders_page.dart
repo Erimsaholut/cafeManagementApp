@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:flutter/material.dart';
@@ -46,14 +44,19 @@ class _OrdersPageState extends State<OrdersPage> {
             flex: 3,
             child: Container(
               color: Colors.lime,
-              child: GridView.count(
-                mainAxisSpacing: 1.0,
-                crossAxisSpacing: 1.0,
-                crossAxisCount: 4,
-                children: orders,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, // İstediğiniz sütun sayısını ayarlayabilirsiniz.
+
+                ),
+                itemCount: orders.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return orders[index];
+                },
               ),
             ),
           ),
+
           Expanded(
             flex: 1,
             child: Container(
@@ -63,15 +66,19 @@ class _OrdersPageState extends State<OrdersPage> {
                 children: [
                   Expanded(
                     flex: 7,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Row(
+                    child: FutureBuilder(
+                      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                        return ListView(
+                          scrollDirection: Axis.horizontal,
                           children: [
-                            ...buildOrderWidgets(bottomStrings),
+                            Row(
+                              children: [
+                                ...buildOrderWidgets(bottomStrings),
+                              ],
+                            ),
                           ],
-                        )
-                      ],
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -104,7 +111,7 @@ class _OrdersPageState extends State<OrdersPage> {
   Future<void> _loadTableData() async {
     try {
       Map<String, dynamic>? data =
-          await tableDataHandler.getTableSet(widget.tableNum);
+      await tableDataHandler.getTableSet(widget.tableNum);
       setTableData(data);
     } catch (error) {
       print("Error loading table data: $error");
@@ -120,23 +127,26 @@ class _OrdersPageState extends State<OrdersPage> {
       for (var orderData in tableData["orders"] as List<dynamic>) {
         final int? quantity = orderData["quantity"];
         final String? name = orderData["name"];
-        final double price = orderData["price"];
+        final double price = (orderData["price"]/quantity);
 
         if (quantity != null && name != null) {
-          orders.add(Order(
-            maxCount: quantity,
-            name: name,
-            textList: bottomStrings,
-            toplamHesap: toplamHesap,
-            manualSetState: () {
-              manualSetState();
-            },
-            price: price,
-          ));
+          setState(() {
+            orders.add(Order(
+              maxCount: quantity,
+              name: name,
+              textList: bottomStrings,
+              toplamHesap: toplamHesap,
+              manualSetState: () {
+                manualSetState();
+              },
+              price: price,
+            ));
+          });
         }
       }
     }
   }
+
 
   List<Widget> buildOrderWidgets(orders) {
     Map<String, int> itemCounts = {};
