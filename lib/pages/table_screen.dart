@@ -135,6 +135,9 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                           opaque: false,
                           pageBuilder: (_, __, ___) => OrdersPage(
                             tableNum: widget.tableNum,
+                            customFunction: () {
+                              manualSetState();
+                            },
                           ),
                           transitionsBuilder: (_, anim, __, child) {
                             return ScaleTransition(
@@ -156,6 +159,9 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       //Todo buraya da istatistik sallama gelecek ama içeride de gelebilir
                     });
                   }, onLongPressFunction: () {
+                    setState(() {
+                      
+                    });
                     //Todo (buraya indirimli parametre gelecek)
                   }),
                 ],

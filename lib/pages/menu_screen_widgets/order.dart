@@ -34,48 +34,82 @@ class _OrderState extends State<Order> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          onPressed: initialValue > 0
-              ? () {
-            setState(() {
-              initialValue = (initialValue - 1).clamp(0, widget.maxCount);
-              widgetName = widget.name;
-              widget.textList.add(widgetName);
-              widget.toplamHesap += widget.price;
-              print(widget.toplamHesap);
-              widget.manualSetState();
-            });
-          }
-              : null, // Null olması durumunda button disabled olur
-          icon: const Icon(Icons.remove),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
-          ),
+    return TextButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.green.withOpacity(0.3)),
+        // Highlight color for the button
+        overlayColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.green.shade400; // Change this color as needed
+            }
+            // The default color
+            return Colors.transparent;
+          },
         ),
-        Text("$initialValue ${widget.name}", style: const TextStyle(fontSize: 16)),
-        IconButton(
-          onPressed: initialValue < widget.maxCount
-              ? () {
-            setState(() {
-              initialValue = (initialValue + 1).clamp(0, widget.maxCount);
-              widget.manualSetState();
-              widget.toplamHesap -= widget.price;
-              print(widget.toplamHesap);
-              widget.textList.remove(widgetName); // Remove widget name
-            });
+      ),
+      onPressed: () {
+        setState(() {
+          widgetName = widget.name;
+          for(int i = 0;initialValue>i;i++){
+            widget.textList.add(widgetName);
           }
-              : null,
-          icon: const Icon(Icons.add),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
+
+          widget.toplamHesap += widget.price;
+          print(widget.toplamHesap);
+          initialValue = 0;
+          widget.manualSetState();
+        });
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: initialValue > 0
+                ? () {
+                    setState(() {
+
+                      initialValue =
+                          (initialValue - 1).clamp(0, widget.maxCount);
+                      widgetName = widget.name;
+                      widget.textList.add(widgetName);
+                      widget.manualSetState();
+                    });
+                  }
+                : null,
+            icon: const Icon(Icons.remove),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.grey.shade300),
+            ),
           ),
-        ),
-      ],
+          Text("$initialValue ${widget.name}",
+              style: const TextStyle(fontSize: 16)),
+          IconButton(
+            onPressed: initialValue < widget.maxCount
+                ? () {
+                    setState(() {
+                      initialValue =
+                          (initialValue + 1).clamp(0, widget.maxCount);
+
+                      widget.textList
+                          .remove(widgetName); // Remove widget name
+
+
+                      widget.manualSetState();
+
+                    });
+                  }
+                : null,
+            icon: const Icon(Icons.add),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.grey.shade300),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
