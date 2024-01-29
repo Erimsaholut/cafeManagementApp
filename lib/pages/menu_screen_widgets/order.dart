@@ -63,7 +63,7 @@ class _OrderState extends State<Order> {
         });
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
             onPressed: initialValue > 0

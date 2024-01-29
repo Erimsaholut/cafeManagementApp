@@ -1,19 +1,19 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
-class MyCustomButton extends StatefulWidget {
+class CustomMultiSelectionButton extends StatefulWidget {
   final String buttonText;
   final List<dynamic>? checkboxTexts;
   final VoidCallback? onPressed;
 
-  MyCustomButton(
+  CustomMultiSelectionButton(
       {required this.buttonText, required this.checkboxTexts, this.onPressed});
 
   @override
-  _MyCustomButtonState createState() => _MyCustomButtonState();
+  _CustomMultiSelectionButtonState createState() => _CustomMultiSelectionButtonState();
 }
 
-class _MyCustomButtonState extends State<MyCustomButton> {
+class _CustomMultiSelectionButtonState extends State<CustomMultiSelectionButton> {
   List<bool> checkboxValues = [];
 
   @override

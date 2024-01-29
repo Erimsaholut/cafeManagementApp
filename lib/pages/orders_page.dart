@@ -110,6 +110,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                 widget.tableNum, entry.key, entry.value);
                           }
 
+                          bottomWidgets.clear();
                           widget.customFunction();
                         });
                       },

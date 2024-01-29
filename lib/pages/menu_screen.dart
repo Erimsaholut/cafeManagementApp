@@ -1,8 +1,9 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_single_selection_checkbox_button.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../datas/menu_data/read_data.dart';
-import '../utils/custom_button_with_checkboxes.dart';
+import '../utils/custom_multi_selection_checkbox_button.dart';
 
 /*itemlerin seçilip eklendiği o sayfa*/
 
@@ -41,10 +42,10 @@ class _MenuScreenState extends State<MenuScreen> {
   void createButtons() {
     setState(() {
       makeWidgetsForNoInd(readNewData.drinksWithNoIngredients, drinksNoIn);
-      makeWidgetsForInd(readNewData.drinksWithIngredients, drinksIn);
+      makeWidgetsForIndDrink(readNewData.drinksWithIngredients, drinksIn);
 
       makeWidgetsForNoInd(readNewData.foodsWithNoIngredients, foodsNoIn);
-      makeWidgetsForInd(readNewData.foodsWithIngredients, foodsIn);
+      makeWidgetsForIndFood(readNewData.foodsWithIngredients, foodsIn);
     });
   }
 
@@ -163,13 +164,29 @@ class _MenuScreenState extends State<MenuScreen> {
     }
   }
 
-  void makeWidgetsForInd(
+  void makeWidgetsForIndFood(
       List<Map<String, dynamic>> items, List<Widget> widgets) {
     for (var item in items) {
       List<String> ingredients = List<String>.from(item["ingredients"]);
       String name = item["name"];
       widgets.add(
-        MyCustomButton(
+        CustomMultiSelectionButton(
+          buttonText: name,
+          checkboxTexts: ingredients,
+          onPressed: () {
+            _performAsyncOperationsForInd(name,widget.tableNum);
+          },
+        ),
+      );
+    }
+  }
+  void makeWidgetsForIndDrink(
+      List<Map<String, dynamic>> items, List<Widget> widgets) {
+    for (var item in items) {
+      List<String> ingredients = List<String>.from(item["ingredients"]);
+      String name = item["name"];
+      widgets.add(
+        CustomSingleSelectionButton(
           buttonText: name,
           checkboxTexts: ingredients,
           onPressed: () {

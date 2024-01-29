@@ -153,8 +153,10 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                   CustomMenuButton("Masa Ödendi", onPressedFunction: () {
                     setState(() {
                       WriteTableData writeTableData = WriteTableData();
+
                       writeTableData.resetOneTable(widget.tableNum);
                       orders.clear();
+
                       Navigator.pop(context);
                       //Todo buraya da istatistik sallama gelecek ama içeride de gelebilir
                     });
@@ -162,7 +164,9 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                     setState(() {
                       
                     });
+
                     //Todo (buraya indirimli parametre gelecek)
+
                   }),
                 ],
               ),
