@@ -25,10 +25,8 @@ class WriteTableData {
               }
             }
 
-            print(1);
             /*o itemden yoksa yenisini ekle*/
             if (!isItemExits) {
-              print("bu itemden yok");
               Map<String, dynamic> newItem = {
                 "name": itemName,
                 "quantity": quantity,
@@ -44,7 +42,6 @@ class WriteTableData {
         }
 
         if (isItemExits) {
-          print("bu itemden var");
           for (var i in rawData["tables"]) {
             if (i["tableNum"] == tableNum) {
               /*bu kısımda doğru tableSetteyiz*/

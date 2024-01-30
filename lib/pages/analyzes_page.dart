@@ -1,5 +1,6 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
 import '../datas/table_orders_data/read_table_data.dart';
@@ -111,6 +112,23 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
               await writeTableData.addItemToTable(2, "Kırmızı Tuborg", 2, 75);
             },
             child: const Text("masa 2 ye kırmızı tuborg"),
+          ),
+          TextButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder:(BuildContext context){
+                  return CustomAlertButton(
+                    text1: 'Test Edilecektir.',
+                    text2: 'Emin misiniz ?',
+                    customFunction: () {
+                      print("object");
+                    },
+                  ); // Burada const kullanmamalısınız
+                },
+              );
+            },
+            child: const Text("customAlert"),
           ),
         ],
       ),

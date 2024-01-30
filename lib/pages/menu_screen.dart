@@ -257,7 +257,6 @@ SizedBox customSizedBox({int rate = 1}) {
   return SizedBox(height: 16 * rate.toDouble());
 }
 
-//todo only one checkboxlu customWidget
 //todo analiz sayfası ve dışarı aktarabilme özelliği
 //todo tasarım
 //todo firebase (dlc olarak sunucam onu)

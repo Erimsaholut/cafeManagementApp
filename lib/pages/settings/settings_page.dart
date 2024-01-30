@@ -1,6 +1,7 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_page_widgets/show_change_name_and_table_count_dialog.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_drink_page.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import 'package:flutter/material.dart';
 import '../../datas/menu_data/reset_datas.dart';
 
@@ -59,7 +60,8 @@ class SettingsPageState extends State<SettingsPage> {
                       );
                     },
                   ),
-                  CustomMenuButton("Menüye Yeni Ürün Ekle", onPressedFunction: () {
+                  CustomMenuButton("Menüye Yeni Ürün Ekle",
+                      onPressedFunction: () {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
@@ -88,13 +90,26 @@ class SettingsPageState extends State<SettingsPage> {
                   CustomMenuButton(
                     "Bütün verileri resetle",
                     onPressedFunction: () {
-                      ResetAllJsonData resetAllJsonData = ResetAllJsonData();
-                      resetAllJsonData.resetJsonFile();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Bütün veriler başarı ile resetlendi'),
-                        ),
-                      );
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomAlertButton(
+                              answer1: 'Kapat',
+                              text1: 'Bütün veriler resetlenecektir.',
+                              text2: 'Onaylıyor musunuz ?',
+                              customFunction: () {
+                                ResetAllJsonData resetAllJsonData =
+                                    ResetAllJsonData();
+                                resetAllJsonData.resetJsonFile();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Bütün veriler başarı ile resetlendi'),
+                                  ),
+                                );
+                              },
+                            );
+                          });
                     },
                   ),
                 ],

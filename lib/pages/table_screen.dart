@@ -3,6 +3,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_da
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import '../utils/custom_alert_button.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
@@ -151,22 +152,23 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                     },
                   ),
                   CustomMenuButton("Masa Ödendi", onPressedFunction: () {
-                    setState(() {
-                      WriteTableData writeTableData = WriteTableData();
-
-                      writeTableData.resetOneTable(widget.tableNum);
-                      orders.clear();
-
-                      Navigator.pop(context);
-                      //Todo buraya da istatistik sallama gelecek ama içeride de gelebilir
-                    });
-                  }, onLongPressFunction: () {
-                    setState(() {
-                      
-                    });
-
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomAlertButton(
+                          text1: ' Bütün masayı ödenecektir.',
+                          text2: 'Emin misiniz ?',
+                          customFunction: () {
+                            WriteTableData writeTableData = WriteTableData();
+                            writeTableData.resetOneTable(widget.tableNum);
+                            orders.clear();
+                            Navigator.pop(context);
+                            setState(() {});
+                          },
+                        );
+                      },
+                    );
                     //Todo (buraya indirimli parametre gelecek)
-
                   }),
                 ],
               ),
