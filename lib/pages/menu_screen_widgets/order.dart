@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 
 class Order extends StatefulWidget {
   Order({
-    super.key,
+    Key? key,
     required this.manualSetState,
+    required this.arttirToplamHesap,
+    required this.azaltToplamHesap,
     required this.toplamHesap,
     required this.maxCount,
     required this.textList,
     required this.price,
     required this.name,
-  });
+  }) : super(key: key);
 
   final String name;
   final double price;
 
   final Function manualSetState;
+  final Function arttirToplamHesap;
+  final Function azaltToplamHesap;
   final int maxCount;
   List<String> textList;
   double toplamHesap;
@@ -25,7 +29,7 @@ class Order extends StatefulWidget {
 
 class _OrderState extends State<Order> {
   late int initialValue;
-  late String widgetName; // Added variable to store widget name
+  late String widgetName;
 
   @override
   void initState() {
@@ -38,13 +42,11 @@ class _OrderState extends State<Order> {
     return TextButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.green.withOpacity(0.3)),
-        // Highlight color for the button
         overlayColor: MaterialStateProperty.resolveWith<Color>(
               (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
               return Colors.green.shade400; // Change this color as needed
             }
-            // The default color
             return Colors.transparent;
           },
         ),
@@ -52,12 +54,17 @@ class _OrderState extends State<Order> {
       onPressed: () {
         setState(() {
           widgetName = widget.name;
-          for(int i = 0;initialValue>i;i++){
+
+          /* burası toplu ekleme burayı en son kullan*/
+
+          for (int i = 0; initialValue > i; i++) {
             widget.textList.add(widgetName);
+            widget.arttirToplamHesap(widget.price);
           }
 
-          widget.toplamHesap += widget.price;
-          print(widget.toplamHesap);
+          widget.toplamHesap = widget.price * initialValue;
+          print("Toplam Hesap: ${widget.toplamHesap}");
+
           initialValue = 0;
           widget.manualSetState();
         });
@@ -68,44 +75,45 @@ class _OrderState extends State<Order> {
           IconButton(
             onPressed: initialValue > 0
                 ? () {
-                    setState(() {
+              setState(() {
+                initialValue = (initialValue - 1).clamp(0, widget.maxCount);
+                widgetName = widget.name;
+                widget.textList.add(widgetName);
 
-                      initialValue =
-                          (initialValue - 1).clamp(0, widget.maxCount);
-                      widgetName = widget.name;
-                      widget.textList.add(widgetName);
-                      widget.manualSetState();
-                    });
-                  }
+                widget.arttirToplamHesap(widget.price);
+
+                widget.manualSetState();
+                print("Azalt");
+                print("Toplam Hesap: ${widget.toplamHesap}");
+
+                widget.manualSetState();
+              });
+            }
                 : null,
             icon: const Icon(Icons.remove),
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Colors.grey.shade300),
+              backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
             ),
           ),
-          Text("$initialValue ${widget.name}",
-              style: const TextStyle(fontSize: 16)),
+          Text("$initialValue ${widget.name}", style: const TextStyle(fontSize: 16)),
           IconButton(
             onPressed: initialValue < widget.maxCount
                 ? () {
-                    setState(() {
-                      initialValue =
-                          (initialValue + 1).clamp(0, widget.maxCount);
+              setState(() {
+                initialValue = (initialValue + 1).clamp(0, widget.maxCount);
 
-                      widget.textList
-                          .remove(widgetName); // Remove widget name
+                widget.textList.remove(widgetName); // Remove widget name
 
-
-                      widget.manualSetState();
-
-                    });
-                  }
+                widget.azaltToplamHesap(widget.price);
+                widget.manualSetState();
+                print("Arttır");
+                print("Toplam Hesap: ${widget.toplamHesap}");
+              });
+            }
                 : null,
             icon: const Icon(Icons.add),
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Colors.grey.shade300),
+              backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
             ),
           ),
         ],

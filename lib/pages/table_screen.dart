@@ -163,6 +163,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                             writeTableData.resetOneTable(widget.tableNum);
                             orders.clear();
                             Navigator.pop(context);
+                            widget.totalPrice = getTotalPrice(widget.tableNum);
                             setState(() {});
                           },
                         );
@@ -186,19 +187,19 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
       widget.totalPrice = getTotalPrice(widget.tableNum);
     });
   }
-}
 
-Future<void> setTableData(
-    int tableNum, List<Widget> orders, Map<String, dynamic>? test) async {
-  TableDataHandler tableDataHandler = TableDataHandler();
-  Map<String, dynamic>? tableData =
-      await tableDataHandler.getTableSet(tableNum);
-  test = tableData;
+  Future<void> setTableData(
+      int tableNum, List<Widget> orders, Map<String, dynamic>? test) async {
+    TableDataHandler tableDataHandler = TableDataHandler();
+    Map<String, dynamic>? tableData =
+        await tableDataHandler.getTableSet(tableNum);
+    test = tableData;
 
-  print(tableData);
+    print(tableData);
 
-  for (var i in tableData?["orders"]) {
-    orders.add(orderShown(i["quantity"], i["name"], i["price"]));
+    for (var i in tableData?["orders"]) {
+      orders.add(orderShown(i["quantity"], i["name"], i["price"]));
+    }
   }
 }
 

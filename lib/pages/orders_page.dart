@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../constants/colors.dart';
 
-/*  sadece azalt butonlarının olduğu o sayfa*/
+/*  sadece azalt butonlarının olduğu o mistik sayfa*/
 
 class OrdersPage extends StatefulWidget {
   OrdersPage({super.key, required this.tableNum, required this.customFunction});
@@ -24,8 +24,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
   List<String> bottomStrings = [];
   List<Widget> bottomWidgets = [];
-
-  double toplamHesap = 0;
+  double toplamHesap = 0.0;
 
   @override
   void initState() {
@@ -89,9 +88,26 @@ class _OrdersPageState extends State<OrdersPage> {
                   ),
                   Expanded(
                     flex: 2,
-                    child: Text(
-                      "Hesap: $toplamHesap ₺",
-                      style: CustomStyles.blackAndBoldTextStyleM,
+                    child: FutureBuilder<Text>(
+                      future: buildBottomPriceText(toplamHesap),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<Text> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                            return CircularProgressIndicator(); // Display loading indicator while waiting.
+                          case ConnectionState.done:
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return snapshot
+                                  .data!; // Display the Text widget when the future is complete.
+                            }
+                          default:
+                            return Text(
+                                'Unexpected ConnectionState: ${snapshot.connectionState}');
+                        }
+                      },
                     ),
                   ),
                   Expanded(
@@ -158,6 +174,12 @@ class _OrdersPageState extends State<OrdersPage> {
                 manualSetState();
               },
               price: price,
+              arttirToplamHesap: (double price) {
+                toplamHesap += price;
+              },
+              azaltToplamHesap: (double price) {
+                toplamHesap -= price;
+              },
             ));
           });
         }
@@ -214,5 +236,11 @@ class _OrdersPageState extends State<OrdersPage> {
     }
 
     return count;
+  }
+
+  Future<Text> buildBottomPriceText(double bottomPriceText) async {
+    print('Price: $bottomPriceText');
+
+    return Text('Price: $bottomPriceText');
   }
 }
