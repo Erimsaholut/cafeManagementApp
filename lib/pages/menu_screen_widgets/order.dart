@@ -102,7 +102,7 @@ class _OrderState extends State<Order> {
               setState(() {
                 initialValue = (initialValue + 1).clamp(0, widget.maxCount);
 
-                widget.textList.remove(widgetName); // Remove widget name
+                widget.textList.remove(widgetName);
 
                 widget.azaltToplamHesap(widget.price);
                 widget.manualSetState();

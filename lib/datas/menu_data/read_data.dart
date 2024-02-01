@@ -5,7 +5,6 @@ import 'dart:io';
 class ReadData {
   ReadData() {
     readJsonData();
-    print("newJsonDataReaded");
   }
 
   static final List<String> _drinksWithNoIngredients = [];

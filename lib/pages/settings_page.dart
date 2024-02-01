@@ -3,9 +3,10 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settin
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_drink_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import 'package:flutter/material.dart';
-import '../../datas/menu_data/reset_datas.dart';
+import '../datas/menu_data/reset_datas.dart';
 
-import '../../utils/custom_menu_button.dart';
+import '../utils/custom_menu_button.dart';
+import 'edit_items.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -78,12 +79,20 @@ class SettingsPageState extends State<SettingsPage> {
                   }),
                   CustomMenuButton(
                     "Ürünleri Düzenle",
-                    onPressedFunction: () async {
-                      Object menu =
-                          (await readNewData.readJsonData()) as Object;
-                      print(menu);
-                      int tableNum = await readNewData.getTableCount();
-                      print(tableNum);
+                    onPressedFunction: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => EditItems(),
+                          transitionsBuilder: (_, anim, __, child) {
+                            return ScaleTransition(
+                              scale: anim,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
                     },
                   ),
                   CustomMenuButton("Eski Verilere Ulaş"),
