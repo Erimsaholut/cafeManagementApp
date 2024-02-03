@@ -266,3 +266,4 @@ SizedBox customSizedBox({int rate = 1}) {
 //todo dil desteği gelecek ama nasıl gelecek bilmiyorum
 //todo masa resetlemek için döngü kullanılarak anlık bir dosya hazırlanıcak limitleme kendini
 //todo masa seçimi için yeni number pickerlardan kullan
+//todo yeni item eklerken isim kontrolü yapılsın

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import '../datas/menu_data/read_data.dart';
-import '../utils/custom_alert_button.dart';
+import 'settings/settings_page_widgets/price_picker.dart';
 
 class EditItems extends StatelessWidget {
   EditItems({super.key});
 
   ReadData readData = ReadData();
+  TextEditingController nameController = TextEditingController();
+  int moneyValue = 0;
+  int pennyValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +23,11 @@ class EditItems extends StatelessWidget {
           future: readData.getRawData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // or any loading indicator
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data?['menu'] == null) {
-              return Text('No data available.');
+              return const Text('No data available.');
             } else {
               List<dynamic> menuItems = snapshot.data!['menu'];
 
@@ -35,37 +38,92 @@ class EditItems extends StatelessWidget {
                 children: menuItems.map((item) {
                   return TextButton(
                     onPressed: () {
+                      double doubleMoneyValue = item["price"];
+                      int InitialMoneyValue = doubleMoneyValue.truncate();
+                      int InitialPennyValue =
+                          ((doubleMoneyValue - InitialMoneyValue) * 100)
+                              .round();
+
+                      nameController.text = item["name"];
+
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Edit Item"),
+                            title: const Text("Edit Item"),
                             content: SingleChildScrollView(
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  TextField(
-                                    decoration:
-                                        InputDecoration(labelText: 'Name'),
-                                    // Burada kullanıcıdan isim alıyoruz.
+                                  const Text("İsim"),
+                                  TextFormField(
+                                    controller: nameController,
                                   ),
-                                  TextField(
-                                    decoration:
-                                        InputDecoration(labelText: 'Price'),
-                                    keyboardType: TextInputType.number,
-                                    // Burada kullanıcıdan fiyat alıyoruz.
+                                  const SizedBox(height: 16),
+                                  PricePicker(
+                                    name: "Fiyat",
+                                    initialMoney: InitialMoneyValue,
+                                    initialPenny: InitialPennyValue,
+                                    onValueChanged: (int money, int penny) {
+                                      moneyValue = money;
+                                      pennyValue = penny;
+                                    },
                                   ),
-                                  SizedBox(height: 16.0),
-                                  Text("Ingredients:"),
-                                  // Burada item["ingredients"] listesindeki eleman sayısı kadar checkbox oluşturuyoruz.
-                                  ...List.generate(
-                                    item['ingredients'].length,
-                                    (index) => CheckboxListTile(
-                                      title: Text(item['ingredients'][index]),
-                                      value: false,
-                                      // Checkbox başlangıç değeri, kullanıcı seçim yapacak.
-                                      onChanged: (bool? value) {
-                                        // Checkbox değeri değiştiğinde burada işlemler yapılabilir.
-                                      },
+                                  const SizedBox(height: 16.0),
+                                  const Text("Secenekler:"),
+                                  item['ingredients'].isEmpty
+                                      ? const Column(
+                                          children: [
+                                            SizedBox(height: 16,),
+                                            Text('Bu ürün için seçenek yoktur.')
+                                          ],
+                                        )
+                                      : Column(
+                                          children: List<Widget>.generate(
+                                            item['ingredients'].length,
+                                            (index) => Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                    flex: 3,
+                                                    child: Text(
+                                                        item['ingredients']
+                                                            [index])),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.edit,
+                                                      color: Colors.amberAccent,
+                                                    ),
+                                                    onPressed: () {
+                                                      // İlk IconButton'a tıklandığında yapılacak işlemler
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.close_rounded,
+                                                      color: Colors.red,
+                                                    ),
+                                                    onPressed: () {
+                                                      // İkinci IconButton'a tıklandığında yapılacak işlemler
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                  const SizedBox(height: 16,),
+                                  Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text("Seçenek Ekle"),
                                     ),
                                   ),
                                 ],
@@ -81,7 +139,7 @@ class EditItems extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   // Burada kullanıcının girdiği değerleri kullanabilirsiniz.
-                                  // Örneğin: nameController.text, priceController.text, selectedIngredients
+                                  // Örneğin: nameController.text, moneyValue, pennyValue
                                   Navigator.of(context).pop();
                                 },
                                 child: Text('Save'),
@@ -98,7 +156,7 @@ class EditItems extends StatelessWidget {
                           if (states.contains(MaterialState.pressed)) {
                             return Colors.transparent;
                           }
-                          return null; // Use the default value.
+                          return null;
                         },
                       ),
                     ),

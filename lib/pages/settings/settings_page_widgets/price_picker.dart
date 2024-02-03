@@ -6,13 +6,17 @@ class PricePicker extends StatefulWidget {
   final String name;
   final int moneyValue;
   final int pennyValue;
+  final int initialMoney;
+  final int initialPenny;
   final Function(int, int) onValueChanged;
 
   PricePicker({
     Key? key,
     required this.name,
     this.moneyValue = 0, // Added default value
-    this.pennyValue = 0, // Added default value
+    this.pennyValue = 0,
+    this.initialMoney =15,
+    this.initialPenny=0,
     required this.onValueChanged,
   }) : super(key: key);
 
@@ -21,15 +25,15 @@ class PricePicker extends StatefulWidget {
 }
 
 class _PricePickerState extends State<PricePicker> {
-  int _currentMoneyValue = 15;
-  int _currentPennyValue = 0;
+  late int _currentMoneyValue = widget.initialMoney;
+  late int _currentPennyValue = widget.initialPenny;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         const SizedBox(height: 16),
-        Text(widget.name, style: CustomStyles.blackAndBoldTextStyleXl),
+        Text(widget.name, style: CustomStyles.blackAndBoldTextStyleL),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
