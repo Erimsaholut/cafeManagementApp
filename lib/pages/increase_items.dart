@@ -7,17 +7,17 @@ import '../utils/custom_multi_selection_checkbox_button.dart';
 
 /*itemlerin seçilip eklendiği o sayfa*/
 
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key,required this.tableNum,required this.customFunction});
+class IncreaseOrder extends StatefulWidget {
+  const IncreaseOrder({super.key,required this.tableNum,required this.customFunction});
 
   final int tableNum;
   final Function customFunction;
 
   @override
-  State<MenuScreen> createState() => _MenuScreenState();
+  State<IncreaseOrder> createState() => _IncreaseOrderState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _IncreaseOrderState extends State<IncreaseOrder> {
   final ReadData readNewData = ReadData();
 
   List<String> orders = [];

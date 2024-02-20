@@ -5,25 +5,20 @@ import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 import '../constants/colors.dart';
 
-/*  sadece azalt butonlarının olduğu o mistik sayfa*/
+class Decrease0rder extends StatefulWidget {
+  Decrease0rder({super.key, required this.tableNum, required this.customFunction});
 
-class OrdersPage extends StatefulWidget {
-  OrdersPage({super.key, required this.tableNum, required this.customFunction});
-
-  late Map<String, dynamic>? initialOrders;
   final int tableNum;
   final Function customFunction;
 
   @override
-  _OrdersPageState createState() => _OrdersPageState();
+  _Decrease0rderState createState() => _Decrease0rderState();
 }
 
-class _OrdersPageState extends State<OrdersPage> {
+class _Decrease0rderState extends State<Decrease0rder> {
   TableDataHandler tableDataHandler = TableDataHandler();
   List<Widget> orders = [];
-
   List<String> bottomStrings = [];
-  List<Widget> bottomWidgets = [];
   double toplamHesap = 0.0;
 
   @override
@@ -36,7 +31,7 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sipariş Öde"),
+        title: Text("Sipariş Öde"),
         backgroundColor: CustomColors.appbarBlue,
       ),
       body: Column(
@@ -61,7 +56,6 @@ class _OrdersPageState extends State<OrdersPage> {
             ),
           ),
           Expanded(
-            /*alttaki ödeme ekranı*/
             flex: 1,
             child: Container(
               padding: const EdgeInsets.all(10.0),
@@ -70,42 +64,34 @@ class _OrdersPageState extends State<OrdersPage> {
                 children: [
                   Expanded(
                     flex: 7,
-                    child: FutureBuilder(
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
-                        return ListView(
-                          scrollDirection: Axis.horizontal,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                ...buildOrderWidgets(bottomStrings),
-                              ],
-                            ),
+                            ...buildOrderWidgets(bottomStrings),
                           ],
-                        );
-                      },
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
                     flex: 2,
                     child: FutureBuilder<Text>(
                       future: buildBottomPriceText(toplamHesap),
-                      builder:
-                          (BuildContext context, AsyncSnapshot<Text> snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot<Text> snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
-                            return CircularProgressIndicator(); // Display loading indicator while waiting.
+                            return CircularProgressIndicator();
                           case ConnectionState.done:
                             if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
-                              return snapshot
-                                  .data!; // Display the Text widget when the future is complete.
+                              return snapshot.data!;
                             }
                           default:
-                            return Text(
-                                'Unexpected ConnectionState: ${snapshot.connectionState}');
+                            return Text('Unexpected ConnectionState: ${snapshot.connectionState}');
                         }
                       },
                     ),
@@ -117,16 +103,13 @@ class _OrdersPageState extends State<OrdersPage> {
                         setState(() {
                           WriteTableData writeTableData = WriteTableData();
 
-                          Map<String, int> separetedItems =
-                              buildOrderTexts(bottomStrings);
+                          Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
                           for (var entry in separetedItems.entries) {
-                            print(
-                                "Şu an ${entry.key} ile muhattabız.  ${entry.value} tane var");
-                            writeTableData.decreaseOneItem(
-                                widget.tableNum, entry.key, entry.value);
+                            print("Şu an ${entry.key} ile muhattabız.  ${entry.value} tane var");
+                            writeTableData.decreaseOneItem(widget.tableNum, entry.key, entry.value);
                           }
 
-                          bottomWidgets.clear();
+                          bottomStrings.clear();
                           widget.customFunction();
                         });
                       },
@@ -144,8 +127,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
   Future<void> _loadTableData() async {
     try {
-      Map<String, dynamic>? data =
-          await tableDataHandler.getTableSet(widget.tableNum);
+      Map<String, dynamic>? data = await tableDataHandler.getTableSet(widget.tableNum);
       setTableData(data);
     } catch (error) {
       print("Error loading table data: $error");
@@ -159,6 +141,7 @@ class _OrdersPageState extends State<OrdersPage> {
   void setTableData(Map<String, dynamic>? tableData) {
     if (tableData != null && tableData.containsKey("orders")) {
       for (var orderData in tableData["orders"] as List<dynamic>) {
+
         final int? quantity = orderData["quantity"];
         final String? name = orderData["name"];
         final double price = (orderData["price"] / quantity);
@@ -170,16 +153,21 @@ class _OrdersPageState extends State<OrdersPage> {
               name: name,
               textList: bottomStrings,
               toplamHesap: toplamHesap,
+
               manualSetState: () {
                 manualSetState();
               },
               price: price,
+
+
               arttirToplamHesap: (double price) {
                 toplamHesap += price;
               },
               azaltToplamHesap: (double price) {
                 toplamHesap -= price;
               },
+
+
             ));
           });
         }
@@ -187,7 +175,7 @@ class _OrdersPageState extends State<OrdersPage> {
     }
   }
 
-  List<Widget> buildOrderWidgets(orders) {
+  List<Widget> buildOrderWidgets(List<String> orders) {
     Map<String, int> itemCounts = {};
 
     for (String order in orders) {
@@ -208,7 +196,6 @@ class _OrdersPageState extends State<OrdersPage> {
   Map<String, int> buildOrderTexts(List<String> orders) {
     Map<String, int> itemCounts = {};
 
-    // Siparişleri say
     for (String order in orders) {
       if (itemCounts.containsKey(order)) {
         itemCounts[order] = (itemCounts[order] ?? 0) + 1;
@@ -217,25 +204,12 @@ class _OrdersPageState extends State<OrdersPage> {
       }
     }
 
-    // Itemleri sayılarına göre ayır
     Map<String, int> textMap = {};
     itemCounts.forEach((item, count) {
       textMap[item] = count;
     });
 
     return textMap;
-  }
-
-  int getItemCount(List<String> textList, String itemName) {
-    int count = 0;
-
-    for (String item in textList) {
-      if (item == itemName) {
-        count++;
-      }
-    }
-
-    return count;
   }
 
   Future<Text> buildBottomPriceText(double bottomPriceText) async {

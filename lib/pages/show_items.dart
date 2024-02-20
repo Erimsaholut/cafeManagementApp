@@ -1,13 +1,13 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import '../utils/custom_alert_button.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
-import 'orders_page.dart';
+import 'decrease_order.dart';
 
 class CustomTableMenu extends StatefulWidget {
   /* genel bakışların olduğu sayfa*/
@@ -112,7 +112,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => MenuScreen(
+                        pageBuilder: (_, __, ___) => IncreaseOrder(
                           tableNum: widget.tableNum,
                           customFunction: () {
                             manualSetState();
@@ -134,7 +134,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           opaque: false,
-                          pageBuilder: (_, __, ___) => OrdersPage(
+                          pageBuilder: (_, __, ___) => Decrease0rder(
                             tableNum: widget.tableNum,
                             customFunction: () {
                               manualSetState();

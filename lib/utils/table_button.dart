@@ -2,7 +2,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart
 import 'package:flutter/material.dart';
 
 import 'is_table_name_null.dart';
-import '../pages/table_screen.dart';
+import '../pages/show_items.dart';
 
 /*Siparişlerin değerleri burada mı tutulacak ayrı dosyadan mı çekilecek ona bak
  sistem oluştuğuda*/

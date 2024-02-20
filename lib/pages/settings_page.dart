@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../datas/menu_data/reset_datas.dart';
 
 import '../utils/custom_menu_button.dart';
-import 'edit_items.dart';
+import 'settings/settings_sub_pages/edit_items.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
