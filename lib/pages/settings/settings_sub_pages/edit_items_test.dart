@@ -11,7 +11,6 @@ class EditItems extends StatefulWidget {
 class _EditItemsState extends State<EditItems> {
   ReadData readData = ReadData();
   List<EditableItem> items = [];
-  List<Widget> itemWidgets = [];
 
   @override
   void initState() {
@@ -23,69 +22,146 @@ class _EditItemsState extends State<EditItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("data"),
+        title: const Text("Data"),
       ),
-      body: Column(
-        children: [
-          TextButton(
+      body: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 5,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return OutlinedButton(
             onPressed: () {
-              for (var item in items) {
-                print(item);
-              }
+              _showItemDialog(context, items[index]);
             },
-            child: Column(
-              children: [
-                ...itemWidgets,
-              ],
-            ),
-          ),
-        ],
+            child: Text(items[index].name),
+          );
+        },
       ),
     );
+  }
+
+  Future<void> _processMenuData() async {
+    Map<String, dynamic>? rawMenu = await readMenu();
+
+    setState(() {
+      items.clear();
+      for (var itemData in rawMenu?["menu"]) {
+        EditableItem newItem = EditableItem(
+          id: itemData["id"],
+          name: itemData["name"],
+          price: itemData["price"],
+          ingredients: List<String>.from(itemData["ingredients"]),
+        );
+        items.add(newItem);
+      }
+    });
   }
 
   Future<Map<String, dynamic>?> readMenu() {
     return readData.getRawData();
   }
 
-  void _processMenuData() async {
-    Map<String, dynamic>? rawMenu = await readMenu();
+  Future<void> _showItemDialog(BuildContext context, EditableItem item) async {
+    double newPrice = item.price;
 
-    // Clear existing items
-    items.clear();
-
-    // Iterate over the menu items
-    for (var itemData in rawMenu?["menu"]) {
-      // Create a new EditableItem instance for each item
-      EditableItem newItem = EditableItem(
-        id: itemData["id"],
-        name: itemData["name"],
-        price: itemData["price"],
-        ingredients: List<String>.from(itemData["ingredients"]),
-      );
-
-      // Add the item to the list
-      items.add(newItem);
-    }
-
-    // Print the items
-    for (var item in items) {
-      print(item);
-    }
-    makeItemWidgets(items);
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(item.name),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Price: ${item.price}'),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove_circle),
+                        onPressed: () {
+                          setState(() {
+                            if (newPrice > 0) {
+                              newPrice -= 1;
+                            }
+                          });
+                        },
+                      ),
+                      Text('$newPrice'),
+                      IconButton(
+                        icon: const Icon(Icons.add_circle),
+                        onPressed: () {
+                          setState(() {
+                            newPrice += 1;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Text('Ingredients: ${indList(item.ingredients)}'),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          items.remove(item);
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Delete'),
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Close'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          item.price = newPrice;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Save'),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
-  void makeItemWidgets(List<EditableItem> items) {
-    for (var i in items) {
-      itemWidgets.add(TextButton(onPressed: () {}, child: Text(i.name)));
+  String indList(List<String> items) {
+    if (items.isEmpty) {
+      return "No items";
     }
+    return items.join(', ');
   }
+
+
+
+
+
 }
 
 class EditableItem {
   final int id;
   final String name;
-  final double price;
+  double price;
   final List<String> ingredients;
 
   EditableItem({

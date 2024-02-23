@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../datas/menu_data/read_data.dart';
-import '../settings_page_widgets/price_picker.dart';
+import '../../../utils/price_picker.dart';
 
 class EditItems extends StatefulWidget {
   EditItems({super.key});

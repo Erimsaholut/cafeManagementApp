@@ -4,7 +4,7 @@ import '../../../utils/custom_divider.dart';
 import '../settings_page_widgets/custom_text_field.dart';
 import '../settings_page_widgets/ingredients.dart';
 import '../settings_page_widgets/item_type_selector.dart';
-import '../settings_page_widgets/price_picker.dart';
+import '../../../utils/price_picker.dart';
 
 class AddNewItemToMenu extends StatefulWidget {
   const AddNewItemToMenu({Key? key}) : super(key: key);
