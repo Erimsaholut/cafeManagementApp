@@ -13,6 +13,11 @@ class CustomStyles {
     fontSize: 18.0,
   );
 
+  static TextStyle blackTextStyleS = const TextStyle(
+    color: Colors.black,
+    fontSize: 15.0,
+  );
+
   static TextStyle blackAndBoldTextStyleXl = const TextStyle(
       fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24);
 

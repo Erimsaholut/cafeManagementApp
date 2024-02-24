@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import '../../../datas/menu_data/read_data.dart';
 
@@ -43,8 +44,9 @@ class _EditItemsState extends State<EditItems> {
     );
   }
 
+/*raw datayı okutup EditableItem olarak yaratıyor*/
   Future<void> _processMenuData() async {
-    Map<String, dynamic>? rawMenu = await readMenu();
+    Map<String, dynamic>? rawMenu = await readData.getRawData();
 
     setState(() {
       items.clear();
@@ -60,10 +62,9 @@ class _EditItemsState extends State<EditItems> {
     });
   }
 
-  Future<Map<String, dynamic>?> readMenu() {
-    return readData.getRawData();
-  }
 
+
+  /* her item için üzerine tıklandığında açılan pencereyi yaratıyor*/
   Future<void> _showItemDialog(BuildContext context, EditableItem item) async {
     double newPrice = item.price;
 
@@ -73,52 +74,57 @@ class _EditItemsState extends State<EditItems> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text(item.name),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Price: ${item.price}'),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle),
-                        onPressed: () {
-                          setState(() {
-                            if (newPrice > 0) {
-                              newPrice -= 1;
-                            }
-                          });
-                        },
-                      ),
-                      Text('$newPrice'),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle),
-                        onPressed: () {
-                          setState(() {
-                            newPrice += 1;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  Text('Ingredients: ${indList(item.ingredients)}'),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          items.remove(item);
-                        });
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Delete'),
+              title: Center(child: Text(item.name)),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('Price'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle),
+                          onPressed: () {
+                            setState(() {
+                              if (newPrice > 0) {
+                                newPrice -= 1;
+                              }
+                            });
+                          },
+                        ),
+                        Text('$newPrice'),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle),
+                          onPressed: () {
+                            setState(() {
+                              newPrice += 1;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const Text('Ingredients:'),
+                    ...(indList(item)),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            items.remove(item);
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Delete Item'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               actions: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
                       onPressed: () {
@@ -145,19 +151,64 @@ class _EditItemsState extends State<EditItems> {
     );
   }
 
-  String indList(List<String> items) {
+
+  /*Elimizdeki ind stringlerini butona çeviriyor*/
+  List<Widget> indList(EditableItem editableItem) {
+    List<Widget> indWidgetList = [];
     if (items.isEmpty) {
-      return "No items";
+      indWidgetList.add(const Text("No items"));
+    } else {
+      indWidgetList.add(Text("Tap to Remove item",style: TextStyle(color: Colors.black.withOpacity(0.3)),));
+
+
+      for (var i in editableItem.ingredients) {
+        indWidgetList.add(TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return Colors.redAccent;
+                  }
+                  return Colors.red.shade300;
+                },
+              ),
+            ),
+            onPressed: () {
+            },
+            child: Text(
+              i,
+              style: CustomStyles.blackTextStyleS,
+            )));
+      }
+
+
     }
-    return items.join(', ');
+
+    indWidgetList.add(const SizedBox(height: 10,));
+    indWidgetList.add(TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return Colors.transparent;
+              }
+              return Colors.green.shade400;
+            },
+          ),
+        ),
+        onPressed: () {
+
+        },
+        child: Text("Add ingredient",style: CustomStyles.blackTextStyleS,)));
+
+    return indWidgetList;
   }
-
-
 
 
 
 }
 
+/*bu bizim aslan parçası classımız*/
 class EditableItem {
   final int id;
   final String name;
