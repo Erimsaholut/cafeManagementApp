@@ -1,4 +1,5 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data.dart';
 import 'package:flutter/material.dart';
 import '../../../datas/menu_data/read_data.dart';
 
@@ -61,8 +62,6 @@ class _EditItemsState extends State<EditItems> {
       }
     });
   }
-
-
 
   /* her item için üzerine tıklandığında açılan pencereyi yaratıyor*/
   Future<void> _showItemDialog(BuildContext context, EditableItem item) async {
@@ -128,7 +127,11 @@ class _EditItemsState extends State<EditItems> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+
+                        setState((){
+                          Navigator.of(context).pop();
+                        });
+
                       },
                       child: Text('Close'),
                     ),
@@ -136,10 +139,12 @@ class _EditItemsState extends State<EditItems> {
                       onPressed: () {
                         setState(() {
                           item.price = newPrice;
+                          print(item.toString());
+                          item.saveNewParams();
                         });
                         Navigator.of(context).pop();
                       },
-                      child: Text('Save'),
+                      child: const Text('Save'),
                     ),
                   ],
                 ),
@@ -151,65 +156,66 @@ class _EditItemsState extends State<EditItems> {
     );
   }
 
-
   /*Elimizdeki ind stringlerini butona çeviriyor*/
   List<Widget> indList(EditableItem editableItem) {
     List<Widget> indWidgetList = [];
-    if (items.isEmpty) {
-      indWidgetList.add(const Text("No items"));
+    if (editableItem.ingredients.isEmpty) {
+      indWidgetList.add(const Text("No ingredient"));
     } else {
-      indWidgetList.add(Text("Tap to Remove item",style: TextStyle(color: Colors.black.withOpacity(0.3)),));
-
-
-      for (var i in editableItem.ingredients) {
-        indWidgetList.add(TextButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.disabled)) {
-                    return Colors.redAccent;
-                  }
-                  return Colors.red.shade300;
+      for (var i = 0; i < editableItem.ingredients.length; i++) {
+        indWidgetList.add(Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      return Colors.red.shade300;
+                    },
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    editableItem.ingredients.removeAt(i);
+                  });
                 },
+                child: Text(
+                  editableItem.ingredients[i],
+                  style: CustomStyles.blackTextStyleS,
+                ),
               ),
             ),
-            onPressed: () {
-            },
-            child: Text(
-              i,
-              style: CustomStyles.blackTextStyleS,
-            )));
+            IconButton(
+              icon: Icon(Icons.remove_circle),
+              onPressed: () {
+                setState(() {
+                  editableItem.ingredients.removeAt(i);
+                  Navigator.pop(context);
+                  _showItemDialog(context, editableItem);
+                });
+              },
+            ),
+          ],
+        ));
       }
-
-
     }
 
-    indWidgetList.add(const SizedBox(height: 10,));
-    indWidgetList.add(TextButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return Colors.transparent;
-              }
-              return Colors.green.shade400;
-            },
-          ),
-        ),
-        onPressed: () {
+    if (indWidgetList.isEmpty) {
+      indWidgetList.add(const Text("No ingredient"));
+    }
 
-        },
-        child: Text("Add ingredient",style: CustomStyles.blackTextStyleS,)));
+    indWidgetList.add(const SizedBox(
+      height: 10,
+    ));
 
     return indWidgetList;
   }
-
-
 
 }
 
 /*bu bizim aslan parçası classımız*/
 class EditableItem {
+  WriteData writeData = WriteData();
   final int id;
   final String name;
   double price;
@@ -225,5 +231,10 @@ class EditableItem {
   @override
   String toString() {
     return 'EditableItem{id: $id, name: $name, price: $price, ingredients: $ingredients}';
+  }
+
+  void saveNewParams(){
+writeData.setExistingItemInMenu(name, price, 0, ingredients);
+
   }
 }
