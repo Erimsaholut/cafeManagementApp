@@ -1,5 +1,4 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyzes_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/edit_items_test.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
@@ -67,9 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ..add(CustomUtilPagesButton(
           buttonName: "Analyzes", goToPage: AnalyzesPage()))
       ..add(const CustomUtilPagesButton(
-          buttonName: 'Settings', goToPage: SettingsPage()))
-    ..add(const CustomUtilPagesButton(
-    buttonName: 'editIt', goToPage: EditItems()));
+          buttonName: 'Settings', goToPage: SettingsPage()));
 
   }
 
