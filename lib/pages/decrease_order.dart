@@ -16,7 +16,7 @@ class Decrease0rder extends StatefulWidget {
 }
 
 class _Decrease0rderState extends State<Decrease0rder> {
-  TableDataHandler tableDataHandler = TableDataHandler();
+  TableReader tableDataHandler = TableReader();
   List<Widget> orders = [];
   List<String> bottomStrings = [];
   double toplamHesap = 0.0;

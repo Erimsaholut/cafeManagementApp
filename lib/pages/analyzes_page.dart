@@ -16,7 +16,7 @@ class AnalyzesPage extends StatefulWidget {
 class _AnalyzesPageState extends State<AnalyzesPage> {
   final ReadData readNewData = ReadData();
 
-  TableDataHandler tableDataHandler = TableDataHandler();
+  TableReader tableDataHandler = TableReader();
 
   ResetAllTableJsonData resetAllTableJsonData = ResetAllTableJsonData();
 

@@ -258,7 +258,9 @@ SizedBox customSizedBox({int rate = 1}) {
 }
 
 //todo analiz sayfası ve dışarı aktarabilme özelliği
+
 //todo tasarım
+
 //todo firebase (dlc olarak sunucam onu)
 
 //todo sipariş ödeme ekranı hallet

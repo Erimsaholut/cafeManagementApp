@@ -1,7 +1,7 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import '../utils/custom_alert_button.dart';
 import '../utils/custom_menu_button.dart';
@@ -10,24 +10,23 @@ import '../constants/colors.dart';
 import 'decrease_order.dart';
 
 class CustomTableMenu extends StatefulWidget {
-  /* genel bakışların olduğu sayfa*/
+  /*   ana,masa menüsü   */
 
   final int tableNum;
   final String tableName;
-  late Future<double> totalPrice;
 
-  CustomTableMenu(
-      {super.key, required this.tableNum, required this.tableName}) {
-    totalPrice = getTotalPrice(tableNum);
-  }
+  CustomTableMenu({super.key, required this.tableNum, required this.tableName});
+
 
   @override
   State<CustomTableMenu> createState() => _CustomTableMenuState();
 }
 
 class _CustomTableMenuState extends State<CustomTableMenu> {
-  final List<Widget> orders = [];
-  Map<String, dynamic>? test;
+  List<TableOrderClass> orderClass = [];
+  final List<Widget> orderWidgets = [];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +37,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
       ),
       body: Row(
         children: [
+          /*sol taraf*/
           Expanded(
             flex: 1,
             child: Container(
@@ -46,29 +46,21 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  /*masadaki itemler*/
                   Expanded(
                     flex: 4,
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
                       color: Colors.deepPurple.shade200,
-                      child: FutureBuilder<void>(
-                        future: setTableData(widget.tableNum, orders, test),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return ListView.builder(
-                              itemCount: orders.length,
-                              itemBuilder: (context, index) {
-                                return orders[index];
-                              },
-                            );
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
+                      child: ListView.builder(
+                        itemCount: orderWidgets.length,
+                        itemBuilder: (context, index) {
+                          return orderWidgets[index];
                         },
                       ),
                     ),
                   ),
+                  /*masadaki itemlerin fiyatı*/
                   Expanded(
                     flex: 1,
                     child: Container(
@@ -79,20 +71,7 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                           const SizedBox(
                             width: 8.0,
                           ),
-                          FutureBuilder<double>(
-                            future: widget.totalPrice,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return Text(
-                                  "Toplam Hesap: ${snapshot.data} ₺",
-                                  style: CustomStyles.blackAndBoldTextStyleL,
-                                );
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            },
-                          ),
+                          Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL'),
                         ],
                       ),
                     ),
@@ -101,11 +80,14 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
               ),
             ),
           ),
+          /*sağ taraf*/
           Expanded(
             flex: 1,
             child: Container(
               color: Colors.tealAccent,
+              /*Butonlar*/
               child: Column(
+                /*masadaki itemler*/
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CustomMenuButton("Ekle Sipariş", onPressedFunction: () {
@@ -151,26 +133,38 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       );
                     },
                   ),
-                  CustomMenuButton("Masa Ödendi", onPressedFunction: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CustomAlertButton(
-                          text1: ' Bütün masayı ödenecektir.',
-                          text2: 'Emin misiniz ?',
-                          customFunction: () {
-                            WriteTableData writeTableData = WriteTableData();
-                            writeTableData.resetOneTable(widget.tableNum);
-                            orders.clear();
-                            Navigator.pop(context);
-                            widget.totalPrice = getTotalPrice(widget.tableNum);
-                            setState(() {});
-                          },
-                        );
-                      },
-                    );
-                    //Todo (buraya indirimli parametre gelecek)
-                  }),
+                  CustomMenuButton(
+                    "Masa Ödendi",
+                    onPressedFunction: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomAlertButton(
+                            text1: ' Bütün masayı ödenecektir.',
+                            text2: 'Emin misiniz ?',
+                            customFunction: () {
+                              setState(() {
+                              WriteTableData writeTableData = WriteTableData();
+                              writeTableData.resetOneTable(widget.tableNum);
+                              orderWidgets.clear();
+                              orderClass.clear();
+                              Navigator.pop(context);
+                              /*masa sıfırlama gelecek*/
+                              //widget.totalPrice = getTotalPrice(widget.tableNum);
+                              });
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  TextButton(onPressed: (){
+                    setState(() {
+                    setOrderClasses(widget.tableNum);
+                    setItemWidgets(orderClass);
+                    manualSetState();
+                    });
+                  }, child: const Text("setOrderClasses")),
                 ],
               ),
             ),
@@ -183,31 +177,69 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
 
   void manualSetState() {
     setState(() {
-      orders.clear();
-      widget.totalPrice = getTotalPrice(widget.tableNum);
     });
   }
 
-  Future<void> setTableData(
-      int tableNum, List<Widget> orders, Map<String, dynamic>? test) async {
-    TableDataHandler tableDataHandler = TableDataHandler();
+/*okuduğu datadaki itemleri class olarak listeliyor*/
+  /*allahın emri olarak bir kere çalışacak*/
+
+  Future<void> setOrderClasses(
+      int tableNum) async {
+
+    TableReader tableDataHandler = TableReader();
+
     Map<String, dynamic>? tableData =
         await tableDataHandler.getTableSet(tableNum);
-    test = tableData;
 
-    print(tableData);
+    orderClass.clear();
 
     for (var i in tableData?["orders"]) {
-      orders.add(orderShown(i["quantity"], i["name"], i["price"]));
+      orderClass.add(
+        TableOrderClass(
+            name: i["name"], price: i["price"], quantity: i["quantity"]),
+      );
     }
+  }
+
+  void setItemWidgets(List<TableOrderClass> classList) {
+    orderWidgets.clear();
+    setState(() {
+    for (TableOrderClass i in classList) {
+      orderWidgets.add(orderShown(i.quantity, i.name, i.price));
+    }
+    print(orderWidgets);
+    });
   }
 }
 
-Future<double> getTotalPrice(int tableNum) async {
-  TableDataHandler tableDataHandler = TableDataHandler();
-  double tableTotalPrice = await tableDataHandler.getTableTotalPrice(tableNum);
-  return tableTotalPrice;
+/* classlardan toplam fiyatı alıyor */
+double getTotalPrice(List<TableOrderClass> classList) {
+  double totalPrice = 0;
+
+
+  for (TableOrderClass i in classList) {
+    totalPrice += i.price;
+  }
+
+
+  return totalPrice;
+
 }
+
+/*aslan parçası classımız*/
+class TableOrderClass {
+  final String name;
+  final double price;
+  final int quantity;
+
+  TableOrderClass({required this.name, required this.price, required this.quantity});
+
+  @override
+  String toString() {
+    return 'Name: $name, Price: $price, Quantity: $quantity';
+  }
+}
+
 
 Widget orderShown(int quantity, String itemName, double price) {
   return Column(

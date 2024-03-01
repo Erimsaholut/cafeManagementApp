@@ -59,6 +59,8 @@ class _CustomTableState extends State<CustomTable> {
                     const InputDecoration(hintText: "Enter table name"),
                   ),
                   actions: [
+
+
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -68,12 +70,16 @@ class _CustomTableState extends State<CustomTable> {
                       },
                       child: const Text("Delete"),
                     ),
+
+
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
                       child: const Text("Cancel"),
                     ),
+
+
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -85,6 +91,8 @@ class _CustomTableState extends State<CustomTable> {
                       },
                       child: const Text("OK"),
                     ),
+
+
                   ],
                 );
               },

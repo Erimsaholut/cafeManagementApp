@@ -4,7 +4,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_da
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 
 class WriteTableData {
-  TableDataHandler tableDataHandler = TableDataHandler();
+  TableReader tableDataHandler = TableReader();
   ResetTableDatas resetTableDatas = ResetTableDatas();
 
   Future<void> addItemToTable(int tableNum, String itemName, int quantity,
