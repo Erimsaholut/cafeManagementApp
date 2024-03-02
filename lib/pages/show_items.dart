@@ -1,5 +1,6 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/table_order_class.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
@@ -17,7 +18,6 @@ class CustomTableMenu extends StatefulWidget {
 
   CustomTableMenu({super.key, required this.tableNum, required this.tableName});
 
-
   @override
   State<CustomTableMenu> createState() => _CustomTableMenuState();
 }
@@ -26,7 +26,11 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
   List<TableOrderClass> orderClass = [];
   final List<Widget> orderWidgets = [];
 
-
+  @override
+  void initState() {
+    super.initState();
+    initialFunction();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +100,8 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                         opaque: false,
                         pageBuilder: (_, __, ___) => IncreaseOrder(
                           tableNum: widget.tableNum,
-                          customFunction: () {
-                            manualSetState();
+                          initialFunction: () {
+                            initialFunction();
                           },
                         ),
                         transitionsBuilder: (_, anim, __, child) {
@@ -118,8 +122,8 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                           opaque: false,
                           pageBuilder: (_, __, ___) => Decrease0rder(
                             tableNum: widget.tableNum,
-                            customFunction: () {
-                              manualSetState();
+                            initialFunction: () {
+                              initialFunction();
                             },
                           ),
                           transitionsBuilder: (_, anim, __, child) {
@@ -144,13 +148,14 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                             text2: 'Emin misiniz ?',
                             customFunction: () {
                               setState(() {
-                              WriteTableData writeTableData = WriteTableData();
-                              writeTableData.resetOneTable(widget.tableNum);
-                              orderWidgets.clear();
-                              orderClass.clear();
-                              Navigator.pop(context);
-                              /*masa sıfırlama gelecek*/
-                              //widget.totalPrice = getTotalPrice(widget.tableNum);
+                                WriteTableData writeTableData =
+                                    WriteTableData();
+                                writeTableData.resetOneTable(widget.tableNum);
+                                orderWidgets.clear();
+                                orderClass.clear();
+                                Navigator.pop(context);
+                                /*masa sıfırlama gelecek*/
+                                //widget.totalPrice = getTotalPrice(widget.tableNum);
                               });
                             },
                           );
@@ -158,13 +163,15 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       );
                     },
                   ),
-                  TextButton(onPressed: (){
-                    setState(() {
-                    setOrderClasses(widget.tableNum);
-                    setItemWidgets(orderClass);
-                    manualSetState();
-                    });
-                  }, child: const Text("setOrderClasses")),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          setOrderClasses(widget.tableNum);
+                          setItemWidgets(orderClass);
+                          manualSetState();
+                        });
+                      },
+                      child: const Text("setOrderClasses")),
                 ],
               ),
             ),
@@ -175,17 +182,20 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
     );
   }
 
+  void initialFunction() async {
+    await setOrderClasses(widget.tableNum);
+
+    setItemWidgets(orderClass);
+  }
+
   void manualSetState() {
-    setState(() {
-    });
+    setState(() {});
   }
 
 /*okuduğu datadaki itemleri class olarak listeliyor*/
   /*allahın emri olarak bir kere çalışacak*/
 
-  Future<void> setOrderClasses(
-      int tableNum) async {
-
+  Future<void> setOrderClasses(int tableNum) async {
     TableReader tableDataHandler = TableReader();
 
     Map<String, dynamic>? tableData =
@@ -204,10 +214,9 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
   void setItemWidgets(List<TableOrderClass> classList) {
     orderWidgets.clear();
     setState(() {
-    for (TableOrderClass i in classList) {
-      orderWidgets.add(orderShown(i.quantity, i.name, i.price));
-    }
-    print(orderWidgets);
+      for (TableOrderClass i in classList) {
+        orderWidgets.add(orderShown(i.quantity, i.name, i.price));
+      }
     });
   }
 }
@@ -216,30 +225,12 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
 double getTotalPrice(List<TableOrderClass> classList) {
   double totalPrice = 0;
 
-
   for (TableOrderClass i in classList) {
     totalPrice += i.price;
   }
 
-
   return totalPrice;
-
 }
-
-/*aslan parçası classımız*/
-class TableOrderClass {
-  final String name;
-  final double price;
-  final int quantity;
-
-  TableOrderClass({required this.name, required this.price, required this.quantity});
-
-  @override
-  String toString() {
-    return 'Name: $name, Price: $price, Quantity: $quantity';
-  }
-}
-
 
 Widget orderShown(int quantity, String itemName, double price) {
   return Column(

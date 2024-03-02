@@ -8,10 +8,10 @@ import '../utils/custom_multi_selection_checkbox_button.dart';
 /*itemlerin seçilip eklendiği o sayfa*/
 
 class IncreaseOrder extends StatefulWidget {
-  const IncreaseOrder({super.key,required this.tableNum,required this.customFunction});
+  const IncreaseOrder({super.key,required this.tableNum,required this.initialFunction});
 
   final int tableNum;
-  final Function customFunction;
+  final Function initialFunction;
 
   @override
   State<IncreaseOrder> createState() => _IncreaseOrderState();
@@ -53,7 +53,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: () {Navigator.pop(context); widget.customFunction();  }, icon: const Icon(Icons.arrow_back_ios_new)),
+          leading: IconButton(onPressed: () {Navigator.pop(context); widget.initialFunction();  print("çıkıldı");  }, icon: const Icon(Icons.arrow_back_ios_new)),
           title: Text(
             "Menü",
             style: CustomStyles.blackAndBoldTextStyleXl,

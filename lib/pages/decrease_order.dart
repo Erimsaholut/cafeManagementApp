@@ -1,15 +1,14 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:flutter/material.dart';
-import '../constants/styles.dart';
 import '../constants/colors.dart';
 
 class Decrease0rder extends StatefulWidget {
-  Decrease0rder({super.key, required this.tableNum, required this.customFunction});
+  const Decrease0rder({super.key, required this.tableNum,required this.initialFunction});
 
   final int tableNum;
-  final Function customFunction;
+  final Function initialFunction;
 
   @override
   _Decrease0rderState createState() => _Decrease0rderState();
@@ -19,7 +18,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
   TableReader tableDataHandler = TableReader();
   List<Widget> orders = [];
   List<String> bottomStrings = [];
-  double toplamHesap = 0.0;
+  double totalAmount = 0.0;
 
   @override
   void initState() {
@@ -31,11 +30,13 @@ class _Decrease0rderState extends State<Decrease0rder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sipariş Öde"),
+        leading: IconButton(onPressed: () {Navigator.pop(context); widget.initialFunction();  print("çıkıldı");  }, icon: const Icon(Icons.arrow_back_ios_new)),
+        title: const Text("Sipariş Öde"),
         backgroundColor: CustomColors.appbarBlue,
       ),
       body: Column(
         children: [
+          /*yeşil buton ekranı*/
           Expanded(
             flex: 3,
             child: Container(
@@ -55,6 +56,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
               ),
             ),
           ),
+          /*mavi özet ve fiyat ekranı*/
           Expanded(
             flex: 1,
             child: Container(
@@ -63,7 +65,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 7,
+                    flex: 6,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -76,41 +78,27 @@ class _Decrease0rderState extends State<Decrease0rder> {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
-                    child: FutureBuilder<Text>(
-                      future: buildBottomPriceText(toplamHesap),
-                      builder: (BuildContext context, AsyncSnapshot<Text> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                          case ConnectionState.waiting:
-                            return CircularProgressIndicator();
-                          case ConnectionState.done:
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else {
-                              return snapshot.data!;
-                            }
-                          default:
-                            return Text('Unexpected ConnectionState: ${snapshot.connectionState}');
-                        }
-                      },
-                    ),
+                    flex: 1,
+                    child: buildBottomPriceText(totalAmount),
                   ),
                   Expanded(
                     flex: 2,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
+                          /*onayla butonunun içi*/
                           WriteTableData writeTableData = WriteTableData();
 
+                          //todo buradaki sistemde komple bir hata var zaten amk
                           Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
+
                           for (var entry in separetedItems.entries) {
                             print("Şu an ${entry.key} ile muhattabız.  ${entry.value} tane var");
                             writeTableData.decreaseOneItem(widget.tableNum, entry.key, entry.value);
                           }
 
                           bottomStrings.clear();
-                          widget.customFunction();
+                          totalAmount = 0;
                         });
                       },
                       child: const Text("Onayla"),
@@ -125,6 +113,9 @@ class _Decrease0rderState extends State<Decrease0rder> {
     );
   }
 
+
+  /*local filestan verileri çekiyor*/
+  /*setTabelData çalıştırıyor dataları verip*/
   Future<void> _loadTableData() async {
     try {
       Map<String, dynamic>? data = await tableDataHandler.getTableSet(widget.tableNum);
@@ -138,6 +129,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
     setState(() {});
   }
 
+  /*rawdatadaki itemları kendi Order widgetında yaratıyor*/
   void setTableData(Map<String, dynamic>? tableData) {
     if (tableData != null && tableData.containsKey("orders")) {
       for (var orderData in tableData["orders"] as List<dynamic>) {
@@ -152,7 +144,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
               maxCount: quantity,
               name: name,
               textList: bottomStrings,
-              toplamHesap: toplamHesap,
+              toplamHesap: totalAmount,
 
               manualSetState: () {
                 manualSetState();
@@ -161,10 +153,10 @@ class _Decrease0rderState extends State<Decrease0rder> {
 
 
               arttirToplamHesap: (double price) {
-                toplamHesap += price;
+                totalAmount += price;
               },
               azaltToplamHesap: (double price) {
-                toplamHesap -= price;
+                totalAmount -= price;
               },
 
 
@@ -175,6 +167,8 @@ class _Decrease0rderState extends State<Decrease0rder> {
     }
   }
 
+
+  /*aldığı orderlerı */
   List<Widget> buildOrderWidgets(List<String> orders) {
     Map<String, int> itemCounts = {};
 
@@ -193,6 +187,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
     return orderWidgets;
   }
 
+  /*alttaki yazıları string olarak gruplayarak yazıyor*/
   Map<String, int> buildOrderTexts(List<String> orders) {
     Map<String, int> itemCounts = {};
 
@@ -212,9 +207,17 @@ class _Decrease0rderState extends State<Decrease0rder> {
     return textMap;
   }
 
-  Future<Text> buildBottomPriceText(double bottomPriceText) async {
-    print('Price: $bottomPriceText');
+  /*alttaki geçici fiyatı hesaplıyor*/
 
+
+
+  Text buildBottomPriceText(double bottomPriceText) {
+    print('Price: $bottomPriceText');
     return Text('Price: $bottomPriceText');
   }
+
+
+
+
 }
+//todo bu gösterme widgetları uzun metinlerde patlıyor

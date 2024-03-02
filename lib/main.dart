@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     myList = List.generate(
         widget.tableCount, (index) => CustomTable(tableNum: index + 1))
       ..add(CustomUtilPagesButton(
-          buttonName: "Analyzes", goToPage: AnalyzesPage()))
+          buttonName: "Admin Panel", goToPage: AnalyzesPage()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()));
 
