@@ -79,7 +79,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: buildBottomPriceText(totalAmount),
+                    child: Text("$totalAmount ₺"),
                   ),
                   Expanded(
                     flex: 2,
@@ -90,12 +90,13 @@ class _Decrease0rderState extends State<Decrease0rder> {
                           WriteTableData writeTableData = WriteTableData();
 
                           //todo buradaki sistemde komple bir hata var zaten amk
+
                           Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
 
-                          for (var entry in separetedItems.entries) {
-                            print("Şu an ${entry.key} ile muhattabız.  ${entry.value} tane var");
-                            writeTableData.decreaseOneItem(widget.tableNum, entry.key, entry.value);
-                          }
+                          print(separetedItems);
+                          writeTableData.decreaseItemList(widget.tableNum,separetedItems);
+
+
 
                           bottomStrings.clear();
                           totalAmount = 0;
@@ -206,18 +207,6 @@ class _Decrease0rderState extends State<Decrease0rder> {
 
     return textMap;
   }
-
-  /*alttaki geçici fiyatı hesaplıyor*/
-
-
-
-  Text buildBottomPriceText(double bottomPriceText) {
-    print('Price: $bottomPriceText');
-    return Text('Price: $bottomPriceText');
-  }
-
-
-
 
 }
 //todo bu gösterme widgetları uzun metinlerde patlıyor

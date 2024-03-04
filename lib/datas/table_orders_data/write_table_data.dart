@@ -7,8 +7,8 @@ class WriteTableData {
   TableReader tableDataHandler = TableReader();
   ResetTableDatas resetTableDatas = ResetTableDatas();
 
-  Future<void> addItemToTable(int tableNum, String itemName, int quantity,
-      double price) async {
+  Future<void> addItemToTable(
+      int tableNum, String itemName, int quantity, double price) async {
     Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
     bool isItemExits = false;
 
@@ -105,73 +105,67 @@ class WriteTableData {
     }
   }
 
-  Future<void> decreaseOneItem(int tableNum, String itemName,
-      int decreaseCount,) async {
+  Future<void> decreaseItemList(
+      int tableNum, Map<String, int> removeList) async {
     try {
+      /*rawdata alındı*/
       Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
+      List<dynamic> itemsToRemove = [];
 
       if (rawData != null) {
-        // Tablo numarası kontrolü
-        bool tableFound = false;
         for (var table in rawData["tables"]) {
           if (table["tableNum"] == tableNum) {
-            tableFound = true;
-            print("#####$table");
-            List<dynamic> itemsToRemove = [];
+            print("içinde bulunuduğumuz masa $table \n*\n");
+            /*    doğru masadayız   */
 
             for (var order in table["orders"]) {
-              if (order["name"] == itemName) {
-                print("#####$order");
+              /* table orderdaki her table itemi için */
 
-                // Sıfırdan küçük kontrolü
-                if (decreaseCount <= 0) {
-                  print("decreaseCount should be greater than 0");
-                  // Hata durumu ile başa çıkma
-                  return;
-                }
+              for (var removeItem in removeList.entries) {
+                if (removeItem.key == order["name"]) {
+                  print("#####$order");
 
-                double orderPrice = order["price"] / order["quantity"];
+                  // Sıfırdan küçük kontrolü
+                  if ((order["quantity"] - removeItem.value) <
+                      0) {
+                    print("decreaseCount should be greater than 0");
+                    return;
+                  }
 
-                order["quantity"] = order["quantity"] - decreaseCount;
+                  double orderPrice = order["price"] / order["quantity"];
 
-                order["price"] =
-                    order["price"] - (orderPrice * decreaseCount);
+                  order["quantity"] = order["quantity"] - removeItem.value;
 
-                table["totalPrice"] =
-                    table["totalPrice"] - (orderPrice * decreaseCount);
+                  order["price"] =
+                      order["price"] - (orderPrice * removeItem.value);
 
-                // Sipariş miktarı sıfırdan küçük veya eşitse, siparişi kaldır
-                if (order["quantity"] <= 0) {
-                  itemsToRemove.add(order);
+                  table["totalPrice"] =
+                      table["totalPrice"] - (orderPrice * removeItem.value);
+
+                  // Sipariş miktarı sıfırdan küçük veya eşitse, siparişi kaldır
+                  if (order["quantity"] == 0) {
+                    itemsToRemove.add(order);
+                  }
                 }
               }
             }
 
-            // Kaldırılacak öğeleri kaldır
             for (var itemToRemove in itemsToRemove) {
               table["orders"].remove(itemToRemove);
             }
           }
         }
 
-        // Tablo bulunamazsa
-        if (!tableFound) {
-          print("Table not found");
-          // Hata durumu ile başa çıkma
-          return;
-        }
-
-        // JSON verisini güncelle
         await tableDataHandler.writeJsonData(jsonEncode(rawData));
+
+        /*üst kısımda bir hata çıkarsa*/
       } else {
         print("rawData is null");
-        // Hata durumu ile başa çıkma
       }
     } catch (e) {
       print("An error occurred: $e");
-      // Hata durumu ile başa çıkma
     }
+    print("Allah kerimdir");
   }
-
 
 }
