@@ -1,6 +1,6 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/table_order_class.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/clases/table_order_class.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
@@ -163,15 +163,6 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                       );
                     },
                   ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          setOrderClasses(widget.tableNum);
-                          setItemWidgets(orderClass);
-                          manualSetState();
-                        });
-                      },
-                      child: const Text("setOrderClasses")),
                 ],
               ),
             ),

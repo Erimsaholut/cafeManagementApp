@@ -11,29 +11,21 @@ class ResetAllTableJsonData {
 
 class ResetTableDatas {
   Map<String, dynamic> jsonRawDataFirst = {
-    "tables": [
-      {"tableNum": 1, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 2, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 3, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 4, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 5, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 6, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 7, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 8, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 9, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 10, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 11, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 12, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 13, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 14, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 15, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 16, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 17, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 18, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 19, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 20, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 21, "totalPrice": 0.0, "orders": []},
-      {"tableNum": 22, "totalPrice": 0.0, "orders": []}
-    ]
+    "tables": [],
   };
+
+  void createTables(int numberOfTables) {
+    List<Map<String, dynamic>> tables = [];
+    for (int i = 1; i <= numberOfTables; i++) {
+      Map<String, dynamic> table = {
+        "tableNum": i,
+        "totalPrice": 0.0,
+        "orders": [],
+      };
+      tables.add(table);
+    }
+    jsonRawDataFirst['tables'] = tables;
+  }
 }
+
+

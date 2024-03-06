@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 
-class AnalyzesPage extends StatefulWidget {
-  AnalyzesPage({Key? key}) : super(key: key);
+class AdminPanel extends StatefulWidget {
+  AdminPanel({Key? key}) : super(key: key);
 
 /* For now I'm using this page to test data files */
   @override
-  State<AnalyzesPage> createState() => _AnalyzesPageState();
+  State<AdminPanel> createState() => _AdminPanelState();
 }
 
-class _AnalyzesPageState extends State<AnalyzesPage> {
+class _AdminPanelState extends State<AdminPanel> {
   final ReadData readNewData = ReadData();
 
   TableReader tableDataHandler = TableReader();
@@ -27,7 +27,7 @@ class _AnalyzesPageState extends State<AnalyzesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Analyzes",
+          "Admin Panel",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.amberAccent,

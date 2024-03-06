@@ -41,9 +41,10 @@ class _OrderState extends State<Order> {
   Widget build(BuildContext context) {
     return TextButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.green.withOpacity(0.3)),
+        backgroundColor:
+            MaterialStateProperty.all(Colors.green.withOpacity(0.3)),
         overlayColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+          (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
               return Colors.green.shade400; // Change this color as needed
             }
@@ -75,41 +76,48 @@ class _OrderState extends State<Order> {
           IconButton(
             onPressed: initialValue > 0
                 ? () {
-              setState(() {
-                initialValue = (initialValue - 1).clamp(0, widget.maxCount);
-                widgetName = widget.name;
-                widget.textList.add(widgetName);
+                    setState(() {
+                      initialValue =
+                          (initialValue - 1).clamp(0, widget.maxCount);
+                      widgetName = widget.name;
+                      widget.textList.add(widgetName);
 
-                widget.arttirToplamHesap(widget.price);
+                      widget.arttirToplamHesap(widget.price);
 
-                widget.manualSetState();
-                print("Azalt");
-                print("Toplam Hesap: ${widget.toplamHesap}");
+                      widget.manualSetState();
+                      print("Azalt");
+                      print("Toplam Hesap: ${widget.toplamHesap}");
 
-                widget.manualSetState();
-              });
-            }
+                      widget.manualSetState();
+                    });
+                  }
                 : null,
             icon: const Icon(Icons.remove),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
             ),
           ),
-          Text("$initialValue ${widget.name}", style: const TextStyle(fontSize: 16)),
+          Flexible(
+            child: Text(
+              "$initialValue ${widget.name}",
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
           IconButton(
             onPressed: initialValue < widget.maxCount
                 ? () {
-              setState(() {
-                initialValue = (initialValue + 1).clamp(0, widget.maxCount);
+                    setState(() {
+                      initialValue =
+                          (initialValue + 1).clamp(0, widget.maxCount);
 
-                widget.textList.remove(widgetName);
+                      widget.textList.remove(widgetName);
 
-                widget.azaltToplamHesap(widget.price);
-                widget.manualSetState();
-                print("Arttır");
-                print("Toplam Hesap: ${widget.toplamHesap}");
-              });
-            }
+                      widget.azaltToplamHesap(widget.price);
+                      widget.manualSetState();
+                      print("Arttır");
+                      print("Toplam Hesap: ${widget.toplamHesap}");
+                    });
+                  }
                 : null,
             icon: const Icon(Icons.add),
             style: ButtonStyle(

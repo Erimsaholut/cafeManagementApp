@@ -74,8 +74,9 @@ class WriteTableData {
 
   Future<void> resetAllData() async {
     try {
-      Map<String, dynamic> initialMenu = resetTableDatas.jsonRawDataFirst;
-      await tableDataHandler.writeJsonData(jsonEncode(initialMenu));
+      ResetTableDatas resetTables = ResetTableDatas();
+      resetTables.createTables(22);
+      await tableDataHandler.writeJsonData(jsonEncode(resetTables.jsonRawDataFirst));
       print("Başarı ile resetlendi");
     } catch (e) {
       print("Resetlenemedi $e");

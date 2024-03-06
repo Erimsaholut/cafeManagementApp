@@ -25,7 +25,6 @@ class _CustomSingleSelectionButtonState
   @override
   void initState() {
     super.initState();
-    // Başlangıçta ilk checkbox'u seçili olarak işaretle
     selectedCheckbox = widget.checkboxTexts.first;
   }
 

@@ -93,9 +93,6 @@ class WriteData {
     }
   }
 
-
-
-
   Future<void> setExistingItemInMenu(String itemName, double moneyValue, int pennyValue, List<String> indList) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
@@ -137,10 +134,6 @@ class WriteData {
       print('Ürün güncellenirken hata oluştu: $e');
     }
   }
-
-
-
-
 
   int _generateNewItemId(List<dynamic> menu) {
     int maxId = 0;

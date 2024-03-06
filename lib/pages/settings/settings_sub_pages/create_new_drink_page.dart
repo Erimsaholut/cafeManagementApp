@@ -69,12 +69,11 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                     String selectedItemType = customItemTypeSelector.itemType;
                     print("Selected Item Type: $selectedItemType");
 
-                    // TODO: Add your validation logic here
                     if(beverageName.isEmpty){
                       scaffoldMessage("Ürün ismi boş olamaz", context);
                     }
                     else{
-                      //emin misiniz diye sor ve seçilen bilgileri gönder.
+                      //todo emin misiniz diye sor ve seçilen bilgileri gönder.
                       writeData.addNewItemToMenu(beverageName,moneyValue, pennyValue, indList, selectedItemType);
                       scaffoldMessage("Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType", context);
                     }

@@ -1,4 +1,5 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyzes_page.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyses_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
@@ -64,7 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
     myList = List.generate(
         widget.tableCount, (index) => CustomTable(tableNum: index + 1))
       ..add(CustomUtilPagesButton(
-          buttonName: "Admin Panel", goToPage: AnalyzesPage()))
+          buttonName: "Admin Panel", goToPage: AdminPanel()))
+      ..add(const CustomUtilPagesButton(
+          buttonName: 'Analyses', goToPage: AnalysesPage()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()));
 

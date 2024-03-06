@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 
 class Decrease0rder extends StatefulWidget {
-  const Decrease0rder({super.key, required this.tableNum,required this.initialFunction});
+  const Decrease0rder(
+      {super.key, required this.tableNum, required this.initialFunction});
 
   final int tableNum;
   final Function initialFunction;
@@ -30,7 +31,13 @@ class _Decrease0rderState extends State<Decrease0rder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {Navigator.pop(context); widget.initialFunction();  print("çıkıldı");  }, icon: const Icon(Icons.arrow_back_ios_new)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              widget.initialFunction();
+              print("çıkıldı");
+            },
+            icon: const Icon(Icons.arrow_back_ios_new)),
         title: const Text("Sipariş Öde"),
         backgroundColor: CustomColors.appbarBlue,
       ),
@@ -89,14 +96,12 @@ class _Decrease0rderState extends State<Decrease0rder> {
                           /*onayla butonunun içi*/
                           WriteTableData writeTableData = WriteTableData();
 
-                          //todo buradaki sistemde komple bir hata var zaten amk
-
-                          Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
+                          Map<String, int> separetedItems =
+                              buildOrderTexts(bottomStrings);
 
                           print(separetedItems);
-                          writeTableData.decreaseItemList(widget.tableNum,separetedItems);
-
-
+                          writeTableData.decreaseItemList(
+                              widget.tableNum, separetedItems);
 
                           bottomStrings.clear();
                           totalAmount = 0;
@@ -114,12 +119,12 @@ class _Decrease0rderState extends State<Decrease0rder> {
     );
   }
 
-
   /*local filestan verileri çekiyor*/
   /*setTabelData çalıştırıyor dataları verip*/
   Future<void> _loadTableData() async {
     try {
-      Map<String, dynamic>? data = await tableDataHandler.getTableSet(widget.tableNum);
+      Map<String, dynamic>? data =
+          await tableDataHandler.getTableSet(widget.tableNum);
       setTableData(data);
     } catch (error) {
       print("Error loading table data: $error");
@@ -134,7 +139,6 @@ class _Decrease0rderState extends State<Decrease0rder> {
   void setTableData(Map<String, dynamic>? tableData) {
     if (tableData != null && tableData.containsKey("orders")) {
       for (var orderData in tableData["orders"] as List<dynamic>) {
-
         final int? quantity = orderData["quantity"];
         final String? name = orderData["name"];
         final double price = (orderData["price"] / quantity);
@@ -146,28 +150,22 @@ class _Decrease0rderState extends State<Decrease0rder> {
               name: name,
               textList: bottomStrings,
               toplamHesap: totalAmount,
-
               manualSetState: () {
                 manualSetState();
               },
               price: price,
-
-
               arttirToplamHesap: (double price) {
                 totalAmount += price;
               },
               azaltToplamHesap: (double price) {
                 totalAmount -= price;
               },
-
-
             ));
           });
         }
       }
     }
   }
-
 
   /*aldığı orderlerı */
   List<Widget> buildOrderWidgets(List<String> orders) {
@@ -207,6 +205,5 @@ class _Decrease0rderState extends State<Decrease0rder> {
 
     return textMap;
   }
-
 }
-//todo bu gösterme widgetları uzun metinlerde patlıyor
+

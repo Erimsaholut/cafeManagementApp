@@ -257,11 +257,8 @@ SizedBox customSizedBox({int rate = 1}) {
   return SizedBox(height: 16 * rate.toDouble());
 }
 
-//todo analiz sayfası ve dışarı aktarabilme özelliği
 
-//todo tasarım
 
-//todo firebase (dlc olarak sunucam onu)
 
 //todo sipariş ödeme ekranı hallet
 
@@ -276,3 +273,9 @@ SizedBox customSizedBox({int rate = 1}) {
 //todo masa seçimi için yeni number pickerlardan kullan
 
 //todo yeni item eklerken isim kontrolü yapılsın
+
+//todo firebase (dlc olarak sunucam onu)
+
+//todo tasarım
+
+//todo analiz sayfası ve dışarı aktarabilme özelliği
