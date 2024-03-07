@@ -61,7 +61,7 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                 customDivider(),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     beverageName = beverageNameController.text;
                     print("$beverageName, $moneyValue, $pennyValue");
                     print(indList);
@@ -73,9 +73,19 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                       scaffoldMessage("Ürün ismi boş olamaz", context);
                     }
                     else{
-                      //todo emin misiniz diye sor ve seçilen bilgileri gönder.
-                      writeData.addNewItemToMenu(beverageName,moneyValue, pennyValue, indList, selectedItemType);
-                      scaffoldMessage("Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType", context);
+
+                      bool? result = await writeData.addNewItemToMenu(beverageName, moneyValue, pennyValue, indList, selectedItemType);
+                      if (result != null) {
+                        if (result) {
+                          scaffoldMessage("Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType", context);
+                        } else {
+                          scaffoldMessage("Yeni ürün eklenirken bir hata ile karşılaşıldı", context);
+                        }
+                      } else {
+                        // Handle null case here
+                        print("Beklenmeyen bir hata oluştu. addNewItemToMenu null değer döndürdü.");
+                      }
+
                     }
 
                   },

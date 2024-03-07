@@ -47,7 +47,7 @@ class WriteData {
   Future<void> resetData() async {
 
     try {
-      Map<String, dynamic> initialMenu = resetDatas.jsonRawDataFirst;
+      Map<String, dynamic> initialMenu = resetDatas.jsonDemoRawData;
       await readData.writeJsonData(jsonEncode(initialMenu));
       print("Başarı ile resetlendi");
     } catch (e) {
@@ -56,7 +56,7 @@ class WriteData {
 
   }
 
-  Future<void> addNewItemToMenu(String itemName, int moneyValue,
+  Future<bool?> addNewItemToMenu(String itemName, int moneyValue,
       int pennyValue, List<String> indList, String type) async {
     if (type == "Yiyecek") {
       type = "food";
@@ -73,6 +73,16 @@ class WriteData {
 
         int newId = _generateNewItemId(menu);
 
+        String lowercaseItemName = itemName.toLowerCase();
+        bool itemExists =
+        menu.any((item) => item["name"].toLowerCase() == lowercaseItemName);
+
+        if (itemExists) {
+          print(
+              "Bu ürün zaten mevcut. Lütfen ürünü kontrol edin veya mevcut ürünün adını değiştirin.");
+          return false;
+        }
+
         Map<String, dynamic> newItem = {
           "id": newId,
           "name": itemName,
@@ -87,11 +97,17 @@ class WriteData {
         print("Yeni ürün başarıyla eklendi: $itemName");
         readData.readJsonData();
         readData.separateMenuItems();
+        return true;
       }
     } catch (e) {
       print('Yeni ürün eklenirken hata oluştu: $e');
+      return false;
     }
+
+    // Eğer kod bu noktaya kadar gelirse, hata olmuştur ve null döndürülmelidir.
+    return null;
   }
+
 
   Future<void> setExistingItemInMenu(String itemName, double moneyValue, int pennyValue, List<String> indList) async {
     try {

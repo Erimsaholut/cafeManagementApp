@@ -8,7 +8,7 @@ class ResetAllJsonData {
 }
 
 class ResetDatas {
-  Map<String, dynamic> jsonRawDataFirst = {
+  Map<String, dynamic> jsonDemoRawData = {
     "cafe_name": "Çamaltı Kahvehanesi",
     "table_count": 22,
     "menu": [

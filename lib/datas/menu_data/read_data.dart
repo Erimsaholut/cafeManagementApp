@@ -202,7 +202,7 @@ class ReadData {
     } catch (e) {
       print('Masa sayisi hata oluştu: $e');
     }
-    return 2;
+    return -1;
   }
 
   List<Map<String, dynamic>> get drinksWithIngredients =>
@@ -213,4 +213,6 @@ class ReadData {
   List<Map<String, dynamic>> get foodsWithIngredients => _foodsWithIngredients;
 
   List<String> get foodsWithNoIngredients => _foodsWithNoIngredients;
+
+
 }

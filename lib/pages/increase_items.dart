@@ -258,17 +258,9 @@ SizedBox customSizedBox({int rate = 1}) {
 }
 
 
-
-
-//todo sipariş ödeme ekranı hallet
-
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
 
-//todo masa sayısı denetleyen bir kod yaz denetleme (maks mas sayısı döndürme falan) data klasöründeki datalrda olsun.
-
 //todo dil desteği gelecek ama nasıl gelecek bilmiyorum
-
-//todo masa resetlemek için döngü kullanılarak anlık bir dosya hazırlanıcak limitleme kendini
 
 //todo masa seçimi için yeni number pickerlardan kullan
 
