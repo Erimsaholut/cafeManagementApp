@@ -1,13 +1,8 @@
 {
   "tables": [
     {
-
-
-
       "tableNum": 1,
       "totalPrice": 24,
-
-
       "orders": [
         {
           "name": "tea",
@@ -30,9 +25,6 @@
           "price": 5.0
         }
       ]
-
-
-
     },
     {
       "tableNum": 2,

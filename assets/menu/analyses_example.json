@@ -1,0 +1,36 @@
+{
+  "sales": {
+    "25.05.2024": {
+      "products": {
+        "Çay": {
+          "quantity": 30,
+          "revenue": 150
+        },
+        "Kahve": {
+          "quantity": 80,
+          "revenue": 600
+        },
+        "Tost": {
+          "quantity": 20,
+          "revenue": 200
+        }
+      }
+    },
+    "26.05.2024": {
+      "products": {
+        "Sucuklu Tost": {
+          "quantity": 50,
+          "revenue": 100
+        },
+        "Tavuk Döner": {
+          "quantity": 40,
+          "revenue": 120
+        },
+        "Kokoreç": {
+          "quantity": 10,
+          "revenue": 500
+        }
+      }
+    }
+  }
+}

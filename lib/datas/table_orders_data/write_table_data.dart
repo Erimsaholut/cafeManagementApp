@@ -1,7 +1,6 @@
-import 'dart:convert';
-
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
+import 'dart:convert';
 
 class WriteTableData {
   TableReader tableDataHandler = TableReader();

@@ -1,9 +1,10 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
-import 'package:flutter/material.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data.dart';
 import '../datas/table_orders_data/read_table_data.dart';
+import 'package:flutter/material.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
@@ -22,6 +23,8 @@ class _AdminPanelState extends State<AdminPanel> {
 
   WriteTableData writeTableData = WriteTableData();
 
+  AnalysesReader analysesReader = AnalysesReader();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,30 @@ class _AdminPanelState extends State<AdminPanel> {
       body: ListView(
         children: [
           TextButton(
+              onPressed: () {
+                DateTime now = DateTime.now();
+
+                print("${now.day}.${now.month}.${now.year}");
+              },
+              child: Text("Date"),),
+
+
+
+          TextButton(
             onPressed: () async {
+
+
+              Object analysesRaw = (await analysesReader.readJsonData()) as Object;
+              print(analysesRaw);
+
+            },
+            child: const Text("show dates"),
+          ),
+
+
+          TextButton(
+            onPressed: () async {
+
               Object menu = (await readNewData.readJsonData()) as Object;
               print(menu);
               int menuItemCount = await readNewData.getMenuItemCount();
@@ -117,7 +143,7 @@ class _AdminPanelState extends State<AdminPanel> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder:(BuildContext context){
+                builder: (BuildContext context) {
                   return CustomAlertButton(
                     text1: 'Test Edilecektir.',
                     text2: 'Emin misiniz ?',

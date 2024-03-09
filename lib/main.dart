@@ -3,7 +3,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyses_page.d
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
-import 'datas/menu_data/read_data.dart';
+import 'datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

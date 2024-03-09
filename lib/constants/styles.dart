@@ -35,7 +35,7 @@ class CustomStyles {
   );
 
   static final ButtonStyle customMenuItemButtonStyle = ElevatedButton.styleFrom(
-    primary: Colors.white,
+    backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
       side: const BorderSide(

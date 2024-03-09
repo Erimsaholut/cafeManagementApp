@@ -1,8 +1,8 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
 import 'package:flutter/material.dart';
-import '../../../datas/menu_data/read_data.dart';
+import '../../../datas/menu_data/read_data_menu.dart';
 
 class EditItems extends StatefulWidget {
   const EditItems({Key? key}) : super(key: key);

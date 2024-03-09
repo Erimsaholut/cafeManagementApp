@@ -2,7 +2,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_da
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_single_selection_checkbox_button.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../datas/menu_data/read_data.dart';
+import '../datas/menu_data/read_data_menu.dart';
 import '../utils/custom_multi_selection_checkbox_button.dart';
 
 /*itemlerin seçilip eklendiği o sayfa*/
@@ -263,8 +263,6 @@ SizedBox customSizedBox({int rate = 1}) {
 //todo dil desteği gelecek ama nasıl gelecek bilmiyorum
 
 //todo masa seçimi için yeni number pickerlardan kullan
-
-//todo yeni item eklerken isim kontrolü yapılsın
 
 //todo firebase (dlc olarak sunucam onu)
 
