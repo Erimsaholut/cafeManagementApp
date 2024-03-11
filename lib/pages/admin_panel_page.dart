@@ -1,3 +1,5 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
@@ -23,7 +25,10 @@ class _AdminPanelState extends State<AdminPanel> {
 
   WriteTableData writeTableData = WriteTableData();
 
+  WriteAnalysesData writeAnalysesData = WriteAnalysesData();
+
   AnalysesReader analysesReader = AnalysesReader();
+  ResetAllAnalysesJsonData resetAllAnalysesJsonData = ResetAllAnalysesJsonData();
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +47,9 @@ class _AdminPanelState extends State<AdminPanel> {
                 DateTime now = DateTime.now();
 
                 print("${now.day}.${now.month}.${now.year}");
+                print(now.day);
               },
               child: Text("Date"),),
-
-
 
           TextButton(
             onPressed: () async {
@@ -56,6 +60,43 @@ class _AdminPanelState extends State<AdminPanel> {
 
             },
             child: const Text("show dates"),
+          ),
+
+
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+            writeAnalysesData.addItemToTable(now.day,now.month, now.year, "Çay",1, 5.0);
+
+            },
+            child: const Text("1 adet çay ekle"),
+          ),
+
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              writeAnalysesData.addItemToTable(now.day,now.month, now.year, "Su",1, 5.0);
+
+            },
+            child: const Text("1 adet Su ekle"),
+          ),
+
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              writeAnalysesData.addItemToTable(now.day,now.month, now.year, "Tavuk Döner",2, 35.0);
+
+            },
+            child: const Text("2 adet Tavuk Döner ekle"),
+          ),
+
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              resetAllAnalysesJsonData.resetAllTableJsonFiles();
+
+            },
+            child: const Text("Reset all the analyses data"),
           ),
 
 

@@ -4,83 +4,40 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/r
 class WriteAnalysesData {
   AnalysesReader analysesDataHandler = AnalysesReader();
 
-  Future<void> addItemToTable(DateTime dateTime, String product, int quantity, double price) async {
-    Map<String, dynamic>? rawData = await analysesDataHandler.getRawData();
-
+  Future<void> addItemToTable(int day, int month, int year, String prodName,
+      int prodQuantity, double prodPrice) async {
     try {
+      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData();
+      String dateNow = "$day.$month.$year";
+
       if (rawData != null) {
-        for (var i in rawData["sales"]) {
-          if (i["tableNum"] == tableNum) {
-            /*doğru mekanı bul*/
-
-            /*o itemden yoksa yenisini ekle*/
-            if (!isItemExits) {
-              Map<String, dynamic> newItem = {
-                "name": product,
-                "quantity": quantity,
-                "price": price,
-              };
-
-              i["orders"].add(newItem); // önce bi kontrol
-              double oldPrice = i["totalPrice"];
-              oldPrice += price;
-              i["totalPrice"] = oldPrice;
-            }
-          }
+        // Eğer rawData boş değilse işlemleri gerçekleştir
+        if (!rawData.containsKey("sales")) {
+          // Eğer "sales" anahtarı yoksa yeni bir harita oluştur
+          rawData["sales"] = {};
         }
 
-        if (isItemExits) {
-          for (var i in rawData["tables"]) {
-            if (i["tableNum"] == tableNum) {
-              /*bu kısımda doğru tableSetteyiz*/
+        if (!rawData["sales"].containsKey(dateNow)) {
+          // Eğer verilen tarih için bir giriş yoksa, yeni bir giriş oluştur
+          rawData["sales"][dateNow] = {"products": {}};
+        }
 
-              for (var j in i["orders"]) {
-                if (j["name"] == product) {
-                  int oldQuantity = j["quantity"];
-                  oldQuantity += quantity;
-                  j["quantity"] = oldQuantity;
-
-                  double oldPrice = j["price"];
-                  oldPrice += price;
-                  j["price"] = oldPrice;
-
-                  double oldTotalPrice = i["totalPrice"];
-                  oldTotalPrice += price;
-                  i["totalPrice"] = oldTotalPrice;
-                }
-              }
-            }
-          }
+        if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
+          // Eğer ürünün listeye eklenmediyse, yeni bir ürün ekle
+          rawData["sales"][dateNow]["products"][prodName] = {
+            "quantity": prodQuantity,
+            "revenue": prodPrice * prodQuantity
+          };
+        } else {
+          // Eğer ürün listedeyse, miktarını ve gelirini güncelle
+          rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
+          rawData["sales"][dateNow]["products"][prodName]["revenue"] += prodPrice * prodQuantity;
         }
 
         await analysesDataHandler.writeJsonData(jsonEncode(rawData));
       }
     } catch (e) {
-      print('Yeni ürün eklenirken hata oluştu: $e');
+      print('Ürün analizi eklenirken hata oluştu: $e');
     }
   }
-
-  Future<void> resetOneTable(int tableNum) async {
-    try {
-      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData();
-
-      if (rawData != null) {
-        for (var table in rawData["tables"]) {
-          if (table["tableNum"] == tableNum) {
-            /*doğru mekanı bul*/
-            print("Doğru tableNum aranıyor ve orders resetleniyor");
-            table["totalPrice"] = 0.0;
-            table["orders"] = [];
-            print(table);
-          }
-        }
-      }
-
-      await analysesDataHandler.writeJsonData(jsonEncode(rawData));
-      print("Resetledik galiba");
-    } catch (e) {
-      print("Resetlenemedi $e");
-    }
-  }
-
 }

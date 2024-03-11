@@ -54,13 +54,16 @@ class AnalysesReader {
     return -1.0;
   }
 
-
   Future<void> writeJsonData(String jsonData) async {
     final file = await _localFile;
     try {
       await file.writeAsString(jsonData);
+      print("Başarılı");
     } catch (e) {
       print('JSON data write error: $e');
     }
   }
+
+
+
 }
