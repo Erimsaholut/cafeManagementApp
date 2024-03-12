@@ -266,6 +266,8 @@ SizedBox customSizedBox({int rate = 1}) {
 
 //todo firebase (dlc olarak sunucam onu)
 
+//todo çalışan analyses table
+
 //todo tasarım
 
 //todo analiz sayfası ve dışarı aktarabilme özelliği

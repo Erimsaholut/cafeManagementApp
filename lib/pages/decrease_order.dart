@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
@@ -16,9 +19,10 @@ class Decrease0rder extends StatefulWidget {
 }
 
 class _Decrease0rderState extends State<Decrease0rder> {
+  WriteAnalysesData writeAnalysesData = WriteAnalysesData();
   TableReader tableDataHandler = TableReader();
-  List<Widget> orders = [];
   List<String> bottomStrings = [];
+  List<Widget> orders = [];
   double totalAmount = 0.0;
 
   @override
@@ -91,18 +95,18 @@ class _Decrease0rderState extends State<Decrease0rder> {
                   Expanded(
                     flex: 2,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
+
+                        // Diğer işlemleri yap
+                        WriteTableData writeTableData = WriteTableData();
+                        await writeTableData.decreaseItemList(widget.tableNum, separetedItems);
+
+                        // Diğer işlemler tamamlandıktan sonra analizleri JSON'a ekle
+                        await addItemToAnalyses(separetedItems);
+
+                        // Diğer işlemler tamamlandıktan sonra işlemleri temizle
                         setState(() {
-                          /*onayla butonunun içi*/
-                          WriteTableData writeTableData = WriteTableData();
-
-                          Map<String, int> separetedItems =
-                              buildOrderTexts(bottomStrings);
-
-                          print(separetedItems);
-                          writeTableData.decreaseItemList(
-                              widget.tableNum, separetedItems);
-
                           bottomStrings.clear();
                           totalAmount = 0;
                         });
@@ -119,6 +123,12 @@ class _Decrease0rderState extends State<Decrease0rder> {
     );
   }
 
+
+  Future<void> addItemToAnalyses(Map<String, int> separetedItems) async {
+    for (var item in separetedItems.entries) {
+      await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
+    }
+  }
   /*local filestan verileri çekiyor*/
   /*setTabelData çalıştırıyor dataları verip*/
   Future<void> _loadTableData() async {
@@ -206,4 +216,3 @@ class _Decrease0rderState extends State<Decrease0rder> {
     return textMap;
   }
 }
-

@@ -1,10 +1,12 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
 import 'dart:convert';
 
 class WriteTableData {
-  TableReader tableDataHandler = TableReader();
+  WriteAnalysesData writeAnalysesData = WriteAnalysesData();
   ResetTableDatas resetTableDatas = ResetTableDatas();
+  TableReader tableDataHandler = TableReader();
 
   Future<void> addItemToTable(
       int tableNum, String itemName, int quantity, double price) async {
@@ -112,6 +114,16 @@ class WriteTableData {
       Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
       List<dynamic> itemsToRemove = [];
 
+                                                                              /*
+      for(var item in removeList.entries){
+        print("####enes######");
+        print(item.value);
+        print(item.key);
+        writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
+        print("#####batur#######");
+      }
+                                                                              */
+
       if (rawData != null) {
         for (var table in rawData["tables"]) {
           if (table["tableNum"] == tableNum) {
@@ -125,13 +137,6 @@ class WriteTableData {
                 if (removeItem.key == order["name"]) {
                   print("#####$order");
 
-                  // Sıfırdan küçük kontrolü
-                  if ((order["quantity"] - removeItem.value) <
-                      0) {
-                    print("decreaseCount should be greater than 0");
-                    return;
-                  }
-
                   double orderPrice = order["price"] / order["quantity"];
 
                   order["quantity"] = order["quantity"] - removeItem.value;
@@ -142,10 +147,13 @@ class WriteTableData {
                   table["totalPrice"] =
                       table["totalPrice"] - (orderPrice * removeItem.value);
 
-                  // Sipariş miktarı sıfırdan küçük veya eşitse, siparişi kaldır
+
+
                   if (order["quantity"] == 0) {
                     itemsToRemove.add(order);
                   }
+
+
                 }
               }
             }
@@ -157,6 +165,7 @@ class WriteTableData {
         }
 
         await tableDataHandler.writeJsonData(jsonEncode(rawData));
+
 
         /*üst kısımda bir hata çıkarsa*/
       } else {

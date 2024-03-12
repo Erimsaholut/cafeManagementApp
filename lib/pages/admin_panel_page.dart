@@ -66,7 +66,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-            writeAnalysesData.addItemToTable(now.day,now.month, now.year, "Çay",1, 5.0);
+            writeAnalysesData.addItemToAnalysesJson("Çay",1);
 
             },
             child: const Text("1 adet çay ekle"),
@@ -74,8 +74,7 @@ class _AdminPanelState extends State<AdminPanel> {
 
           TextButton(
             onPressed: () async {
-              DateTime now = DateTime.now();
-              writeAnalysesData.addItemToTable(now.day,now.month, now.year, "Su",1, 5.0);
+              writeAnalysesData.addItemToAnalysesJson("Su",1);
 
             },
             child: const Text("1 adet Su ekle"),
@@ -83,8 +82,7 @@ class _AdminPanelState extends State<AdminPanel> {
 
           TextButton(
             onPressed: () async {
-              DateTime now = DateTime.now();
-              writeAnalysesData.addItemToTable(now.day,now.month, now.year, "Tavuk Döner",2, 35.0);
+              writeAnalysesData.addItemToAnalysesJson( "Tavuk Döner",2);
 
             },
             child: const Text("2 adet Tavuk Döner ekle"),
@@ -92,7 +90,6 @@ class _AdminPanelState extends State<AdminPanel> {
 
           TextButton(
             onPressed: () async {
-              DateTime now = DateTime.now();
               resetAllAnalysesJsonData.resetAllTableJsonFiles();
 
             },

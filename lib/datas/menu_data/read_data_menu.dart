@@ -164,6 +164,7 @@ class ReadData {
   Future<double> getItemPrice(String itemName) async {
     try {
       final file = await _localFile;
+      print("prodname = $itemName");
 
       if (await file.exists()) {
 
