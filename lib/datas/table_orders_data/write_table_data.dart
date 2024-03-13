@@ -77,7 +77,8 @@ class WriteTableData {
     try {
       ResetTableDatas resetTables = ResetTableDatas();
       resetTables.createTables(22);
-      await tableDataHandler.writeJsonData(jsonEncode(resetTables.jsonRawDataFirst));
+      await tableDataHandler
+          .writeJsonData(jsonEncode(resetTables.jsonRawDataFirst));
       print("Başarı ile resetlendi");
     } catch (e) {
       print("Resetlenemedi $e");
@@ -114,16 +115,6 @@ class WriteTableData {
       Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
       List<dynamic> itemsToRemove = [];
 
-                                                                              /*
-      for(var item in removeList.entries){
-        print("####enes######");
-        print(item.value);
-        print(item.key);
-        writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
-        print("#####batur#######");
-      }
-                                                                              */
-
       if (rawData != null) {
         for (var table in rawData["tables"]) {
           if (table["tableNum"] == tableNum) {
@@ -147,13 +138,9 @@ class WriteTableData {
                   table["totalPrice"] =
                       table["totalPrice"] - (orderPrice * removeItem.value);
 
-
-
                   if (order["quantity"] == 0) {
                     itemsToRemove.add(order);
                   }
-
-
                 }
               }
             }
@@ -166,7 +153,6 @@ class WriteTableData {
 
         await tableDataHandler.writeJsonData(jsonEncode(rawData));
 
-
         /*üst kısımda bir hata çıkarsa*/
       } else {
         print("rawData is null");
@@ -176,5 +162,4 @@ class WriteTableData {
     }
     print("Allah kerimdir");
   }
-
 }

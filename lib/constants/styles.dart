@@ -5,6 +5,9 @@ class CustomStyles {
   static TextStyle blackAndBoldTextStyleM = const TextStyle(
       fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15);
 
+  static TextStyle blackTextStyleM = const TextStyle(
+      color: Colors.black, fontSize: 15);
+
 
 
   static TextStyle blackAndBoldTextStyleL = const TextStyle(
