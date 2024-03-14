@@ -17,7 +17,7 @@ class AnalysesReader {
   }
 
 
-  Future<Map<String, dynamic>?> readJsonData() async {
+  Future<Map<String, dynamic>?> getRawData() async {
     try {
       final file = await _localFile;
 
@@ -33,10 +33,10 @@ class AnalysesReader {
     return null;
   }
 
-
-  Future<Map<String, dynamic>?> getRawData() async {
+  Future<String?> getRawSales() async {
     try {
-      return await readJsonData();
+      Future<Map<String, dynamic>?> rawdata = getRawData();
+      return await rawdata.toString();
     } catch (e) {
       print('Raw data read error: $e');
       return null;

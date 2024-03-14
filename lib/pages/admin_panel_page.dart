@@ -8,6 +8,8 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_bu
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/testtesttest.dart';
+
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
 
@@ -54,8 +56,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
 
-
-              Object analysesRaw = (await analysesReader.readJsonData()) as Object;
+              Object analysesRaw = (await analysesReader.getRawData()) as Object;
               print(analysesRaw);
 
             },
@@ -194,6 +195,7 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("customAlert"),
           ),
+          const LineChartSample2(),
         ],
       ),
     );
