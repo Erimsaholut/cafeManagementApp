@@ -8,7 +8,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_bu
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/testtesttest.dart';
+import '../utils/test_graph1.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
