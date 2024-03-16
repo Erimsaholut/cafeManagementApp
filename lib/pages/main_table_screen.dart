@@ -1,6 +1,8 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/clases/table_order_class.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
@@ -10,19 +12,19 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import 'decrease_order.dart';
 
-class CustomTableMenu extends StatefulWidget {
+class MainTableScreen extends StatefulWidget {
   /*   ana,masa menüsü   */
 
   final int tableNum;
   final String tableName;
 
-  CustomTableMenu({super.key, required this.tableNum, required this.tableName});
+  MainTableScreen({super.key, required this.tableNum, required this.tableName});
 
   @override
-  State<CustomTableMenu> createState() => _CustomTableMenuState();
+  State<MainTableScreen> createState() => _MainTableScreenState();
 }
 
-class _CustomTableMenuState extends State<CustomTableMenu> {
+class _MainTableScreenState extends State<MainTableScreen> {
   List<TableOrderClass> orderClass = [];
   final List<Widget> orderWidgets = [];
 
@@ -147,15 +149,33 @@ class _CustomTableMenuState extends State<CustomTableMenu> {
                             text1: ' Bütün masayı ödenecektir.',
                             text2: 'Emin misiniz ?',
                             customFunction: () {
+
                               setState(() {
+
                                 WriteTableData writeTableData =
                                     WriteTableData();
+
+                                Map<String, int> separetedItems  = {};
+
+                                for(TableOrderClass i in orderClass){
+                                  separetedItems[i.name] = i.quantity;
+                                }
+
+                                Future<void> addItemToAnalyses(Map<String, int> separetedItems) async {
+                                  WriteAnalysesData writeAnalysesData =WriteAnalysesData();
+
+                                  for (var item in separetedItems.entries) {
+                                    await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
+                                  }
+                                }
+
+                                addItemToAnalyses(separetedItems);
                                 writeTableData.resetOneTable(widget.tableNum);
                                 orderWidgets.clear();
                                 orderClass.clear();
+
                                 Navigator.pop(context);
-                                /*masa sıfırlama gelecek*/
-                                //widget.totalPrice = getTotalPrice(widget.tableNum);
+
                               });
                             },
                           );

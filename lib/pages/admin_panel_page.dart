@@ -45,6 +45,28 @@ class _AdminPanelState extends State<AdminPanel> {
       body: ListView(
         children: [
           TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              Future<Map<String, dynamic>?> analysesFuture = analysesReader.getDaySet(now.day, now.month, now.year);
+              analysesFuture.then((analyses) {
+                if (analyses != null) {
+                  print("Bugünkü analizler: $analyses");
+                  // Analiz verilerini kullanabilirsiniz
+                  Future<double> totalRevenueFuture = analysesReader.getDaysTotalRevenue(now.day, now.month, now.year);
+                  totalRevenueFuture.then((totalRevenue) {
+                    print("Bugünün toplam geliri: $totalRevenue");
+                  });
+                } else {
+                  print("Bugünkü analizler bulunamadı.");
+                }
+              });
+            },
+            child: Text("Bugünün analizlerini al"),
+          ),
+
+
+
+          TextButton(
               onPressed: () {
                 DateTime now = DateTime.now();
 

@@ -201,7 +201,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   Future<void> _performAsyncOperations(String itemName) async {
     WriteTableData writeTableData = WriteTableData();
     double itemPrice = await readNewData.getItemPrice(itemName);
-    print('Price of $itemName: $itemPrice');
     setState(() {
       print(itemName);
       orders.add(itemName);
@@ -212,9 +211,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 
 
   Future<void> _performAsyncOperationsForInd(String name,tableNum) async {
-    print("Button pressed for $name");
     double itemPrice = await readNewData.getItemPrice(name);
-    print('Price of $name: $itemPrice');
 
     WriteTableData writeTableData = WriteTableData();
 

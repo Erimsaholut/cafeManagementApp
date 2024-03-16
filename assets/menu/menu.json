@@ -88,7 +88,7 @@
     {
       "id": 10,
       "name": "Tavuk Döner",
-      "price": 6.99,
+      "price": 30.0,
       "type": "food",
       "ingredients": [
         "Ketçap",
@@ -100,7 +100,7 @@
     {
       "id": 11,
       "name": "Kokoreç",
-      "price": 5.49,
+      "price": 55.50,
       "type": "food",
       "ingredients": [
         "Acı",

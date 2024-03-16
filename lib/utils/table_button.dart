@@ -2,7 +2,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart
 import 'package:flutter/material.dart';
 
 import 'is_table_name_null.dart';
-import '../pages/show_items.dart';
+import '../pages/main_table_screen.dart';
 
 /*Siparişlerin değerleri burada mı tutulacak ayrı dosyadan mı çekilecek ona bak
  sistem oluştuğuda*/
@@ -32,7 +32,7 @@ class _CustomTableState extends State<CustomTable> {
               PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (_, __, ___) =>
-                    CustomTableMenu(
+                    MainTableScreen(
                       tableNum: widget.tableNum,
                       tableName: widget.tableName,
                     ),

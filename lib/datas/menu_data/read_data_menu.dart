@@ -164,7 +164,6 @@ class ReadData {
   Future<double> getItemPrice(String itemName) async {
     try {
       final file = await _localFile;
-      print("prodname = $itemName");
 
       if (await file.exists()) {
 
@@ -178,7 +177,6 @@ class ReadData {
 
           for(var i in menu){
             if(i["name"]==itemName){
-              print(i["price"]);
               return i["price"];
             }
           }
