@@ -23,6 +23,7 @@ class PageIndicator extends StatelessWidget {
     if (!isOnDesktopAndWeb) {
       return const SizedBox.shrink();
     }
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Container(
@@ -36,9 +37,7 @@ class PageIndicator extends StatelessWidget {
               splashRadius: 16.0,
               padding: EdgeInsets.zero,
               onPressed: () {
-                if (currentPageIndex == 0) {
-                  return;
-                }
+                if (currentPageIndex == 0) return;
                 onUpdateCurrentPageIndex(currentPageIndex - 1);
               },
               icon: const Icon(
@@ -55,9 +54,7 @@ class PageIndicator extends StatelessWidget {
               splashRadius: 16.0,
               padding: EdgeInsets.zero,
               onPressed: () {
-                if (currentPageIndex == 2) {
-                  return;
-                }
+                if (currentPageIndex == 2) return;
                 onUpdateCurrentPageIndex(currentPageIndex + 1);
               },
               icon: const Icon(
@@ -79,8 +76,7 @@ class AnalysesPage extends StatefulWidget {
   State<AnalysesPage> createState() => _AnalysesPageState();
 }
 
-class _AnalysesPageState extends State<AnalysesPage>
-    with TickerProviderStateMixin {
+class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMixin {
   late PageController _pageViewController;
   late TabController _tabController;
   int _currentPageIndex = 0;
@@ -109,11 +105,10 @@ class _AnalysesPageState extends State<AnalysesPage>
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber.withOpacity(0.6),
-        title: Text('Analyses'),
+        title: const Text('Analyses'),
       ),
       body: Column(
         children: [
@@ -128,21 +123,24 @@ class _AnalysesPageState extends State<AnalysesPage>
                 });
               },
               children: <Widget>[
-                Column(children: [
-                  const Expanded(flex:1,child: Text("abc")),
-                  Expanded(flex:20,
-                    child: Container(
-                        color: Colors.blue, child: const LineChartSample2()),
-                  ),
-                  Expanded(flex:1,child: Text("abc")),
-                ]),
-                Column(children: [
-                  Container(color: Colors.red, child: PieChartSample2())
-                ]),
                 Column(
                   children: [
-                    Container(
-                        color: Colors.deepPurple, child: Text('Third Page'))
+                    const Expanded(flex: 1, child: Text("abc")),
+                    Expanded(
+                      flex: 20,
+                      child: Container(color: Colors.blue, child: const LineChartSample2()),
+                    ),
+                    const Expanded(flex: 1, child: Text("abc")),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(color: Colors.red, child: PieChartSample2())
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(color: Colors.deepPurple, child: const Text('Third Page'))
                   ],
                 ),
               ],

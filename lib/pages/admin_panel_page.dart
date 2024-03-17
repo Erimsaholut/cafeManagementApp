@@ -7,7 +7,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
-
 import '../utils/test_graph1.dart';
 
 class AdminPanel extends StatefulWidget {
@@ -30,7 +29,8 @@ class _AdminPanelState extends State<AdminPanel> {
   WriteAnalysesData writeAnalysesData = WriteAnalysesData();
 
   AnalysesReader analysesReader = AnalysesReader();
-  ResetAllAnalysesJsonData resetAllAnalysesJsonData = ResetAllAnalysesJsonData();
+  ResetAllAnalysesJsonData resetAllAnalysesJsonData =
+      ResetAllAnalysesJsonData();
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +47,48 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-              Future<Map<String, dynamic>?> analysesFuture = analysesReader.getDaySet(now.day, now.month, now.year);
+              Map<String, dynamic>? monthlySales = await analysesReader.getMonthlyTotalRevenue(now.month, now.year, splitIntoWeeks: true);
+              print(monthlySales);
+            },
+            child: Text("Aylık kazanç salla"),
+          ),
+
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              int month = now.month; // Mevcut ay
+              int year = now.year; // Mevcut yıl
+
+              Map<int, Map<String, int>>? monthlySales =
+                  await analysesReader.getMonthlyProductSales(month, year);
+              if (monthlySales != null) {
+                // Sonuçları yazdır
+
+                monthlySales.forEach((week, sales) {
+                  print('Hafta $week Satışları:');
+                  sales.forEach((product, quantity) {
+                    print('$product: $quantity');
+                  });
+                });
+                print("#############");
+                print(monthlySales);
+              } else {
+
+              }
+            },
+            child: Text("Aylık Satış Verilerini Getir"),
+          ),
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              Future<Map<String, dynamic>?> analysesFuture =
+                  analysesReader.getDaySet(now.day, now.month, now.year);
               analysesFuture.then((analyses) {
                 if (analyses != null) {
                   print("Bugünkü analizler: $analyses");
                   // Analiz verilerini kullanabilirsiniz
-                  Future<double> totalRevenueFuture = analysesReader.getDaysTotalRevenue(now.day, now.month, now.year);
+                  Future<double> totalRevenueFuture = analysesReader
+                      .getDaysTotalRevenue(now.day, now.month, now.year);
                   totalRevenueFuture.then((totalRevenue) {
                     print("Bugünün toplam geliri: $totalRevenue");
                   });
@@ -63,66 +99,50 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: Text("Bugünün analizlerini al"),
           ),
-
-
-
           TextButton(
-              onPressed: () {
-                DateTime now = DateTime.now();
+            onPressed: () {
+              DateTime now = DateTime.now();
 
-                print("${now.day}.${now.month}.${now.year}");
-                print(now.day);
-              },
-              child: Text("Date"),),
-
+              print("${now.day}.${now.month}.${now.year}");
+              print(now.day);
+            },
+            child: Text("Date"),
+          ),
           TextButton(
             onPressed: () async {
-
-              Object analysesRaw = (await analysesReader.getRawData()) as Object;
+              Object analysesRaw =
+                  (await analysesReader.getRawData()) as Object;
               print(analysesRaw);
-
             },
             child: const Text("show dates"),
           ),
-
-
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-            writeAnalysesData.addItemToAnalysesJson("Çay",1);
-
+              writeAnalysesData.addItemToAnalysesJson("Çay", 1);
             },
             child: const Text("1 adet çay ekle"),
           ),
-
           TextButton(
             onPressed: () async {
-              writeAnalysesData.addItemToAnalysesJson("Su",1);
-
+              writeAnalysesData.addItemToAnalysesJson("Su", 1);
             },
             child: const Text("1 adet Su ekle"),
           ),
-
           TextButton(
             onPressed: () async {
-              writeAnalysesData.addItemToAnalysesJson( "Tavuk Döner",2);
-
+              writeAnalysesData.addItemToAnalysesJson("Tavuk Döner", 2);
             },
             child: const Text("2 adet Tavuk Döner ekle"),
           ),
-
           TextButton(
             onPressed: () async {
               resetAllAnalysesJsonData.resetAllTableJsonFiles();
-
             },
             child: const Text("Reset all the analyses data"),
           ),
-
-
           TextButton(
             onPressed: () async {
-
               Object menu = (await readNewData.readJsonData()) as Object;
               print(menu);
               int menuItemCount = await readNewData.getMenuItemCount();

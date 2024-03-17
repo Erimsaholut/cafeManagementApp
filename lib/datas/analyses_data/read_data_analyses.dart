@@ -64,7 +64,6 @@ class AnalysesReader {
     }
   }
 
-
   Future<void> writeJsonData(String jsonData) async {
     final file = await _localFile;
     try {
@@ -74,4 +73,101 @@ class AnalysesReader {
       print('JSON data write error: $e');
     }
   }
+
+  Future<Map<String, int>?> getDailyProductSales(int day, int month, int year) async {
+    String date = "$day.$month.$year";
+    Map<String, dynamic>? rawData = await getRawData();
+
+    if (rawData != null && rawData.containsKey("sales")) {
+      Map<String, dynamic> salesData = rawData["sales"];
+      if (salesData.containsKey(date)) {
+        Map<String, dynamic> dayData = salesData[date];
+        if (dayData.containsKey("products")) {
+          Map<String, dynamic> products = dayData["products"];
+          Map<String, int> dailySales = {};
+          products.forEach((key, value) {
+            dailySales[key] = value["quantity"];
+          });
+          return dailySales;
+        } else {
+          print("Belirtilen tarihe ait ürün verisi bulunamadı.");
+          return null;
+        }
+      } else {
+        print("Belirtilen tarihe ait satış verisi bulunamadı.");
+        return null;
+      }
+    } else {
+      print("Satış verileri bulunamadı veya işlenemedi.");
+      return null;
+    }
+  }
+
+  Future<Map<int, Map<String, int>>?> getMonthlyProductSales(int month, int year, {bool splitIntoWeeks = false}) async {
+    Map<int, Map<String, int>> monthlySales = {};
+
+    // İlgili ayın ilk günü ve son günü
+    DateTime startDate = DateTime(year, month, 1);
+    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
+
+    for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(Duration(days: 1))) {
+      int weekNumber = splitIntoWeeks ? (date.day / 7).ceil() : 1; // splitIntoWeeks true ise haftalara bölecek, false ise 1 olarak ayarlanacak
+      int day = date.day;
+      int month = date.month;
+      int year = date.year;
+
+      Map<String, int>? dailySales = await getDailyProductSales(day, month, year);
+      if (dailySales != null) {
+        // Haftalık satışları güncelle
+        if (!monthlySales.containsKey(weekNumber)) {
+          monthlySales[weekNumber] = {};
+        }
+        dailySales.forEach((product, quantity) {
+          monthlySales[weekNumber]!.update(product, (value) => value + quantity, ifAbsent: () => quantity);
+        });
+      }
+    }
+
+    return monthlySales.isNotEmpty ? monthlySales : null;
+  }
+
+  Future<Map<String, dynamic>?> getMonthlyTotalRevenue(int month, int year, {bool splitIntoWeeks = false}) async {
+    Map<String, dynamic> monthlyRevenue = {};
+
+    // İlgili ayın ilk günü ve son günü
+    DateTime startDate = DateTime(year, month, 1);
+    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
+
+    double totalRevenue = 0.0;
+
+    int currentWeek = 1;
+
+    for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(Duration(days: 1))) {
+      int weekNumber = splitIntoWeeks ? (date.day / 7).ceil() : 1; // splitIntoWeeks true ise haftalara bölecek, false ise 1 olarak ayarlanacak
+      int day = date.day;
+
+      if (weekNumber != currentWeek) {
+        // Yeni hafta başladı, toplam geliri sıfırla
+        if (splitIntoWeeks) {
+          monthlyRevenue[currentWeek.toString()] = totalRevenue;
+        }
+        totalRevenue = 0.0;
+        currentWeek = weekNumber;
+      }
+
+      double dayRevenue = await getDaysTotalRevenue(day, month, year);
+      if (dayRevenue != -1.0) {
+        totalRevenue += dayRevenue;
+      }
+
+      if (!splitIntoWeeks && date == endDate) {
+        // Son gün ve haftalara bölmüyoruz, toplamı ekle
+        monthlyRevenue["1"] = totalRevenue;
+      }
+    }
+
+    return monthlyRevenue.isNotEmpty ? monthlyRevenue : null;
+  }
+
+
 }
