@@ -7,7 +7,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
-import '../utils/test_graph1.dart';
+import '../utils/aylik_veri_adet.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
@@ -118,28 +118,15 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
           TextButton(
             onPressed: () async {
-              DateTime now = DateTime.now();
-              writeAnalysesData.addItemToAnalysesJson("Çay", 1);
-            },
-            child: const Text("1 adet çay ekle"),
-          ),
-          TextButton(
-            onPressed: () async {
-              writeAnalysesData.addItemToAnalysesJson("Su", 1);
-            },
-            child: const Text("1 adet Su ekle"),
-          ),
-          TextButton(
-            onPressed: () async {
-              writeAnalysesData.addItemToAnalysesJson("Tavuk Döner", 2);
-            },
-            child: const Text("2 adet Tavuk Döner ekle"),
-          ),
-          TextButton(
-            onPressed: () async {
               resetAllAnalysesJsonData.resetAllTableJsonFiles();
             },
             child: const Text("Reset all the analyses data"),
+          ),
+          TextButton(
+            onPressed: () async {
+              resetAllAnalysesJsonData.loadExampleJsonData();
+            },
+            child: const Text("LoadExampleJsonData"),
           ),
           TextButton(
             onPressed: () async {
@@ -237,7 +224,7 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("customAlert"),
           ),
-          const LineChartSample2(),
+          const MonthlyDataChart(),
         ],
       ),
     );

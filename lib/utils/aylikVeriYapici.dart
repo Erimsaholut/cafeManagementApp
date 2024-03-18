@@ -1,27 +1,71 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LineChartSample2 extends StatefulWidget {
-  const LineChartSample2({super.key});
+class CustomMonthlyChart extends StatefulWidget {
+  CustomMonthlyChart({super.key, required this.valueList});
+
+  List<double> valueList;
 
   @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
+  State<CustomMonthlyChart> createState() => _CustomMonthlyChartState();
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _CustomMonthlyChartState extends State<CustomMonthlyChart> {
   List<Color> gradientColors = [
     Colors.green,
     Colors.deepPurple,
   ];
 
   bool showAvg = false;
+  late List<double> sortedList;
+  late double minValue;
+  late double maxValue;
+  late int itemCount; // Item sayısı
+  late Map<double, double> relativeFrequencies; // Göreli sıklık değerleri
+
+  @override
+  void initState() {
+    super.initState();
+    // Değer listesini sırala
+    sortedList = List.from(widget.valueList)..sort();
+    minValue = sortedList.first;
+    maxValue = sortedList.last;
+    itemCount = sortedList.length; // Item sayısını atama
+    calculateRelativeFrequencies();
+    print(relativeFrequencies);
+  }
+
+  // Her bir öğenin göreli sıklığını hesaplayan metod
+  void calculateRelativeFrequencies() {
+    relativeFrequencies = {};
+    double totalSum =
+        widget.valueList.reduce((a, b) => a + b); // Toplam değeri hesapla
+
+    widget.valueList.forEach((item) {
+      relativeFrequencies[item] =
+          item * 10 / totalSum; // Göreli sıklığı hesapla
+    });
+  }
+
+  List<FlSpot> flSpotList(Map<double, double> datas) {
+    List<FlSpot> spotList = [];
+    int index = 0; // Sıra numarası için bir sayaç
+
+    // Verilen göreli sıklık verilerini döngüye al
+    datas.values.forEach((relativeFrequency) {
+      spotList.add(FlSpot(index.toDouble(), relativeFrequency)); // Yeni FlSpot nesnesini listeye ekle
+      index++; // Sıra numarasını artır
+    });
+
+    return spotList;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 3.10,
+          aspectRatio: 3.00,
           child: Padding(
             padding: const EdgeInsets.only(
               right: 18,
@@ -45,40 +89,16 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
     Widget text;
     switch (value.toInt()) {
+      case 0:
+        text = const Text('1.Hafta', style: style);
+        break;
       case 1:
-        text = const Text('OCK', style: style);
-        break;
+        text = const Text('2.Hafta', style: style);
       case 2:
-        text = const Text('ŞUB', style: style);
+        text = const Text('3.Hafta', style: style);
+        break;
       case 3:
-        text = const Text('MRT', style: style);
-        break;
-      case 4:
-        text = const Text('NİS', style: style);
-        break;
-      case 5:
-        text = const Text('MAY', style: style);
-        break;
-      case 6:
-        text = const Text('HAZ', style: style);
-        break;
-      case 7:
-        text = const Text('TEM', style: style);
-        break;
-      case 8:
-        text = const Text('AGS', style: style);
-        break;
-      case 9:
-        text = const Text('EYL', style: style);
-        break;
-      case 10:
-        text = const Text('EKM', style: style);
-        break;
-      case 11:
-        text = const Text('KAS', style: style);
-        break;
-      case 12:
-        text = const Text('ARL', style: style);
+        text = const Text('4.Hafta', style: style);
         break;
       default:
         text = const Text('', style: style);
@@ -98,14 +118,15 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
     String text;
     switch (value.toInt()) {
+      //todo max ve min değerleri yazdırılacak buraya
       case 1:
-        text = '10K';
+        text = '${minValue.floor()} Tl';
+        break;
+      case 2:
+        text = '${((maxValue + minValue) / 2).round()} Tl';
         break;
       case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
+        text = '${maxValue.ceil()} Tl';
         break;
       default:
         return Container();
@@ -147,7 +168,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
             showTitles: true,
             reservedSize: 30,
             interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
+            getTitlesWidget: bottomTitleWidgets, /*alttaki yazılar*/
           ),
         ),
         leftTitles: AxisTitles(
@@ -155,7 +176,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
             showTitles: true,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            /*soldaki yazılar*/
+            reservedSize: 62,
           ),
         ),
       ),
@@ -164,23 +186,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
         border: Border.all(color: const Color(0xff37434d)),
       ),
       minX: 0,
-      maxX: 12,
+      maxX: 3,
       minY: 0,
-      maxY: 6,
+      maxY: 4,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(1.3, 6),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-            FlSpot(12, 5),
-          ],
-          isCurved: true,
+          //todo değerler girilecek döngü ile
+          spots: [...flSpotList(relativeFrequencies)],
+          isCurved: false,
           gradient: LinearGradient(
             colors: gradientColors,
           ),
@@ -201,5 +214,4 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ],
     );
   }
-
 }

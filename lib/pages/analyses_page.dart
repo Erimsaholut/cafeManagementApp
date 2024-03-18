@@ -1,7 +1,8 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/aylikVeriYapici.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../utils/test_graph1.dart';
+import '../utils/aylik_veri_adet.dart';
 import '../utils/test_graph2.dart';
 
 class PageIndicator extends StatelessWidget {
@@ -125,12 +126,12 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
               children: <Widget>[
                 Column(
                   children: [
-                    const Expanded(flex: 1, child: Text("abc")),
-                    Expanded(
-                      flex: 20,
-                      child: Container(color: Colors.blue, child: const LineChartSample2()),
-                    ),
-                    const Expanded(flex: 1, child: Text("abc")),
+                    Container(child: CustomMonthlyChart(valueList: const [1084.23,1089.1,725.2,1400.3],),)
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container( child: const MonthlyDataChart()),
                   ],
                 ),
                 Column(
@@ -138,11 +139,7 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
                     Container(color: Colors.red, child: PieChartSample2())
                   ],
                 ),
-                Column(
-                  children: [
-                    Container(color: Colors.deepPurple, child: const Text('Third Page'))
-                  ],
-                ),
+
               ],
             ),
           ),

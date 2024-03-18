@@ -169,5 +169,4 @@ class AnalysesReader {
     return monthlyRevenue.isNotEmpty ? monthlyRevenue : null;
   }
 
-
 }
