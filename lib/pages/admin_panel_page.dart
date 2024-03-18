@@ -47,11 +47,22 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-              Map<String, dynamic>? monthlySales = await analysesReader.getMonthlyTotalRevenue(now.month, now.year, splitIntoWeeks: true);
+              Map<String, dynamic>? monthlySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year, splitIntoWeeks: true);
               print(monthlySales);
             },
-            child: Text("Aylık kazanç salla"),
+            child: Text("Aylık kazanç salla her hafta"),
           ),
+
+          TextButton(
+            onPressed: () async {
+              DateTime now = DateTime.now();
+              Map<String, double>? monthlySales = await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
+              print(monthlySales);
+            },
+            child: Text("Aylık kazanç salla her gün"),
+          ),
+
+
 
           TextButton(
             onPressed: () async {
@@ -60,7 +71,7 @@ class _AdminPanelState extends State<AdminPanel> {
               int year = now.year; // Mevcut yıl
 
               Map<int, Map<String, int>>? monthlySales =
-                  await analysesReader.getMonthlyProductSales(month, year);
+                  await analysesReader.getWeeklyProductSalesForMonth(month, year);
               if (monthlySales != null) {
                 // Sonuçları yazdır
 

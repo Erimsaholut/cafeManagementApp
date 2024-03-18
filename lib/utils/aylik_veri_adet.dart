@@ -74,13 +74,13 @@ class _MonthlyDataChartState extends State<MonthlyDataChart> {
     );
     String text;
     switch (value.toInt()) {//todo max ve min değerleri yazdırılacak buraya
-      case 1:
+      case 25:
         text = '1K';
         break;
-      case 3:
+      case 50:
         text = '30k';
         break;
-      case 5:
+      case 75:
         text = '5k';
         break;
       default:
@@ -95,7 +95,7 @@ class _MonthlyDataChartState extends State<MonthlyDataChart> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
+        horizontalInterval: 10,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return const FlLine(
@@ -142,14 +142,14 @@ class _MonthlyDataChartState extends State<MonthlyDataChart> {
       minX: 0,
       maxX: 3,
       minY: 0,
-      maxY:8,
+      maxY:100,
       lineBarsData: [
         LineChartBarData(  //todo değerler girilecek döngü ile
           spots: const [
             FlSpot(0, 3),
-            FlSpot(1, 3.4),
-            FlSpot(2, 7.7),
-            FlSpot(3, 1.9),
+            FlSpot(1, 34),
+            FlSpot(2, 77),
+            FlSpot(3, 19),
           ],
           isCurved: false,
           gradient: LinearGradient(
