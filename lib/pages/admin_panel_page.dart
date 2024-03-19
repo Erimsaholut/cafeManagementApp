@@ -47,7 +47,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-              Map<String, dynamic>? monthlySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year, splitIntoWeeks: true);
+              Map<String, dynamic>? monthlySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
               print(monthlySales);
             },
             child: Text("Aylık kazanç salla her hafta"),

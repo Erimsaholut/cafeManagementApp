@@ -1,8 +1,6 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/aylikVeriYapici.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
+import '../utils/aylikVeriYapici.dart';
 import '../utils/test_graph2.dart';
 
 class PageIndicator extends StatelessWidget {
@@ -78,40 +76,40 @@ class AnalysesPage extends StatefulWidget {
 }
 
 class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMixin {
-  late PageController _pageViewController;
+  late PageController _pageController;
   late TabController _tabController;
   int _currentPageIndex = 0;
-  List<double> valueList = [];
+  List<double> monthlyRevenueValues = [];
+  List<double> weeklyRevenueValues = [];
 
   @override
   void initState() {
     super.initState();
-    _pageViewController = PageController();
+    _pageController = PageController();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
 
-    // listSeparator fonksiyonunu çağırıp sonucu değer listesine atıyoruz
-    _loadValueList();
-  }
-
-  // Değer listesini dolduran fonksiyon
-  Future<void> _loadValueList() async {
-    valueList = await listSeparator();
-    setState(() {}); // Widget'ın yeniden çizilmesi için setState kullanıyoruz
+    _loadRevenueValues();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _pageViewController.dispose();
+    _pageController.dispose();
     _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
   }
 
   void _handleTabSelection() {
     if (!_tabController.indexIsChanging) {
-      _pageViewController.jumpToPage(_tabController.index);
+      _pageController.jumpToPage(_tabController.index);
     }
+  }
+
+  Future<void> _loadRevenueValues() async {
+    monthlyRevenueValues = await fetchMonthlyRevenueValues();
+    weeklyRevenueValues = await fetchWeeklyRevenueValues();
+    setState(() {});
   }
 
   @override
@@ -126,7 +124,7 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
           Expanded(
             flex: 6,
             child: PageView(
-              controller: _pageViewController,
+              controller: _pageController,
               onPageChanged: (index) {
                 setState(() {
                   _currentPageIndex = index;
@@ -136,11 +134,12 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
               children: <Widget>[
                 Column(
                   children: [
-                    Container(child: CustomMonthlyChart(valueList: valueList),)
+                    Container(child: CustomMonthlyChart(valueList: monthlyRevenueValues),)
                   ],
                 ),
                 Column(
                   children: [
+                    Container(child: CustomMonthlyChart(valueList: weeklyRevenueValues),)
                   ],
                 ),
                 Column(
@@ -148,7 +147,6 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
                     Container(color: Colors.red, child: PieChartSample2())
                   ],
                 ),
-
               ],
             ),
           ),
@@ -158,7 +156,7 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
               tabController: _tabController,
               currentPageIndex: _currentPageIndex,
               onUpdateCurrentPageIndex: (index) {
-                _pageViewController.animateToPage(
+                _pageController.animateToPage(
                   index,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut,
@@ -173,12 +171,20 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
   }
 }
 
-Future<List<double>> listSeparator() async {
+Future<List<double>> fetchMonthlyRevenueValues() async {
   AnalysesReader analysesReader = AnalysesReader();
-  List<double> valueList = [];
   DateTime now = DateTime.now();
   Map<String, double>? monthlySales = await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
-  valueList = monthlySales.values.toList();
-
-  return valueList;
+  List<double> revenueValues = monthlySales?.values.toList() ?? [];
+  return revenueValues;
 }
+
+Future<List<double>> fetchWeeklyRevenueValues() async {
+  AnalysesReader analysesReader = AnalysesReader();
+  DateTime now = DateTime.now();
+  Map<String, double>? weeklySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
+  List<double> revenueValues = weeklySales?.values.toList() ?? [];
+  print("revenueValues:$revenueValues");
+  return revenueValues;
+}
+//todo baştaki hata muhabbetini çöz ve ekrana hizalamasını düzgün yap

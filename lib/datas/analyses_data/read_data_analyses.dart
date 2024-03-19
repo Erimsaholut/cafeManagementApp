@@ -131,26 +131,23 @@ class AnalysesReader {
     return monthlySales.isNotEmpty ? monthlySales : null;
   }
 
-  Future<Map<String, dynamic>?> getWeeklyTotalRevenueForMonth(int month, int year, {bool splitIntoWeeks = false}) async {
-    Map<String, dynamic> monthlyRevenue = {};
+  Future<Map<String, double>> getWeeklyTotalRevenueForMonth(int month, int year) async {
+    Map<String, double> monthlyRevenue = {};
 
     // İlgili ayın ilk günü ve son günü
     DateTime startDate = DateTime(year, month, 1);
     DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
 
     double totalRevenue = 0.0;
-
     int currentWeek = 1;
 
     for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(Duration(days: 1))) {
-      int weekNumber = splitIntoWeeks ? (date.day / 7).ceil() : 1;
+      int weekNumber = (date.day / 7).ceil();
       int day = date.day;
 
       if (weekNumber != currentWeek) {
         // Yeni hafta başladı, toplam geliri sıfırla
-        if (splitIntoWeeks) {
-          monthlyRevenue[currentWeek.toString()] = totalRevenue;
-        }
+        monthlyRevenue[currentWeek.toString()] = totalRevenue;
         totalRevenue = 0.0;
         currentWeek = weekNumber;
       }
@@ -160,14 +157,15 @@ class AnalysesReader {
         totalRevenue += dayRevenue;
       }
 
-      if (!splitIntoWeeks && date == endDate) {
-        // Son gün ve haftalara bölmüyoruz, toplamı ekle
-        monthlyRevenue["1"] = totalRevenue;
+      if (date == endDate) {
+        // Son gün, toplamı ekle
+        monthlyRevenue[currentWeek.toString()] = totalRevenue;
       }
     }
 
-    return monthlyRevenue.isNotEmpty ? monthlyRevenue : null;
+    return monthlyRevenue.isNotEmpty ? monthlyRevenue : {};
   }
+
 
   Future<Map<String, double>> getDailyTotalRevenueForMonth(int month, int year) async {
     Map<String, double> dailyTotalRevenue = {};
