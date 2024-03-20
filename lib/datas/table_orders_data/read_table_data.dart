@@ -70,7 +70,7 @@ class TableReader {
       }
     } catch (e) {
       print('Raw data read error: $e');
-      return -1;
+      return 1;
     }
   }
 

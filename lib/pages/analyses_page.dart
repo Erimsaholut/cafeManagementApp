@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import '../utils/aylikVeriYapici.dart';
+import 'package:flutter/widgets.dart';
+import '../utils/custom_line_chart.dart';
 import '../utils/test_graph2.dart';
 
 class PageIndicator extends StatelessWidget {
@@ -38,6 +40,7 @@ class PageIndicator extends StatelessWidget {
               onPressed: () {
                 if (currentPageIndex == 0) return;
                 onUpdateCurrentPageIndex(currentPageIndex - 1);
+
               },
               icon: const Icon(
                 Icons.arrow_left_rounded,
@@ -92,13 +95,6 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
     _loadRevenueValues();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-    _tabController.removeListener(_handleTabSelection);
-    _tabController.dispose();
-  }
 
   void _handleTabSelection() {
     if (!_tabController.indexIsChanging) {
@@ -107,9 +103,24 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
   }
 
   Future<void> _loadRevenueValues() async {
-    monthlyRevenueValues = await fetchMonthlyRevenueValues();
-    weeklyRevenueValues = await fetchWeeklyRevenueValues();
-    setState(() {});
+    try {
+      // Paralel istekler yapılıyor
+      final monthlyFuture = fetchMonthlyRevenueValues();
+      final weeklyFuture = fetchWeeklyRevenueValues();
+
+      // Veriler beklendiği gibi alınıyor
+      monthlyRevenueValues = await monthlyFuture;
+      weeklyRevenueValues = await weeklyFuture;
+    } catch (error) {
+      // Hata durumunda kullanıcıya bilgi vermek için uygun bir geri bildirim sağlanabilir
+      print("Hata oluştu: $error");
+      // Hata durumunda verileri sıfırlayabilir veya varsayılan bir değer atayabilirsiniz
+      monthlyRevenueValues = [];
+      weeklyRevenueValues = [];
+    } finally {
+      // setState çağrısı veri yüklendikten sonra yapılıyor
+      setState(() {});
+    }
   }
 
   @override
@@ -123,7 +134,11 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
         children: [
           Expanded(
             flex: 6,
-            child: PageView(
+            child: monthlyRevenueValues.isEmpty
+                ? Center(
+              child: CircularProgressIndicator(), // veya uygun bir yüklenme göstergesi
+            )
+                : PageView(
               controller: _pageController,
               onPageChanged: (index) {
                 setState(() {
@@ -134,22 +149,32 @@ class _AnalysesPageState extends State<AnalysesPage> with TickerProviderStateMix
               children: <Widget>[
                 Column(
                   children: [
-                    Container(child: CustomMonthlyChart(valueList: monthlyRevenueValues),)
+                    Expanded(
+                      child: CustomLineChart(valueList: monthlyRevenueValues),
+                    ),
                   ],
                 ),
                 Column(
                   children: [
-                    Container(child: CustomMonthlyChart(valueList: weeklyRevenueValues),)
+                    Expanded(
+                      child: CustomLineChart(valueList: weeklyRevenueValues),
+                    ),
                   ],
                 ),
                 Column(
                   children: [
-                    Container(color: Colors.red, child: PieChartSample2())
+                    Expanded(
+                      child: Container(
+                        color: Colors.red,
+                        child: const PieChartSample2(),
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
+
           Expanded(
             flex: 1,
             child: PageIndicator(
@@ -175,7 +200,7 @@ Future<List<double>> fetchMonthlyRevenueValues() async {
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
   Map<String, double>? monthlySales = await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
-  List<double> revenueValues = monthlySales?.values.toList() ?? [];
+  List<double> revenueValues = monthlySales.values.toList() ?? [];
   return revenueValues;
 }
 
@@ -183,7 +208,7 @@ Future<List<double>> fetchWeeklyRevenueValues() async {
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
   Map<String, double>? weeklySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
-  List<double> revenueValues = weeklySales?.values.toList() ?? [];
+  List<double> revenueValues = weeklySales.values.toList() ?? [];
   print("revenueValues:$revenueValues");
   return revenueValues;
 }

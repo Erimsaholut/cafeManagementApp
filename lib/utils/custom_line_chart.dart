@@ -2,23 +2,22 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class CustomMonthlyChart extends StatefulWidget {
-  CustomMonthlyChart({super.key, required this.valueList});
+class CustomLineChart extends StatefulWidget {
+  CustomLineChart({super.key, required this.valueList});
 
   List<double> valueList;
 
   @override
-  State<CustomMonthlyChart> createState() => _CustomMonthlyChartState();
+  State<CustomLineChart> createState() => _CustomLineChartState();
 }
 
-class _CustomMonthlyChartState extends State<CustomMonthlyChart> {
+class _CustomLineChartState extends State<CustomLineChart> {
   List<Color> gradientColors = [
     Colors.green,
     Colors.deepPurple,
     Colors.red,
   ];
 
-  bool showAvg = false;
   late List<double> sortedList;
   late double minValue;
   late double maxValue;

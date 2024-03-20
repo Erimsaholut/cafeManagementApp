@@ -1,13 +1,12 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
-import '../utils/aylik_veri_adet.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
@@ -44,6 +43,9 @@ class _AdminPanelState extends State<AdminPanel> {
       ),
       body: ListView(
         children: [
+          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
+          TextButton(onPressed: (){}, child: Text("Reset Everything")),
+          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
@@ -61,8 +63,6 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: Text("Aylık kazanç salla her gün"),
           ),
-
-
 
           TextButton(
             onPressed: () async {
@@ -139,6 +139,9 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("LoadExampleJsonData"),
           ),
+
+          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
+
           TextButton(
             onPressed: () async {
               Object menu = (await readNewData.readJsonData()) as Object;
@@ -163,6 +166,7 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("separeted menu items"),
           ),
+          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
           TextButton(
             onPressed: () async {
               String? cafeName = await readNewData.getCafeName();
@@ -235,7 +239,6 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("customAlert"),
           ),
-          const MonthlyDataChart(),
         ],
       ),
     );
