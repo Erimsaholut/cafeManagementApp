@@ -1,15 +1,28 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class PieChartSample2 extends StatefulWidget {
-  const PieChartSample2({super.key});
+class CustomPieChart extends StatefulWidget {
+  const CustomPieChart({Key? key, required this.itemList}) : super(key: key);
+  final Map<int, Map<String, int>> itemList;
 
   @override
   State<StatefulWidget> createState() => PieChart2State();
 }
 
-class PieChart2State extends State {
+class PieChart2State extends State<CustomPieChart> {
   int touchedIndex = -1;
+  late Map<String, int> orderedByCount;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.itemList);
+    orderedByCount = orderByCount();
+  }
+
+  Map<String, int> orderByCount(){
+    return {};
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +35,7 @@ class PieChart2State extends State {
           ),
           Expanded(
             child: AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 3,
               child: PieChart(
                 PieChartData(
                   pieTouchData: PieTouchData(
@@ -43,8 +56,8 @@ class PieChart2State extends State {
                     show: false,
                   ),
                   sectionsSpace: 0,
-                  centerSpaceRadius: 40,
-                  sections: showingSections(),
+                  centerSpaceRadius: 0,
+                  sections: showingSections(), /*bölümleri buradan çekiyor*/
                 ),
               ),
             ),
@@ -58,24 +71,15 @@ class PieChart2State extends State {
                 text: 'First',
                 isSquare: true,
               ),
-              SizedBox(
-                height: 4,
-              ),
               Indicator(
                 color: AppColors.contentColorYellow,
                 text: 'Second',
                 isSquare: true,
               ),
-              SizedBox(
-                height: 4,
-              ),
               Indicator(
                 color: AppColors.contentColorPurple,
                 text: 'Third',
                 isSquare: true,
-              ),
-              SizedBox(
-                height: 4,
               ),
               Indicator(
                 color: AppColors.contentColorGreen,
@@ -86,7 +90,7 @@ class PieChart2State extends State {
                 height: 18,
               ),
             ],
-          ),
+          ), /*sağdaki indicatorlar*/
           const SizedBox(
             width: 28,
           ),
@@ -96,17 +100,17 @@ class PieChart2State extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
+    return List.generate(7, (i) {
       final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
+      final fontSize = isTouched ? 32.0 : 24.0;
+      final radius = isTouched ? 300.0 : 250.0; //todo mesela bunlar falan cihaza göre ayarlanmalı
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
         case 0:
           return PieChartSectionData(
             color: AppColors.contentColorBlue,
             value: 40,
-            title: '40%',
+            title: '40%\nÇay',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -119,7 +123,7 @@ class PieChart2State extends State {
           return PieChartSectionData(
             color: AppColors.contentColorYellow,
             value: 30,
-            title: '30%',
+            title: '30%\nTavuk Döner',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -132,7 +136,7 @@ class PieChart2State extends State {
           return PieChartSectionData(
             color: AppColors.contentColorPurple,
             value: 15,
-            title: '15%',
+            title: '15%\nIce Chocolate Mocca',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -145,12 +149,51 @@ class PieChart2State extends State {
           return PieChartSectionData(
             color: AppColors.contentColorGreen,
             value: 15,
-            title: '15%',
+            title: '15% test',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: AppColors.mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 4:
+          return PieChartSectionData(
+            color: Colors.pink,
+            value: 15,
+            title: '15% mest',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 5:
+          return PieChartSectionData(
+            color: AppColors.contentColorWhite,
+            value: 15,
+            title: '15% hest',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.pink,
+              shadows: shadows,
+            ),
+          );
+        case 6:
+          return PieChartSectionData(
+            color: Colors.orangeAccent,
+            value: 15,
+            title: '15% diğerleri',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.amber,
               shadows: shadows,
             ),
           );
@@ -160,13 +203,14 @@ class PieChart2State extends State {
     });
   }
 }
+
 class Indicator extends StatelessWidget {
   const Indicator({
     super.key,
     required this.color,
     required this.text,
     required this.isSquare,
-    this.size = 16,
+    this.size = 32,
     this.textColor,
   });
   final Color color;
@@ -177,27 +221,32 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-            color: color,
-          ),
+    return Column(
+      children: [
+        Row(
+          children: <Widget>[
+            Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+                color: color,
+              ),
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+            )
+          ],
         ),
-        const SizedBox(
-          width: 4,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        )
+        SizedBox(height: (size/2),),
       ],
     );
   }

@@ -43,16 +43,16 @@ class _AdminPanelState extends State<AdminPanel> {
       ),
       body: ListView(
         children: [
-          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
-          TextButton(onPressed: (){}, child: Text("Reset Everything")),
-          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
+          Container(color: Colors.red,child: const SizedBox(width: 20,height: 20,),),
+          TextButton(onPressed: (){}, child: const Text("Reset Everything")),
+          Container(color: Colors.red,child: const SizedBox(width: 20,height: 20,),),
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
               Map<String, dynamic>? monthlySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
               print(monthlySales);
             },
-            child: Text("Aylık kazanç salla her hafta"),
+            child: const Text("Aylık kazanç salla her hafta"),
           ),
 
           TextButton(
@@ -61,14 +61,14 @@ class _AdminPanelState extends State<AdminPanel> {
               Map<String, double>? monthlySales = await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
               print(monthlySales);
             },
-            child: Text("Aylık kazanç salla her gün"),
+            child: const Text("Aylık kazanç salla her gün"),
           ),
 
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-              int month = now.month; // Mevcut ay
-              int year = now.year; // Mevcut yıl
+              int month = now.month;
+              int year = now.year;
 
               Map<int, Map<String, int>>? monthlySales =
                   await analysesReader.getWeeklyProductSalesForMonth(month, year);
@@ -166,7 +166,7 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("separeted menu items"),
           ),
-          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
+          Container(color: Colors.red,child: const SizedBox(width: 20,height: 20,),),
           TextButton(
             onPressed: () async {
               String? cafeName = await readNewData.getCafeName();
