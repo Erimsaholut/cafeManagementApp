@@ -168,11 +168,8 @@ class _AnalysesPageState extends State<AnalysesPage>
                       Column(
                         children: [
                           Expanded(
-                            child: Container(
-                              color: Colors.red,
-                              child: CustomPieChart(
-                                itemList: monthlyItemValues,
-                              ),
+                            child: CustomPieChart(
+                              itemList: monthlyItemValues,
                             ),
                           ),
                         ],
