@@ -1,6 +1,6 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import '../utils/custom_line_chart.dart';
-import '../utils/custom_pie_graph.dart';
+import '../utils/analysesWidgets/custom_line_chart.dart';
+import '../utils/analysesWidgets/custom_pie_graph.dart';
 import 'package:flutter/material.dart';
 
 class PageIndicator extends StatelessWidget {
@@ -227,5 +227,4 @@ Future<Map<int, Map<String, int>>?> fetchMonthlyItemValues() async {
   return monthlySales;
 }
 
-//todo en son kalan yerlere text döşensin
 //todo belki yıllık özellik gelebilir hatta anlık olarak yıllık ve aylık da yazsa güzel olur yıllık çekince 1000 satır kod çalışıyor anlık amk

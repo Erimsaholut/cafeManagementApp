@@ -1,11 +1,12 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_divider.dart';
 import 'package:flutter/material.dart';
 import '../../../datas/menu_data/read_data_menu.dart';
 
 class EditItems extends StatefulWidget {
-  const EditItems({Key? key}) : super(key: key);
+  const EditItems({super.key});
 
   @override
   State<EditItems> createState() => _EditItemsState();
@@ -58,7 +59,8 @@ class _EditItemsState extends State<EditItems> {
     );
   }
 
-/*raw datayı okutup EditableItem olarak yaratıyor*/
+  /*ilk çalışan*/
+/*raw datayı okutup EditableItem(dümdüz class) olarak yaratıyor*/
   Future<void> _processMenuData() async {
     Map<String, dynamic>? rawMenu = await readData.getRawData();
 
@@ -117,9 +119,14 @@ class _EditItemsState extends State<EditItems> {
                           },
                         ),
                       ],
-                    ),
+                    ),/* (+) (-) butonları*/
+                    SizedBox(height: 15,),
                     const Text('Ingredients:'),
                     ...(indList(item)),
+                    SizedBox(height: 15,),
+                    const Text('Çeşit ekle:'),
+                    const TextField(),
+
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -130,7 +137,7 @@ class _EditItemsState extends State<EditItems> {
                         },
                         child: Text('Delete Item'),
                       ),
-                    ),
+                    ), /*close save*/
                   ],
                 ),
               ),
@@ -199,7 +206,7 @@ class _EditItemsState extends State<EditItems> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.remove_circle),
+              icon: const Icon(Icons.remove_circle),
               onPressed: () {
                 setState(() {
                   editableItem.ingredients.removeAt(i);
@@ -251,3 +258,42 @@ writeData.setExistingItemInMenu(name, price, 0, ingredients);
 
   }
 }
+//todo delete çalışmıyor ind ekleme yok. Silme nedense çalışıyor
+
+/*
+indWidgetList.add(Row(
+      children: [
+        Expanded(
+          child: TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  return Colors.green.shade500;
+                },
+              ),
+            ),
+            onPressed: () {
+              setState(() {
+
+              });
+            },
+            child: Text(
+              "Çeşit Ekle",
+              style: CustomStyles.blackTextStyleS,
+            ),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle_rounded),
+          onPressed: () {
+            setState(() {
+
+              Navigator.pop(context);
+              _showItemDialog(context, editableItem);
+            });
+          },
+        ),
+      ],
+    ));
+
+*/

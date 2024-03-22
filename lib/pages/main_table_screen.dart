@@ -36,6 +36,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: isTableNameNull(widget.tableName, widget.tableNum),
@@ -50,7 +51,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
               color: Colors.lime,
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /*masadaki itemler*/
                   Expanded(
@@ -71,13 +71,12 @@ class _MainTableScreenState extends State<MainTableScreen> {
                     flex: 1,
                     child: Container(
                       alignment: Alignment.centerLeft,
-                      color: Colors.redAccent,
+                      color: Colors.red,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL'),
+                          Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL',style: CustomStyles.blackAndBoldTextStyleL,),
+                          const SizedBox(width: 8),
                         ],
                       ),
                     ),
@@ -115,7 +114,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
-                  }),
+                  }, context: context,),
                   CustomMenuButton(
                     "Azalt Sipariş",
                     onPressedFunction: () {
@@ -137,7 +136,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                           transitionDuration: const Duration(milliseconds: 300),
                         ),
                       );
-                    },
+                    }, context: context,
                   ),
                   CustomMenuButton(
                     "Masa Ödendi",
@@ -149,23 +148,24 @@ class _MainTableScreenState extends State<MainTableScreen> {
                             text1: ' Bütün masayı ödenecektir.',
                             text2: 'Emin misiniz ?',
                             customFunction: () {
-
                               setState(() {
-
                                 WriteTableData writeTableData =
                                     WriteTableData();
 
-                                Map<String, int> separetedItems  = {};
+                                Map<String, int> separetedItems = {};
 
-                                for(TableOrderClass i in orderClass){
+                                for (TableOrderClass i in orderClass) {
                                   separetedItems[i.name] = i.quantity;
                                 }
 
-                                Future<void> addItemToAnalyses(Map<String, int> separetedItems) async {
-                                  WriteAnalysesData writeAnalysesData =WriteAnalysesData();
-
+                                Future<void> addItemToAnalyses(
+                                    Map<String, int> separetedItems) async {
+                                  WriteAnalysesData writeAnalysesData =
+                                      WriteAnalysesData();
                                   for (var item in separetedItems.entries) {
-                                    await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
+                                    await writeAnalysesData
+                                        .addItemToAnalysesJson(
+                                            item.key, item.value);
                                   }
                                 }
 
@@ -175,13 +175,12 @@ class _MainTableScreenState extends State<MainTableScreen> {
                                 orderClass.clear();
 
                                 Navigator.pop(context);
-
                               });
                             },
                           );
                         },
                       );
-                    },
+                    }, context: context,
                   ),
                 ],
               ),

@@ -44,9 +44,9 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
               children: [
                 buildCustomTextField(
                     "Ürün İsmi", beverageNameController, context),
-                customDivider(),
+                CustomDivider(),
                 customItemTypeSelector,
-                customDivider(),
+                CustomDivider(),
                 PricePicker(
                   name: "Ürün Fiyatı Belirle",
                   onValueChanged: (int money, int penny) {
@@ -56,9 +56,9 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                     });
                   },
                 ),
-                customDivider(),
+                CustomDivider(),
                 Ingredients(indList: indList),
-                customDivider(),
+                CustomDivider(),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () async {

@@ -94,7 +94,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
     return Padding(
       padding: const EdgeInsets.only(
         right: 18,
-        left: 12,
+        left: 18,
         top: 24,
         bottom: 12,
       ),
@@ -194,7 +194,6 @@ class _CustomLineChartState extends State<CustomLineChart> {
       maxY: (classMidpoints.last.roundToDouble()),
       lineBarsData: [
         LineChartBarData(
-          //todo değerler girilecek döngü ile
           spots: [...flSpotList(widget.valueList)],
           isCurved: true,
           gradient: LinearGradient(

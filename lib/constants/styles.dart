@@ -25,17 +25,6 @@ class CustomStyles {
       fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24);
 
 
-  static final ButtonStyle customButtonStyle = TextButton.styleFrom(
-    backgroundColor: Colors.white,
-    padding: const EdgeInsets.all(15.0),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      side: const BorderSide(
-        color: Colors.black,
-        width: 2.0,
-      ),
-    ),
-  );
 
   static final ButtonStyle customMenuItemButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: Colors.white,

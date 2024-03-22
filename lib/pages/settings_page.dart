@@ -1,6 +1,7 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_page_widgets/show_change_name_and_table_count_dialog.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_drink_page.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/EditItems2.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_menu_item_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import 'package:flutter/material.dart';
 import '../datas/menu_data/reset_datas_menu.dart';
@@ -33,20 +34,17 @@ class SettingsPageState extends State<SettingsPage> {
             children: [
               Column(
                 children: [
-                  CustomMenuButton(
-                    "Kafe ismi düzenle",
-                    onPressedFunction: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ChangeCafeNameDialog(
-                            mainTitle: 'Kafe ismi',
-                            textFieldTitle: 'Kafe ismini giriniz ? ',
-                          );
-                        },
-                      );
-                    },
-                  ),
+                  CustomMenuButton("Kafe ismi düzenle", onPressedFunction: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ChangeCafeNameDialog(
+                          mainTitle: 'Kafe ismi',
+                          textFieldTitle: 'Kafe ismini giriniz ? ',
+                        );
+                      },
+                    );
+                  }, context: context),
                   CustomMenuButton(
                     "Masa sayısını düzenle",
                     onPressedFunction: () {
@@ -60,30 +58,15 @@ class SettingsPageState extends State<SettingsPage> {
                         },
                       );
                     },
+                    context: context,
                   ),
-                  CustomMenuButton("Menüye Yeni Ürün Ekle",
-                      onPressedFunction: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const AddNewItemToMenu(),
-                        transitionsBuilder: (_, anim, __, child) {
-                          return ScaleTransition(
-                            scale: anim,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(milliseconds: 300),
-                      ),
-                    );
-                  }),
                   CustomMenuButton(
-                    "Ürünleri Düzenle",
+                    "Menüye Yeni Ürün Ekle",
                     onPressedFunction: () {
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           opaque: false,
-                          pageBuilder: (_, __, ___) => EditItems(),
+                          pageBuilder: (_, __, ___) => const AddNewItemToMenu(),
                           transitionsBuilder: (_, anim, __, child) {
                             return ScaleTransition(
                               scale: anim,
@@ -94,33 +77,86 @@ class SettingsPageState extends State<SettingsPage> {
                         ),
                       );
                     },
+                    context: context,
                   ),
-                  CustomMenuButton("Eski Verilere Ulaş"),
+                  CustomMenuButton(
+                    "Ürünleri Düzenle",
+                    onPressedFunction: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => EditItems2(),
+                          transitionsBuilder: (_, anim, __, child) {
+                            return ScaleTransition(
+                              scale: anim,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                    context: context,
+                  ),
+                  CustomMenuButton("Eski Verilere Ulaş", context: context),
                   CustomMenuButton(
                     "Bütün verileri resetle",
                     onPressedFunction: () {
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CustomAlertButton(
-                              answer1: 'Kapat',
-                              text1: 'Bütün veriler resetlenecektir.',
-                              text2: 'Onaylıyor musunuz ?',
-                              customFunction: () {
-                                ResetAllJsonData resetAllJsonData =
-                                    ResetAllJsonData();
-                                resetAllJsonData.resetJsonFile();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'Bütün veriler başarı ile resetlendi'),
+                        context: context,
+                        builder: (BuildContext context) {
+                          String confirmationText = '';
+
+                          return AlertDialog(
+                            title: const Text('Verileri Sıfırla'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                const Text(
+                                  'Bütün verileri sıfırlamak için "Onaylıyorum" yazmalısınız.',
+                                ),
+                                TextField(
+                                  onChanged: (text) {
+                                    confirmationText = text;
+                                  },
+                                  decoration: const InputDecoration(
+                                    labelText: 'Metin Alanı',
                                   ),
-                                );
-                              },
-                            );
-                          });
+                                ),
+                              ],
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('İptal'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  if (confirmationText == 'Onaylıyorum') {
+                                    ResetAllJsonData resetAllJsonData =
+                                    ResetAllJsonData();
+                                    resetAllJsonData.resetJsonFile();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Bütün veriler başarı ile resetlendi'),),);
+                                  } else {
+                                    // Onay metni doğru değilse kullanıcıyı uyar
+                                    print('Lütfen doğru onay metnini girin.');
+                                  }
+                                },
+                                child: Text('Onayla'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
-                  ),
+                    context: context,
+                  )
+
                 ],
               ),
             ],
