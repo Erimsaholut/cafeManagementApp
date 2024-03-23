@@ -52,10 +52,7 @@ class _EditItems2State extends State<EditItems2> {
                 Navigator.of(context).push(
                   PageRouteBuilder(
                     opaque: false,
-                    pageBuilder: (_, __, ___) => ItemStudio(
-                      itemName: items[index].name,
-                      price: items[index].price,
-                      ingredients: items[index].ingredients,
+                    pageBuilder: (_, __, ___) => ItemStudio(item: items[index],
                     ),
                     transitionsBuilder: (_, anim, __, child) {
                       return ScaleTransition(
