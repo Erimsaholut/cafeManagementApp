@@ -1,13 +1,12 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
 import '../../../utils/price_picker.dart';
 import '../../../constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'EditItems2.dart';
 
 class ItemStudio extends StatefulWidget {
-  const ItemStudio({super.key, required this.item});
+  const ItemStudio({Key? key, required this.item}) : super(key: key);
 
   final EditableItem item;
 
@@ -16,52 +15,109 @@ class ItemStudio extends StatefulWidget {
 }
 
 class _ItemStudioState extends State<ItemStudio> {
-  List<EditableItem> items = []; // Burada items listesini tanımladık.
+  List<EditableItem> items = [];
 
   @override
   void initState() {
-    _processMenuData(); // initState içinde _processMenuData'yı çağırdık.
+    _processMenuData();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int moneyValue = 0;
-    int pennyValue = 0;
+    final TextEditingController itemNameController = TextEditingController();
+    WriteData writeData = WriteData();
+    Size screenSize = MediaQuery.of(context).size;
+    int initialMoneyValue = widget.item.price.round();
+    int initialPennyValue = ((widget.item.price-widget.item.price.floor())*100).round();
+    int newMoneyValue = initialMoneyValue;
+    int newPennyValue = initialPennyValue;
 
     return Scaffold(
-        backgroundColor: Colors.lime.shade300,
-        appBar: AppBar(
-          title: Text("Edit  ${widget.item.name}"),
-          backgroundColor: Colors.orangeAccent,
-        ),
-        body: ListView(
-          children: [
-            Column(
-              children: [
-                PricePicker(
-                  name: "Ürün Fiyatı Belirle",
-                  onValueChanged: (int money, int penny) {
-                    setState(() {
-                      moneyValue = money;
-                      pennyValue = penny;
-                    });
+      backgroundColor: Colors.lime.shade300,
+      appBar: AppBar(
+        title: Text("Edit  ${widget.item.name}"),
+        backgroundColor: Colors.orangeAccent,
+      ),
+      body: ListView(
+        children: [
+          Column(
+            children: [
+              PricePicker(
+                name: "Ürün Fiyatını Güncelle",
+                initialMoney: initialMoneyValue,
+                initialPenny: initialPennyValue,
+                //initialPenny: (widget.item.price/widget.item.price.round()*10).round(),
+                onValueChanged: (int money, int penny) {
+                  setState(() {
+                    newMoneyValue = money;
+                    newPennyValue = penny;
+                  });
+                },
+              ),
+              Text("Mevcut Çeşitleri Kaldır",style: CustomStyles.blackAndBoldTextStyleL,),
+              const SizedBox(
+                height: 16,
+              ),
+              Column(
+                children: [
+                  ...(indList(widget.item)),
+                ],
+              ),
+               Text("Çeşit Ekle",style: CustomStyles.blackAndBoldTextStyleL,),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                width: (screenSize.width/3),
+                child: TextField(
+                  controller: itemNameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Çeşit adı girin',
+                  ),
+                  onSubmitted: (String value) {
+                    widget.item.ingredients.add(itemNameController.text);
+                    itemNameController.clear();
                   },
                 ),
-                const Text("Çeşitler"),
-                const SizedBox(
-                  height: 16,
-                ),
-                Column(
-                  children: [
-                    ...(indList(widget.item)),
-                  ],
-                )
-              ],
-            ),
-          ],
-        ));
+
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    widget.item.ingredients.add(itemNameController.text);
+                    itemNameController.clear();
+                  });
+                },
+                child: const Text('Ekle'),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                ElevatedButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: const Text("İptal Et")),
+                ElevatedButton(onPressed: (){
+                  print(widget.item.ingredients);
+                  print("$newMoneyValue,$newPennyValue");
+                  writeData.setExistingItemInMenu(widget.item.name, newMoneyValue, newPennyValue, widget.item.ingredients);
+                  //todo değiştirmemiş
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar( //todo her zaman değil ki
+                      content: Text(
+                          'Başarı ile değiştirildi'),
+                    ),
+                  );
+                }, child: const Text("Kaydet")),
+              ],)
+            ],
+          ),
+        ],
+      ),
+    );
+
   }
+
+
 
   List<Widget> indList(EditableItem editableItem) {
     List<Widget> indWidgetList = [];
@@ -75,17 +131,17 @@ class _ItemStudioState extends State<ItemStudio> {
           child: TextButton(
             onPressed: () {
               editableItem.ingredients.removeAt(i);
-              setState(() {}); // Durumu güncellemek için setState ekledik.
+              setState(() {});
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+                    (Set<MaterialState> states) {
                   return Colors.red.shade300;
                 },
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -93,7 +149,7 @@ class _ItemStudioState extends State<ItemStudio> {
                     editableItem.ingredients[i],
                     style: CustomStyles.blackTextStyleS,
                   ),
-                  const Icon(Icons.close)
+                  const Icon(Icons.close),
                 ],
               ),
             ),
@@ -113,8 +169,6 @@ class _ItemStudioState extends State<ItemStudio> {
     return indWidgetList;
   }
 
-  /*ilk çalışan*/
-  /*raw datayı okutup EditableItem(dümdüz class) olarak yaratıyor*/
   Future<void> _processMenuData() async {
     ReadData readData = ReadData();
     Map<String, dynamic>? rawMenu = await readData.getRawData();
@@ -133,3 +187,5 @@ class _ItemStudioState extends State<ItemStudio> {
     });
   }
 }
+//todo fileda girilen karaketerleri sınırlamayı her yere ekle
+//todo item silinecektir emin misiniz

@@ -6,7 +6,7 @@ class WriteData {
   ReadData readData = ReadData();
   ResetDatas resetDatas = ResetDatas();
 
-  Future<void> _updateSettingsInJSON(
+  Future<void> _updateMainSettings(
 
       String newCafeName, int newTableCount) async {
     try {
@@ -28,7 +28,7 @@ class WriteData {
     Map<String, dynamic>? rawData = await readData.getRawData();
     int currentTableCount = rawData?["table_count"] ?? 0;
     try {
-      await _updateSettingsInJSON(newCafeName, currentTableCount);
+      await _updateMainSettings(newCafeName, currentTableCount);
     } catch (e) {
       print('Cafe adı güncellenirken hata oluştu: $e');
     }
@@ -38,7 +38,7 @@ class WriteData {
     Map<String, dynamic>? rawData = await readData.getRawData();
     String currentCafeName = rawData?["cafe_name"] ?? "";
     try {
-      await _updateSettingsInJSON(currentCafeName, newTableCount);
+      await _updateMainSettings(currentCafeName, newTableCount);
     } catch (e) {
       print('Cafe adı güncellenirken hata oluştu: $e');
     }
@@ -109,7 +109,7 @@ class WriteData {
   }
 
 
-  Future<void> setExistingItemInMenu(String itemName, double moneyValue, int pennyValue, List<String> indList) async {
+  Future<void> setExistingItemInMenu(String itemName, int moneyValue, int pennyValue, List<String> indList) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
 
@@ -163,6 +163,6 @@ class WriteData {
 
     return maxId + 1;
   }
-
+//todo itemId kalksa hayat daha güzel olurdu
 
 }

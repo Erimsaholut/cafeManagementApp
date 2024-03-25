@@ -13,7 +13,7 @@ class PricePicker extends StatefulWidget {
   PricePicker({
     Key? key,
     required this.name,
-    this.moneyValue = 0, // Added default value
+    this.moneyValue = 0,
     this.pennyValue = 0,
     this.initialMoney =15,
     this.initialPenny=0,
@@ -42,7 +42,7 @@ class _PricePickerState extends State<PricePicker> {
                 NumberPicker(
                   value: _currentMoneyValue,
                   minValue: 0,
-                  maxValue: 300,
+                  maxValue: 500,
                   step: 1,
                   haptics: true,
                   onChanged: (value) {

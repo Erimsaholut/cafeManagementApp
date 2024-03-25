@@ -3,7 +3,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_da
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
+import '../constants/interface_colors.dart';
 
 class Decrease0rder extends StatefulWidget {
   const Decrease0rder(

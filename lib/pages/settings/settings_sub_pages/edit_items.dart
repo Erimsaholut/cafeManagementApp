@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/colors.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/interface_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_divider.dart';
@@ -254,7 +254,7 @@ class EditableItem {
   }
 
   void saveNewParams(){
-writeData.setExistingItemInMenu(name, price, 0, ingredients);
+writeData.setExistingItemInMenu(name, price as int, 0, ingredients);
 
   }
 }
