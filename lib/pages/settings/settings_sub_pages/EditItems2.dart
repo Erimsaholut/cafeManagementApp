@@ -51,7 +51,7 @@ class _EditItems2State extends State<EditItems2> {
               onPressed: () {
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    opaque: false,
+                    opaque: true,
                     pageBuilder: (_, __, ___) => ItemStudio(item: items[index],
                     ),
                     transitionsBuilder: (_, anim, __, child) {
@@ -94,7 +94,6 @@ class _EditItems2State extends State<EditItems2> {
 
 /*bu bizim aslan parçası classımız*/
 class EditableItem {
-  WriteData writeData = WriteData();
   final int id;
   final String name;
   double price;

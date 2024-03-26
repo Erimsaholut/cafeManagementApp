@@ -104,19 +104,21 @@ class WriteData {
       return false;
     }
 
-    // Eğer kod bu noktaya kadar gelirse, hata olmuştur ve null döndürülmelidir.
     return null;
   }
 
 
-  Future<void> setExistingItemInMenu(String itemName, int moneyValue, int pennyValue, List<String> indList) async {
+  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney, int newPricePenny, List<String> indList) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
 
       if (rawData != null) {
+
         List<dynamic> menu = rawData["menu"];
+
         Map<String, dynamic>? oldItem;
 
+        // eski itemı sil
         for (var item in menu) {
           if (item["name"] == itemName) {
             oldItem = item;
@@ -126,13 +128,19 @@ class WriteData {
         }
 
         if (oldItem != null) {
+          print("oldItem:$oldItem");
+          print("$newPriceMoney ve $newPricePenny");
+          print("newMoney :${newPriceMoney + (newPricePenny / 100)}");
+
           Map<String, dynamic> newItem = {
             "id": oldItem["id"],
             "name": itemName,
-            "price": moneyValue + pennyValue / 100,
+            "price": newPriceMoney + newPricePenny / 100,
             "type": oldItem["type"],
             "ingredients": indList,
           };
+          print("newItem:$newItem");
+          print(newItem);
 
           menu.add(newItem);
 
@@ -142,6 +150,7 @@ class WriteData {
 
           readData.readJsonData();
           readData.separateMenuItems();
+
         } else {
           print("Güncellenecek ürün bulunamadı: $itemName");
         }

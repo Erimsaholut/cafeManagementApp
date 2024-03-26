@@ -16,12 +16,20 @@ class ItemStudio extends StatefulWidget {
 
 class _ItemStudioState extends State<ItemStudio> {
   List<EditableItem> items = [];
+  late int initialMoneyValue;
+  late int initialPennyValue;
+  late int newMoneyValue;
+  late int newPennyValue;
 
   @override
   void initState() {
-    _processMenuData();
-
     super.initState();
+    initialMoneyValue = widget.item.price.floor();
+    initialPennyValue =
+        ((widget.item.price - widget.item.price.floor()) * 100).round();
+    newMoneyValue = initialMoneyValue;
+    newPennyValue = initialPennyValue;
+    _processMenuData();
   }
 
   @override
@@ -29,10 +37,7 @@ class _ItemStudioState extends State<ItemStudio> {
     final TextEditingController itemNameController = TextEditingController();
     WriteData writeData = WriteData();
     Size screenSize = MediaQuery.of(context).size;
-    int initialMoneyValue = widget.item.price.round();
-    int initialPennyValue = ((widget.item.price-widget.item.price.floor())*100).round();
-    int newMoneyValue = initialMoneyValue;
-    int newPennyValue = initialPennyValue;
+
 
     return Scaffold(
       backgroundColor: Colors.lime.shade300,
@@ -48,15 +53,18 @@ class _ItemStudioState extends State<ItemStudio> {
                 name: "Ürün Fiyatını Güncelle",
                 initialMoney: initialMoneyValue,
                 initialPenny: initialPennyValue,
-                //initialPenny: (widget.item.price/widget.item.price.round()*10).round(),
                 onValueChanged: (int money, int penny) {
                   setState(() {
                     newMoneyValue = money;
                     newPennyValue = penny;
+
                   });
                 },
               ),
-              Text("Mevcut Çeşitleri Kaldır",style: CustomStyles.blackAndBoldTextStyleL,),
+              Text(
+                "Mevcut Çeşitleri Kaldır",
+                style: CustomStyles.blackAndBoldTextStyleL,
+              ),
               const SizedBox(
                 height: 16,
               ),
@@ -65,10 +73,13 @@ class _ItemStudioState extends State<ItemStudio> {
                   ...(indList(widget.item)),
                 ],
               ),
-               Text("Çeşit Ekle",style: CustomStyles.blackAndBoldTextStyleL,),
+              Text(
+                "Çeşit Ekle",
+                style: CustomStyles.blackAndBoldTextStyleL,
+              ),
               Container(
                 padding: const EdgeInsets.all(8.0),
-                width: (screenSize.width/3),
+                width: (screenSize.width / 3),
                 child: TextField(
                   controller: itemNameController,
                   decoration: const InputDecoration(
@@ -79,7 +90,6 @@ class _ItemStudioState extends State<ItemStudio> {
                     itemNameController.clear();
                   },
                 ),
-
               ),
               ElevatedButton(
                 onPressed: () {
@@ -90,34 +100,44 @@ class _ItemStudioState extends State<ItemStudio> {
                 },
                 child: const Text('Ekle'),
               ),
+              /*çeşit ekle*/
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                ElevatedButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child: const Text("İptal Et")),
-                ElevatedButton(onPressed: (){
-                  print(widget.item.ingredients);
-                  print("$newMoneyValue,$newPennyValue");
-                  writeData.setExistingItemInMenu(widget.item.name, newMoneyValue, newPennyValue, widget.item.ingredients);
-                  //todo değiştirmemiş
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar( //todo her zaman değil ki
-                      content: Text(
-                          'Başarı ile değiştirildi'),
-                    ),
-                  );
-                }, child: const Text("Kaydet")),
-              ],)
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("İptal Et")),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          print("$newMoneyValue tl $newPennyValue krş");
+                        });
+
+                      },
+                      child: const Text("price")),
+                  ElevatedButton(
+                      onPressed: () {
+
+                        print("gelmeden önce");
+                        print("$newMoneyValue tl $newPennyValue krş");
+                        writeData.setExistingItemInMenu(
+                            widget.item.name,
+                            newMoneyValue,
+                            newPennyValue,
+                            widget.item.ingredients);
+                        //todo değiştirmemiş
+                      },
+                      child: const Text("Kaydet")),
+                ],
+              )
             ],
           ),
         ],
       ),
     );
-
   }
-
-
 
   List<Widget> indList(EditableItem editableItem) {
     List<Widget> indWidgetList = [];
@@ -135,7 +155,7 @@ class _ItemStudioState extends State<ItemStudio> {
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   return Colors.red.shade300;
                 },
               ),

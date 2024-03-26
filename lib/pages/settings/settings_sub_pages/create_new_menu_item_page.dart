@@ -75,6 +75,7 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                     else{
 
                       bool? result = await writeData.addNewItemToMenu(beverageName, moneyValue, pennyValue, indList, selectedItemType);
+
                       if (result != null) {
                         if (result) {
                           scaffoldMessage("Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType", context);

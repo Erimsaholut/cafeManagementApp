@@ -10,15 +10,15 @@ class PricePicker extends StatefulWidget {
   final int initialPenny;
   final Function(int, int) onValueChanged;
 
-  PricePicker({
-    Key? key,
+  const PricePicker({
+    super.key,
     required this.name,
     this.moneyValue = 0,
     this.pennyValue = 0,
     this.initialMoney =15,
     this.initialPenny=0,
     required this.onValueChanged,
-  }) : super(key: key);
+  });
 
   @override
   _PricePickerState createState() => _PricePickerState();
@@ -34,6 +34,9 @@ class _PricePickerState extends State<PricePicker> {
       children: <Widget>[
         const SizedBox(height: 16),
         Text(widget.name, style: CustomStyles.blackAndBoldTextStyleL),
+
+
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -69,6 +72,9 @@ class _PricePickerState extends State<PricePicker> {
             ),
           ],
         ),
+
+
+
         const SizedBox(height: 32),
         Text('$_currentMoneyValue Lira $_currentPennyValue Kuruş'),
         const SizedBox(height: 32),
