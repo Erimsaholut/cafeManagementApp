@@ -4,7 +4,6 @@ import '../../../constants/styles.dart';
 
 
 Widget buildCustomTextField(String labelText, TextEditingController controller, BuildContext context) {
-  // FocusNode oluşturun
   FocusNode focusNode = FocusNode();
 
   return Column(
@@ -19,6 +18,7 @@ Widget buildCustomTextField(String labelText, TextEditingController controller, 
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 18.0),
         child: TextField(
+          maxLength: 50,
           controller: controller,
           focusNode: focusNode, // FocusNode'u TextField'a atanır
           decoration: InputDecoration(

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import '../../../constants/styles.dart';
+import 'package:flutter/material.dart';
 
 class Ingredients extends StatefulWidget {
   Ingredients({super.key, required this.indList});
@@ -41,6 +41,7 @@ class _IngredientsState extends State<Ingredients> {
                     children: [
                       TextField(
                         controller: _controller,
+                        maxLength: 25,
                       ),
                     ],
                   ),

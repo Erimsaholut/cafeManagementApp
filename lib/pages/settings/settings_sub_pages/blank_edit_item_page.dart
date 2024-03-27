@@ -80,26 +80,43 @@ class _ItemStudioState extends State<ItemStudio> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 width: (screenSize.width / 3),
-                child: TextField(
+                child: TextFormField(
                   controller: itemNameController,
+                  maxLength: 25, // Maksimum karakter sayısı
                   decoration: const InputDecoration(
                     hintText: 'Çeşit adı girin',
                   ),
-                  onSubmitted: (String value) {
-                    widget.item.ingredients.add(itemNameController.text);
-                    itemNameController.clear();
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Lütfen bir çeşit adı girin';
+                    }
+                    return null;
+                  },
+                  onFieldSubmitted: (value) {
+                    if (itemNameController.text.length <= 25 && itemNameController.text.isNotEmpty) {
+                      setState(() {
+                        widget.item.ingredients.add(itemNameController.text);
+                        itemNameController.clear();
+                      });
+                    }
                   },
                 ),
               ),
+
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    widget.item.ingredients.add(itemNameController.text);
-                    itemNameController.clear();
+                    if(itemNameController.text.isNotEmpty){
+                      widget.item.ingredients.add(itemNameController.text);
+                      itemNameController.clear();
+                    }
+
                   });
                 },
                 child: const Text('Ekle'),
               ),
+
+              const SizedBox(height: 16,),
               /*çeşit ekle*/
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -109,14 +126,6 @@ class _ItemStudioState extends State<ItemStudio> {
                         Navigator.pop(context);
                       },
                       child: const Text("İptal Et")),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          print("$newMoneyValue tl $newPennyValue krş");
-                        });
-
-                      },
-                      child: const Text("price")),
                   ElevatedButton(
                       onPressed: () {
 
@@ -209,3 +218,4 @@ class _ItemStudioState extends State<ItemStudio> {
 }
 //todo fileda girilen karaketerleri sınırlamayı her yere ekle
 //todo item silinecektir emin misiniz
+//ya her şey güzel ama tekrar refreshlenmiyor ind değiştirildiğinde.

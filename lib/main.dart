@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: GridView.count(
-        crossAxisCount: 4,
+        crossAxisCount: (widget.tableCount>100?5:4),
         children: myList,
       ),
     );

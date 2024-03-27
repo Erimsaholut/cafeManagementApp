@@ -6,8 +6,8 @@ class CustomMultiSelectionButton extends StatefulWidget {
   final List<dynamic>? checkboxTexts;
   final VoidCallback? onPressed;
 
-  CustomMultiSelectionButton(
-      {required this.buttonText, required this.checkboxTexts, this.onPressed});
+  const CustomMultiSelectionButton(
+      {super.key, required this.buttonText, required this.checkboxTexts, this.onPressed});
 
   @override
   _CustomMultiSelectionButtonState createState() => _CustomMultiSelectionButtonState();
@@ -70,3 +70,4 @@ class _CustomMultiSelectionButtonState extends State<CustomMultiSelectionButton>
     );
   }
 }
+//todo burası düzenlenecek aşağı insin diye

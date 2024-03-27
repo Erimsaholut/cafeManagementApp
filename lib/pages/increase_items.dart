@@ -253,6 +253,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 SizedBox customSizedBox({int rate = 1}) {
   return SizedBox(height: 16 * rate.toDouble());
 }
+//todo customSizedBox Kullan
 
 
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy

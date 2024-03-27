@@ -133,7 +133,7 @@ class _ChangeCafeNameDialogState extends State<ChangeCafeNameDialog> {
       content: Column(
         children: [
           TextField(
-
+            maxLength: 50,
             controller: _controller,
             decoration: InputDecoration(
               labelText: widget.textFieldTitle,

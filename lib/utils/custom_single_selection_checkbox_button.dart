@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CustomSingleSelectionButton extends StatefulWidget {
   final String buttonText;
@@ -6,12 +8,13 @@ class CustomSingleSelectionButton extends StatefulWidget {
   final ValueChanged<String>? onItemSelected;
   final VoidCallback? onPressed;
 
-  CustomSingleSelectionButton({
+  const CustomSingleSelectionButton({
+    Key? key,
     required this.buttonText,
     required this.checkboxTexts,
     this.onItemSelected,
     this.onPressed,
-  });
+  }) : super(key: key);
 
   @override
   _CustomSingleSelectionButtonState createState() =>
@@ -32,45 +35,57 @@ class _CustomSingleSelectionButtonState
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 16.0),
         ElevatedButton(
           onPressed: widget.onPressed,
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 96),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.buttonText,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Row(
-                children: [
-                  for (String checkboxText in widget.checkboxTexts)
-                    Row(
-                      children: [
-                        Text(
-                          checkboxText,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Radio(
-                          value: checkboxText,
-                          groupValue: selectedCheckbox,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCheckbox = value as String;
-                              widget.onItemSelected?.call(selectedCheckbox);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                ],
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.buttonText,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Flexible(
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    children: [
+                      ...widget.checkboxTexts.map((checkboxText) {
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              checkboxText,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Radio(
+                              value: checkboxText,
+                              groupValue: selectedCheckbox,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedCheckbox = value as String;
+                                  widget.onItemSelected?.call(selectedCheckbox);
+                                });
+                              },
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 16,),
+        const SizedBox(
+          height: 16,
+        ),
       ],
     );
   }
