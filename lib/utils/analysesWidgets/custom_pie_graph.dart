@@ -23,20 +23,16 @@ class PieChart2State extends State<CustomPieChart> {
   }
 
   Map<String, int> orderByCount(Map<int, Map<String, int>> itemList) {
-    // Boş bir list oluştur
     List<MapEntry<String, int>> entries = [];
     // Her bir item listesini dön
     itemList.forEach((_, innerMap) {
-      // İç içe olan map'i dön ve her bir öğe için sayacı artır
       innerMap.forEach((item, count) {
-        // MapEntry oluştur ve listeye ekle
         entries.add(MapEntry(item, count));
       });
     });
 
     entries.sort((a, b) => b.value.compareTo(a.value));
 
-    // Sıralanmış listeyi map'e dönüştür
     Map<String, int> orderedMap = Map.fromEntries(entries);
 
     print("orderedMap:$orderedMap");
@@ -121,15 +117,6 @@ class PieChart2State extends State<CustomPieChart> {
     );
   }
 
-  List<Color> colorList = [
-    Colors.blue,
-    Colors.green,
-    Colors.redAccent,
-    Colors.yellow,
-    Colors.orange,
-    Colors.purple,
-  ];
-
   int colorIndex = 0;
 
   List<PieChartSectionData> showingSections(Map<String, int> dataMap) {
@@ -147,20 +134,26 @@ class PieChart2State extends State<CustomPieChart> {
     List<PieChartSectionData> pieChartSections = topEntries.map((entry) {
       Size screenSize = MediaQuery.of(context).size;
       double screenHeight = screenSize.height;
-      double y = screenHeight/3;
+      double y = screenHeight / 3;
 
-      double fontSize = screenHeight/30;
+      double fontSize = screenHeight / 30;
       double radius = y;
       final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
 
       Color selectedColor = colorList[colorIndex];
       colorIndex = (colorIndex + 1) % colorList.length;
 
+      String title = entry.key;
+      if (title.length > 20) {
+        title = '${title.substring(0, 20)}...';
+      } if (title.length > 15) {
+        title = '${title.substring(0, 15)}\n${title.substring(15)}';
+      }
+
       return PieChartSectionData(
         color: selectedColor,
         value: entry.value.toDouble(),
-        title:
-            '${((entry.value / dataMap.values.reduce((a, b) => a + b)) * 100).toStringAsFixed(2)}%\n${entry.key}',
+        title: '${((entry.value / dataMap.values.reduce((a, b) => a + b)) * 100).toStringAsFixed(2)}%\n$title',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
@@ -174,9 +167,9 @@ class PieChart2State extends State<CustomPieChart> {
     if (sortedEntries.length > 5) {
       Size screenSize = MediaQuery.of(context).size;
       double screenHeight = screenSize.height;
-      double y = screenHeight/3;
+      double y = screenHeight / 3;
 
-      double fontSize = screenHeight/30;
+      double fontSize = screenHeight / 30;
       final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
 
       Color selectedColor = colorList[colorIndex];
@@ -186,8 +179,7 @@ class PieChart2State extends State<CustomPieChart> {
         PieChartSectionData(
           color: selectedColor,
           value: totalOtherValue.toDouble(),
-          title:
-              '${((totalOtherValue / dataMap.values.reduce((a, b) => a + b)) * 100).toStringAsFixed(2)}%\nDiğer',
+          title: '${((totalOtherValue / dataMap.values.reduce((a, b) => a + b)) * 100).toStringAsFixed(2)}%\nDiğer',
           radius: y,
           titleStyle: TextStyle(
             fontSize: fontSize,
@@ -201,6 +193,9 @@ class PieChart2State extends State<CustomPieChart> {
 
     return pieChartSections;
   }
+
+
+
 }
 
 class Indicator extends StatelessWidget {
@@ -254,5 +249,5 @@ class Indicator extends StatelessWidget {
   }
 }
 
-//todo ekrana göre ayarlama işlemi kaldı
 //todo Eğer toplam veri sayısı 5 ten az ise ne kadar veri var ise onları göstermeli hiç yoksa kocaman bir beyaz boşuk
+

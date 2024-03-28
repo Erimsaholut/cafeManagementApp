@@ -1,4 +1,5 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -33,7 +34,7 @@ class _PricePickerState extends State<PricePicker> {
     return Column(
       children: <Widget>[
         const SizedBox(height: 16),
-        Text(widget.name, style: CustomStyles.blackAndBoldTextStyleL),
+        Text(widget.name, style: CustomTextStyles.blackAndBoldTextStyleL),
 
 
 
@@ -75,9 +76,9 @@ class _PricePickerState extends State<PricePicker> {
 
 
 
-        const SizedBox(height: 32),
+        CustomSizedBox(rate: 2),
         Text('$_currentMoneyValue Lira $_currentPennyValue Kuruş'),
-        const SizedBox(height: 32),
+        CustomSizedBox(rate: 2),
       ],
     );
   }

@@ -6,10 +6,10 @@ Text isTableNameNull(String tablename, int tableNum) {
   return (tableName == "")
       ? Text(
           "Masa $tableNum",
-          style: CustomStyles.blackAndBoldTextStyleXl,
+          style: CustomTextStyles.blackAndBoldTextStyleXl,
         )
       : Text(
           tableName,
-          style: CustomStyles.blackAndBoldTextStyleXl,
+          style: CustomTextStyles.blackAndBoldTextStyleXl,
         );
 }

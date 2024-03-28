@@ -23,3 +23,12 @@ class AppColors {
   static const Color contentColorRed = Color(0xFFE80054);
   static const Color contentColorCyan = Color(0xFF50E4FF);
 }
+
+List<Color> colorList = [
+  Colors.blue,
+  Colors.green,
+  Colors.redAccent,
+  Colors.yellow,
+  Colors.orange,
+  Colors.purple,
+];

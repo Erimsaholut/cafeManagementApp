@@ -38,7 +38,7 @@ class CustomUtilPagesButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
-        child:Text(buttonName,style: CustomStyles.blackAndBoldTextStyleXl,),
+        child:Text(buttonName,style: CustomTextStyles.blackAndBoldTextStyleXl,),
       ),
     );
   }

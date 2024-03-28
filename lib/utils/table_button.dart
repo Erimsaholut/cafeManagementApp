@@ -98,7 +98,7 @@ class _CustomTableState extends State<CustomTable> {
               },
             );
           },
-          style: CustomStyles.transparentButtonStyle,
+          style: CustomButtonStyles.transparentButtonStyle,
           child:isTableNameNull(widget.tableName,widget.tableNum),
       ),
     );

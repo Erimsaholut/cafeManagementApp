@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,11 +37,10 @@ class _CustomSingleSelectionButtonState
     return Column(
       children: [
         const SizedBox(height: 16.0),
+
         ElevatedButton(
           onPressed: widget.onPressed,
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 96),
-          ),
+          style: CustomButtonStyles.buttonWitchCheckBoxStyle,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -50,6 +50,8 @@ class _CustomSingleSelectionButtonState
                   widget.buttonText,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
+
+
                 Flexible(
                   child: Wrap(
                     alignment: WrapAlignment.spaceBetween,
@@ -75,7 +77,7 @@ class _CustomSingleSelectionButtonState
                             ),
                           ],
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),

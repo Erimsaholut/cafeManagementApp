@@ -10,7 +10,7 @@ Widget buildCustomTextField(String labelText, TextEditingController controller, 
     children: [
       Text(
         labelText,
-        style: CustomStyles.blackAndBoldTextStyleXl,
+        style: CustomTextStyles.blackAndBoldTextStyleXl,
       ),
       const SizedBox(
         height: 16,

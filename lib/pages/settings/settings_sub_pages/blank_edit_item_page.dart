@@ -3,7 +3,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write
 import '../../../utils/price_picker.dart';
 import '../../../constants/styles.dart';
 import 'package:flutter/material.dart';
-import 'EditItems2.dart';
+import 'edit_items_page.dart';
 
 class ItemStudio extends StatefulWidget {
   const ItemStudio({Key? key, required this.item}) : super(key: key);
@@ -63,7 +63,7 @@ class _ItemStudioState extends State<ItemStudio> {
               ),
               Text(
                 "Mevcut Çeşitleri Kaldır",
-                style: CustomStyles.blackAndBoldTextStyleL,
+                style: CustomTextStyles.blackAndBoldTextStyleL,
               ),
               const SizedBox(
                 height: 16,
@@ -75,7 +75,7 @@ class _ItemStudioState extends State<ItemStudio> {
               ),
               Text(
                 "Çeşit Ekle",
-                style: CustomStyles.blackAndBoldTextStyleL,
+                style: CustomTextStyles.blackAndBoldTextStyleL,
               ),
               Container(
                 padding: const EdgeInsets.all(8.0),
@@ -176,7 +176,7 @@ class _ItemStudioState extends State<ItemStudio> {
                 children: [
                   Text(
                     editableItem.ingredients[i],
-                    style: CustomStyles.blackTextStyleS,
+                    style: CustomTextStyles.blackTextStyleS,
                   ),
                   const Icon(Icons.close),
                 ],

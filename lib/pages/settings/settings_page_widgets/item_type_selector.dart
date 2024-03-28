@@ -20,13 +20,13 @@ class _CustomItemTypeSelectorState extends State<CustomItemTypeSelector> {
       children: [
         Text(
           widget.question,
-          style: CustomStyles.blackAndBoldTextStyleXl,
+          style: CustomTextStyles.blackAndBoldTextStyleXl,
         ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(widget.option1, style: CustomStyles.blackAndBoldTextStyleM),
+            Text(widget.option1, style: CustomTextStyles.blackAndBoldTextStyleM),
             Checkbox(
               value: widget.isFirstBoxSelected,
               onChanged: (value) {
@@ -38,7 +38,7 @@ class _CustomItemTypeSelectorState extends State<CustomItemTypeSelector> {
               },
             ),
             const SizedBox(width: 64),
-            Text(widget.option2, style: CustomStyles.blackAndBoldTextStyleM),
+            Text(widget.option2, style: CustomTextStyles.blackAndBoldTextStyleM),
             Checkbox(
               value: !widget.isFirstBoxSelected,
               onChanged: (value) {

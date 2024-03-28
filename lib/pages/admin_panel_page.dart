@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
@@ -35,9 +36,9 @@ class _AdminPanelState extends State<AdminPanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Admin Panel",
-          style: TextStyle(color: Colors.black),
+          style: CustomTextStyles.blackAndBoldTextStyleM,
         ),
         backgroundColor: Colors.amberAccent,
       ),
@@ -117,7 +118,7 @@ class _AdminPanelState extends State<AdminPanel> {
               print("${now.day}.${now.month}.${now.year}");
               print(now.day);
             },
-            child: Text("Date"),
+            child: const Text("Date"),
           ),
           TextButton(
             onPressed: () async {

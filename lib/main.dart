@@ -1,7 +1,8 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/interface_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyses_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 import 'datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Deneme',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
+        colorScheme: CustomColors.appColorScheme,
         useMaterial3: true,
       ),
       home: MyHomePage(
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: CustomColors.appColorScheme.primary,
         title: Text(widget.title),
       ),
       body: GridView.count(

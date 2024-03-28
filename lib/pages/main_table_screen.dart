@@ -74,7 +74,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL',style: CustomStyles.blackAndBoldTextStyleL,),
+                          Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL',style: CustomTextStyles.blackAndBoldTextStyleL,),
                           const SizedBox(width: 8),
                         ],
                       ),
@@ -253,21 +253,21 @@ Widget orderShown(int quantity, String itemName, double price) {
               flex: 1,
               child: Text(
                 "$quantity",
-                style: CustomStyles.blackAndBoldTextStyleM,
+                style: CustomTextStyles.blackAndBoldTextStyleM,
               ),
             ),
             Expanded(
               flex: 5,
               child: Text(
                 itemName,
-                style: CustomStyles.blackAndBoldTextStyleM,
+                style: CustomTextStyles.blackAndBoldTextStyleM,
               ),
             ),
             Expanded(
               flex: 2,
               child: Text(
                 "$price ₺",
-                style: CustomStyles.blackAndBoldTextStyleM,
+                style: CustomTextStyles.blackAndBoldTextStyleM,
               ),
             ),
           ],

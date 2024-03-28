@@ -1,9 +1,10 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_single_selection_checkbox_button.dart';
+import '../utils/custom_multi_selection_checkbox_button.dart';
+import '../datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../datas/menu_data/read_data_menu.dart';
-import '../utils/custom_multi_selection_checkbox_button.dart';
+import '../utils/custom_sized_box.dart';
 
 /*itemlerin seçilip eklendiği o sayfa*/
 
@@ -56,7 +57,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
           leading: IconButton(onPressed: () {Navigator.pop(context); widget.initialFunction();  print("çıkıldı");  }, icon: const Icon(Icons.arrow_back_ios_new)),
           title: Text(
             "Menü",
-            style: CustomStyles.blackAndBoldTextStyleXl,
+            style: CustomTextStyles.blackAndBoldTextStyleXl,
           ),
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
@@ -70,15 +71,15 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
                 child: ListView(
                   children: [
                     buildItemTypeTextContainer("İçecekler"),
-                    customSizedBox(),
+                    CustomSizedBox(),
                     buildGridView(drinksNoIn),
-                    customSizedBox(rate: 2),
+                    CustomSizedBox(rate: 2),
                     ...drinksIn,
-                    customSizedBox(),
+                    CustomSizedBox(),
                     buildItemTypeTextContainer("Yiyecekler"),
-                    customSizedBox(),
+                    CustomSizedBox(),
                     buildGridView(foodsNoIn),
-                    customSizedBox(rate: 2),
+                    CustomSizedBox(rate: 2),
                     ...foodsIn,
                   ],
                 ),
@@ -154,7 +155,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     for (var itemName in items) {
       widgets.add(
         TextButton(
-          style: CustomStyles.customMenuItemButtonStyle,
+          style: CustomButtonStyles.customMenuItemButtonStyle,
           onPressed: () {
             _performAsyncOperations(itemName);
           },
@@ -228,7 +229,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
       alignment: Alignment.center,
       child: Text(
         text,
-        style: CustomStyles.blackAndBoldTextStyleXl,
+        style: CustomTextStyles.blackAndBoldTextStyleXl,
       ),
     );
   }
@@ -250,21 +251,11 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   }
 }
 
-SizedBox customSizedBox({int rate = 1}) {
-  return SizedBox(height: 16 * rate.toDouble());
-}
-//todo customSizedBox Kullan
-
-
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
 
 //todo dil desteği gelecek ama nasıl gelecek bilmiyorum
 
-//todo masa seçimi için yeni number pickerlardan kullan
-
 //todo firebase (dlc olarak sunucam onu)
-
-//todo çalışan analyses table
 
 //todo tasarım
 

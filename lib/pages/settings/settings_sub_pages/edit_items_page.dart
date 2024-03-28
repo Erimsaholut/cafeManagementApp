@@ -1,19 +1,17 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/interface_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_divider.dart';
-import 'package:flutter/material.dart';
 import '../../../datas/menu_data/read_data_menu.dart';
+import 'package:flutter/material.dart';
 import 'blank_edit_item_page.dart';
 
-class EditItems2 extends StatefulWidget {
-  const EditItems2({super.key});
+class EditItemsPage extends StatefulWidget {
+  const EditItemsPage({super.key});
 
   @override
-  State<EditItems2> createState() => _EditItems2State();
+  State<EditItemsPage> createState() => _EditItemsPageState();
 }
 
-class _EditItems2State extends State<EditItems2> {
+class _EditItemsPageState extends State<EditItemsPage> {
   ReadData readData = ReadData();
   List<EditableItem> items = [];
 
@@ -31,6 +29,7 @@ class _EditItems2State extends State<EditItems2> {
         title: const Text("Edit Items"),
       ),
       body: Container(
+        padding: const EdgeInsets.all(8.0),
         color: Colors.tealAccent,
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,13 +40,7 @@ class _EditItems2State extends State<EditItems2> {
           itemCount: items.length,
           itemBuilder: (context, index) {
             return ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
+              style: CustomButtonStyles.customMenuItemButtonStyle,
               onPressed: () {
                 Navigator.of(context).push(
                   PageRouteBuilder(
