@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class _CustomTableState extends State<CustomTable> {
       margin: const EdgeInsets.all(1.0),
       decoration: BoxDecoration(
           border: Border.all(width: 3.0),
-          color: Colors.amber),
+          color: CustomColors.buttonColor),
       child: TextButton(
           onPressed: () {
             Navigator.of(context).push(

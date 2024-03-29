@@ -1,4 +1,5 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
+import '../constants/custom_colors.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
 import '../utils/analysesWidgets/custom_pie_graph.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,6 @@ class PageIndicator extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
     return Container(
       color: Colors.amber.withOpacity(0.6),
       child: Padding(
@@ -46,8 +45,8 @@ class PageIndicator extends StatelessWidget {
             ),
             TabPageSelector(
               controller: tabController,
-              color: colorScheme.background,
-              selectedColor: colorScheme.primary,
+              color: Colors.white,
+              selectedColor: CustomColors.selectedColor,
             ),
             IconButton(
               splashRadius: 16.0,

@@ -1,10 +1,11 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_single_selection_checkbox_button.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
+import '../constants/custom_colors.dart';
 import '../utils/custom_multi_selection_checkbox_button.dart';
 import '../datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../utils/custom_sized_box.dart';
+
 
 /*itemlerin seçilip eklendiği o sayfa*/
 
@@ -59,76 +60,79 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
             "Menü",
             style: CustomTextStyles.blackAndBoldTextStyleXl,
           ),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: CustomColors.appbarColor,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                color: Colors.blueGrey,
-                child: ListView(
-                  children: [
-                    buildItemTypeTextContainer("İçecekler"),
-                    CustomSizedBox(),
-                    buildGridView(drinksNoIn),
-                    CustomSizedBox(rate: 2),
-                    ...drinksIn,
-                    CustomSizedBox(),
-                    buildItemTypeTextContainer("Yiyecekler"),
-                    CustomSizedBox(),
-                    buildGridView(foodsNoIn),
-                    CustomSizedBox(rate: 2),
-                    ...foodsIn,
-                  ],
-                ),
-              ),
-            ),
-            Visibility(
-              visible: (orders.isNotEmpty),
-              child: Expanded(
-                flex: 1,
+        body: Container(
+          color: CustomColors.backGroundColor,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 5,
                 child: Container(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  child: Row(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  color: Colors.blueGrey,
+                  child: ListView(
                     children: [
-                      Expanded(
-                        flex: 4,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: _buildOrderWidgets(),
-                            ),
-                          ),
-
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          color: Colors.greenAccent,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Toplam Fiyat: $totalPrice'),
-                            ],
-                          ),
-                        ),
-                      ),
+                      buildItemTypeTextContainer("İçecekler"),
+                      const SizedBox(height: 16,),
+                      buildGridView(drinksNoIn),
+                      const SizedBox(height: 32,),
+                      ...drinksIn,
+                      const SizedBox(height: 16,),
+                      buildItemTypeTextContainer("Yiyecekler"),
+                      const SizedBox(height: 16,),
+                      buildGridView(foodsNoIn),
+                      const SizedBox(height: 32,),
+                      ...foodsIn,
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+              Visibility(
+                visible: (orders.isNotEmpty),
+                child: Expanded(
+                  flex: 1,
+                  child: Container(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: _buildOrderWidgets(),
+                              ),
+                            ),
+
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            color: Colors.greenAccent,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Toplam Fiyat: $totalPrice'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 
@@ -260,3 +264,11 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 //todo tasarım
 
 //todo analiz sayfası ve dışarı aktarabilme özelliği
+
+
+//todo masalara renk değiştirme özelliği
+//todo değişiklik anında read çağır seperate mesela
+//todo renk paleti belirle belki 2 tane ve uygula
+
+
+//todo CustomSizedSil

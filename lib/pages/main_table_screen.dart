@@ -5,7 +5,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/clases/table_or
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
-import '../constants/interface_colors.dart';
+import '../constants/custom_colors.dart';
 import '../utils/custom_alert_button.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
@@ -39,57 +39,55 @@ class _MainTableScreenState extends State<MainTableScreen> {
     return Scaffold(
       appBar: AppBar(
         title: isTableNameNull(widget.tableName, widget.tableNum),
-        backgroundColor: CustomColors.appbarBlue,
+        backgroundColor: CustomColors.appbarColor,
       ),
-      body: Row(
-        children: [
-          /*sol taraf*/
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: Colors.lime,
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  /*masadaki itemler*/
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      color: Colors.deepPurple.shade200,
-                      child: ListView.builder(
-                        itemCount: orderWidgets.length,
-                        itemBuilder: (context, index) {
-                          return orderWidgets[index];
-                        },
+      body: Container(
+        color: CustomColors.backGroundColor,
+        child: Row(
+          children: [
+            /*sol taraf*/
+            Expanded(
+              flex: 1,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    /*masadaki itemler*/
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        color: Colors.deepPurple.shade200,
+                        child: ListView.builder(
+                          itemCount: orderWidgets.length,
+                          itemBuilder: (context, index) {
+                            return orderWidgets[index];
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  /*masadaki itemlerin fiyatı*/
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      color: Colors.red,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL',style: CustomTextStyles.blackAndBoldTextStyleL,),
-                          const SizedBox(width: 8),
-                        ],
+                    /*masadaki itemlerin fiyatı*/
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL',style: CustomTextStyles.blackAndBoldTextStyleL,),
+                            const SizedBox(width: 8),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          /*sağ taraf*/
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: Colors.tealAccent,
-              /*Butonlar*/
+            /*sağ taraf*/
+            Expanded(
+              flex: 1,
               child: Column(
                 /*masadaki itemler*/
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -184,8 +182,8 @@ class _MainTableScreenState extends State<MainTableScreen> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       backgroundColor: const Color(0xFFAEE2FF),
     );

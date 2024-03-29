@@ -6,6 +6,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/w
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
+import '../constants/custom_colors.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class _AdminPanelState extends State<AdminPanel> {
           "Admin Panel",
           style: CustomTextStyles.blackAndBoldTextStyleM,
         ),
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: CustomColors.backGroundColor,
       ),
       body: ListView(
         children: [

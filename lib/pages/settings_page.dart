@@ -2,6 +2,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settin
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_menu_item_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/edit_items_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
+import '../constants/custom_colors.dart';
 import '../datas/menu_data/reset_datas_menu.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,10 @@ class SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Ayarlar"),
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: CustomColors.appbarColor,
       ),
       body: Container(
-        color: Colors.tealAccent,
+        color: CustomColors.backGroundColor,
         child: Center(
           child: ListView(
             children: [

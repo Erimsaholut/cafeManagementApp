@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/interface_colors.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import '../../../datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _EditItemsPageState extends State<EditItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CustomColors.appbarBlue,
+        backgroundColor: CustomColors.appbarColor,
         title: const Text("Edit Items"),
       ),
       body: Container(

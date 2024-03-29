@@ -3,7 +3,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_da
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
 import 'package:flutter/material.dart';
-import '../constants/interface_colors.dart';
+import '../constants/custom_colors.dart';
 
 class Decrease0rder extends StatefulWidget {
   const Decrease0rder(
@@ -41,82 +41,85 @@ class _Decrease0rderState extends State<Decrease0rder> {
             },
             icon: const Icon(Icons.arrow_back_ios_new)),
         title: const Text("Sipariş Öde"),
-        backgroundColor: CustomColors.appbarBlue,
+        backgroundColor: CustomColors.appbarColor,
       ),
-      body: Column(
-        children: [
-          /*yeşil buton ekranı*/
-          Expanded(
-            flex: 3,
-            child: Container(
-              color: Colors.lime,
-              child: GridView.builder(
-                padding: const EdgeInsets.all(8.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 15.0,
-                  crossAxisSpacing: 10.0,
-                  childAspectRatio: 3.0,
+      body: Container(
+        color: CustomColors.backGroundColor,
+        child: Column(
+          children: [
+            /*yeşil buton ekranı*/
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: Colors.lime,
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 15.0,
+                    crossAxisSpacing: 10.0,
+                    childAspectRatio: 3.0,
+                  ),
+                  itemCount: orders.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return orders[index];
+                  },
                 ),
-                itemCount: orders.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return orders[index];
-                },
               ),
             ),
-          ),
-          /*mavi özet ve fiyat ekranı*/
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              color: Colors.blue,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Row(
-                          children: [
-                            ...buildOrderWidgets(bottomStrings),
-                          ],
-                        ),
-                      ],
+            /*mavi özet ve fiyat ekranı*/
+            Expanded(
+              flex: 1,
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                color: Colors.blue,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Row(
+                            children: [
+                              ...buildOrderWidgets(bottomStrings),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text("$totalAmount ₺"),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
-
-                        // Diğer işlemleri yap
-                        WriteTableData writeTableData = WriteTableData();
-                        await writeTableData.decreaseItemList(widget.tableNum, separetedItems);
-
-                        // Diğer işlemler tamamlandıktan sonra analizleri JSON'a ekle
-                        await addItemToAnalyses(separetedItems);
-
-                        // Diğer işlemler tamamlandıktan sonra işlemleri temizle
-                        setState(() {
-                          bottomStrings.clear();
-                          totalAmount = 0;
-                        });
-                      },
-                      child: const Text("Onayla"),
+                    Expanded(
+                      flex: 1,
+                      child: Text("$totalAmount ₺"),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      flex: 2,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
+
+                          // Diğer işlemleri yap
+                          WriteTableData writeTableData = WriteTableData();
+                          await writeTableData.decreaseItemList(widget.tableNum, separetedItems);
+
+                          // Diğer işlemler tamamlandıktan sonra analizleri JSON'a ekle
+                          await addItemToAnalyses(separetedItems);
+
+                          // Diğer işlemler tamamlandıktan sonra işlemleri temizle
+                          setState(() {
+                            bottomStrings.clear();
+                            totalAmount = 0;
+                          });
+                        },
+                        child: const Text("Onayla"),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

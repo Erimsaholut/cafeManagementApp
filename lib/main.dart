@@ -1,5 +1,5 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/interface_colors.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyses_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
@@ -17,7 +17,7 @@ void main() async {
   print("newJsonDataReaded");
 
   String cafeName = await readNewData.getCafeName();
-  int tableCount = await readNewData.getTableCount(); // Masa sayısını al
+  int tableCount = await readNewData.getTableCount();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: CustomColors.appColorScheme,
         useMaterial3: true,
       ),
       home: MyHomePage(
@@ -47,10 +46,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  final int tableCount; // Yeni eklenen alan
+  final int tableCount;
 
-  const MyHomePage({Key? key, required this.title, required this.tableCount})
-      : super(key: key);
+  const MyHomePage({super.key, required this.title, required this.tableCount});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,9 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.backGroundColor,
       appBar: AppBar(
-        backgroundColor: CustomColors.appColorScheme.primary,
-        title: Text(widget.title),
+        backgroundColor: CustomColors.appbarColor,
+        title: Text(widget.title,style: TextStyle(color: CustomColors.textColor),),
       ),
       body: GridView.count(
         crossAxisCount: (widget.tableCount>100?5:4),

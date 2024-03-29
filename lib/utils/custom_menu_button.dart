@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import 'custom_sized_box.dart';
 
 Column CustomMenuButton(
     String buttonText, {
@@ -25,7 +24,7 @@ Column CustomMenuButton(
           ),
         ),
       ),
-      CustomSizedBox(),
+      const SizedBox(height: 16),
     ],
   );
 }
