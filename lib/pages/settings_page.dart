@@ -15,7 +15,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  final TextEditingController _controller = TextEditingController();
   ReadData readNewData = ReadData();
 
   @override

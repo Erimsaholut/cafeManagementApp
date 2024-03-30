@@ -57,7 +57,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                       flex: 4,
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
-                        color: Colors.deepPurple.shade200,
+                        color: CustomColors.selectedColor1,
                         child: ListView.builder(
                           itemCount: orderWidgets.length,
                           itemBuilder: (context, index) {
@@ -66,12 +66,12 @@ class _MainTableScreenState extends State<MainTableScreen> {
                         ),
                       ),
                     ),
-                    /*masadaki itemlerin fiyatı*/
+                    /* masadaki itemlerin fiyatı */
                     Expanded(
                       flex: 1,
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        color: Colors.red,
+                        color: CustomColors.selectedColor2,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -185,7 +185,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
           ],
         ),
       ),
-      backgroundColor: const Color(0xFFAEE2FF),
+      backgroundColor: CustomColors.backGroundColor,
     );
   }
 
@@ -243,7 +243,7 @@ Widget orderShown(int quantity, String itemName, double price) {
   return Column(
     children: [
       Container(
-        color: Colors.white,
+        color: Colors.white,//todo buraya ve eklendikten sonraki menüye iptal etme gelecek
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [

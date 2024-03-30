@@ -5,7 +5,7 @@ Column CustomMenuButton(
     String buttonText, {
       VoidCallback? onPressedFunction,
       VoidCallback? onLongPressFunction,
-      required BuildContext context, // Ekran boyutunu almak için BuildContext ekleniyor
+      required BuildContext context,
     }) {
   Size screenSize = MediaQuery.of(context).size;
 

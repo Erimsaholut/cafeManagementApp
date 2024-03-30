@@ -1,7 +1,7 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import '../constants/custom_colors.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
 import '../utils/analysesWidgets/custom_pie_graph.dart';
+import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class PageIndicator extends StatelessWidget {
@@ -20,12 +20,9 @@ class PageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isOnDesktopAndWeb) {
-      return const SizedBox.shrink();
-    }
 
     return Container(
-      color: Colors.amber.withOpacity(0.6),
+      color: CustomColors.appbarColor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -46,7 +43,7 @@ class PageIndicator extends StatelessWidget {
             TabPageSelector(
               controller: tabController,
               color: Colors.white,
-              selectedColor: CustomColors.selectedColor,
+              selectedColor: CustomColors.selectedColor2,
             ),
             IconButton(
               splashRadius: 16.0,
@@ -126,8 +123,9 @@ class _AnalysesPageState extends State<AnalysesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.backGroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.amber.withOpacity(0.6),
+        backgroundColor: CustomColors.appbarColor,
         title: const Text('Analyses'),
       ),
       body: Column(
@@ -150,6 +148,7 @@ class _AnalysesPageState extends State<AnalysesPage>
                     children: <Widget>[
                       Column(
                         children: [
+                          Text("aaaaa"),//todo buralara grafikler üstü başlıklar gelecek
                           Expanded(
                             child: CustomLineChart(
                                 valueList: monthlyRevenueValues),

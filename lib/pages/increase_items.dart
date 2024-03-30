@@ -1,8 +1,8 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_single_selection_checkbox_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import '../constants/custom_colors.dart';
 import '../utils/custom_multi_selection_checkbox_button.dart';
 import '../datas/menu_data/read_data_menu.dart';
+import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 
@@ -70,7 +70,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
                 flex: 5,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  color: Colors.blueGrey,
+                  color: CustomColors.backGroundColor2,
                   child: ListView(
                     children: [
                       buildItemTypeTextContainer("İçecekler"),
@@ -93,7 +93,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
                 child: Expanded(
                   flex: 1,
                   child: Container(
-                    color: Theme.of(context).colorScheme.inversePrimary,
+                    color: CustomColors.selectedColor1,
                     child: Row(
                       children: [
                         Expanded(
@@ -116,7 +116,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
                           flex: 1,
                           child: Container(
                             padding: const EdgeInsets.all(8),
-                            color: Colors.greenAccent,
+                            color: CustomColors.selectedColor2,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -185,6 +185,8 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
       );
     }
   }
+
+
   void makeWidgetsForIndDrink(
       List<Map<String, dynamic>> items, List<Widget> widgets) {
     for (var item in items) {
@@ -238,6 +240,9 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     );
   }
 
+
+
+
   Widget buildGridView(List<Widget> list) {
     return GridView.builder(
       shrinkWrap: true,
@@ -253,6 +258,9 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
       },
     );
   }
+
+
+
 }
 
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
@@ -261,14 +269,11 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 
 //todo firebase (dlc olarak sunucam onu)
 
-//todo tasarım
-
 //todo analiz sayfası ve dışarı aktarabilme özelliği
 
 
 //todo masalara renk değiştirme özelliği
 //todo değişiklik anında read çağır seperate mesela
-//todo renk paleti belirle belki 2 tane ve uygula
 
+//todo analyseslara text halinde veriler gelecek
 
-//todo CustomSizedSil

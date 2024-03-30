@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../constants/custom_colors.dart';
 import '../../../datas/menu_data/write_data_menu.dart';
 import '../../../utils/custom_divider.dart';
 import '../settings_page_widgets/custom_text_field.dart';
@@ -33,10 +34,10 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create New Menu Item"),
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: CustomColors.appbarColor,
       ),
       body: Container(
-        color: Colors.tealAccent,
+        color: CustomColors.backGroundColor,
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [

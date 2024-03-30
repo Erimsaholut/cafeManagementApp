@@ -1,7 +1,6 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 
 class CustomSingleSelectionButton extends StatefulWidget {
   final String buttonText;

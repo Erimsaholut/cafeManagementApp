@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
 import '../../../utils/price_picker.dart';
@@ -40,10 +41,10 @@ class _ItemStudioState extends State<ItemStudio> {
 
 
     return Scaffold(
-      backgroundColor: Colors.lime.shade300,
+      backgroundColor: CustomColors.backGroundColorForTexts,
       appBar: AppBar(
         title: Text("Edit  ${widget.item.name}"),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: CustomColors.appbarColor,
       ),
       body: ListView(
         children: [
@@ -165,7 +166,7 @@ class _ItemStudioState extends State<ItemStudio> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
-                  return Colors.red.shade300;
+                  return CustomColors.selectedColor1;
                 },
               ),
             ),

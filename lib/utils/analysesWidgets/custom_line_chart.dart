@@ -91,15 +91,17 @@ class _CustomLineChartState extends State<CustomLineChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: 18,
-        left: 18,
-        top: 24,
-        bottom: 12,
-      ),
-      child: LineChart(
-        mainData(),
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          right: 18,
+          left: 18,
+          top: 24,
+          bottom: 12,
+        ),
+        child: LineChart(
+          mainData(),
+        ),
       ),
     );
   }

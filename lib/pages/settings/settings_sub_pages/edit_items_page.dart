@@ -30,7 +30,7 @@ class _EditItemsPageState extends State<EditItemsPage> {
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),
-        color: Colors.tealAccent,
+        color: CustomColors.backGroundColor,
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5,

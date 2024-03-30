@@ -51,7 +51,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
             Expanded(
               flex: 3,
               child: Container(
-                color: Colors.lime,
+                color: CustomColors.backGroundColor,
                 child: GridView.builder(
                   padding: const EdgeInsets.all(8.0),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -72,7 +72,7 @@ class _Decrease0rderState extends State<Decrease0rder> {
               flex: 1,
               child: Container(
                 padding: const EdgeInsets.all(10.0),
-                color: Colors.blue,
+                color: CustomColors.selectedColor1,
                 child: Row(
                   children: [
                     Expanded(

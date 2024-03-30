@@ -50,4 +50,6 @@ class CustomButtonStyles {
     minimumSize: const Size(double.infinity, 96),
     side:const BorderSide(width: 2,color: Colors.black),
   );
+
+
 }
