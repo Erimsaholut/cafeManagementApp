@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../constants/pie_chart_colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -79,34 +81,10 @@ class PieChart2State extends State<CustomPieChart> {
               ),
             ),
           ),
-          const Column(
+          Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Indicator(
-                color: AppColors.contentColorBlue,
-                text: 'First',
-                isSquare: true,
-              ),
-              Indicator(
-                color: AppColors.contentColorYellow,
-                text: 'Second',
-                isSquare: true,
-              ),
-              Indicator(
-                color: AppColors.contentColorPurple,
-                text: 'Third',
-                isSquare: true,
-              ),
-              Indicator(
-                color: AppColors.contentColorGreen,
-                text: 'Fourth',
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 18,
-              ),
-            ],
+            children: buildIndicators(orderedByCount),
           ),
           /*sağdaki indicatorlar*/
           const SizedBox(
@@ -115,7 +93,9 @@ class PieChart2State extends State<CustomPieChart> {
         ],
       ),
     );
+
   }
+
 
   int colorIndex = 0;
 
@@ -194,6 +174,54 @@ class PieChart2State extends State<CustomPieChart> {
     return pieChartSections;
   }
 
+  List<Widget> buildIndicators(Map<String, int> dataMap) {
+    List<Widget> indicators = [];
+    int index = 0; // Renk listesinden bir sonraki rengi seçmek için indis
+
+    List<MapEntry<String, int>> sortedEntries = dataMap.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    // İlk 5 öğeleri al
+    List<MapEntry<String, int>> topEntries = sortedEntries.sublist(
+        0, sortedEntries.length > 5 ? 5 : sortedEntries.length);
+
+    // Kalan öğelerin toplam değerini hesapla
+    int totalOtherValue = sortedEntries
+        .sublist(5)
+        .map((entry) => entry.value)
+        .fold(0, (previousValue, element) => previousValue + element);
+
+    // İlk 5 öğelerin indicatorlarını oluştur
+    topEntries.forEach((entry) {
+      Color color = colorList[index % colorList.length];
+      index++;
+
+      indicators.add(
+        Indicator(
+          color: color,
+          text: entry.key,
+          isSquare: true,
+        ),
+      );
+    });
+
+    // Kalan öğeler için "Diğer" indicatorını oluştur
+    if (sortedEntries.length > 5) {
+      Color color = colorList[index % colorList.length];
+      index++;
+
+      indicators.add(
+        Indicator(
+          color: color,
+          text: 'Diğer',
+          isSquare: true,
+        ),
+      );
+    }
+
+    return indicators;
+  }
+
 
 
 }
@@ -204,7 +232,7 @@ class Indicator extends StatelessWidget {
     required this.color,
     required this.text,
     required this.isSquare,
-    this.size = 32,
+    this.size = 28,
     this.textColor,
   });
 
@@ -248,6 +276,8 @@ class Indicator extends StatelessWidget {
     );
   }
 }
+
+
 
 //todo Eğer toplam veri sayısı 5 ten az ise ne kadar veri var ise onları göstermeli hiç yoksa kocaman bir beyaz boşuk
 

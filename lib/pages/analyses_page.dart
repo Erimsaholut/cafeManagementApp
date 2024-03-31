@@ -1,4 +1,6 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
+import 'package:flutter/cupertino.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
 import '../utils/analysesWidgets/custom_pie_graph.dart';
 import '../constants/custom_colors.dart';
@@ -20,7 +22,6 @@ class PageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: CustomColors.appbarColor,
       child: Padding(
@@ -79,6 +80,21 @@ class _AnalysesPageState extends State<AnalysesPage>
   List<double> monthlyRevenueValues = [];
   List<double> weeklyRevenueValues = [];
   Map<int, Map<String, int>> monthlyItemValues = {};
+  List<String> months = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
+  ];
+  DateTime now = DateTime.now();
 
   @override
   void initState() {
@@ -134,46 +150,49 @@ class _AnalysesPageState extends State<AnalysesPage>
             flex: 6,
             child: monthlyRevenueValues.isEmpty
                 ? const Center(
-                    child:
-                        CircularProgressIndicator(), // veya uygun bir yüklenme göstergesi
-                  )
+              child:
+              CircularProgressIndicator(), // veya uygun bir yüklenme göstergesi
+            )
                 : PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentPageIndex = index;
-                        _tabController.animateTo(index);
-                      });
-                    },
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          Text("aaaaa"),//todo buralara grafikler üstü başlıklar gelecek
-                          Expanded(
-                            child: CustomLineChart(
-                                valueList: monthlyRevenueValues),
-                          ),
-                        ],
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                  _tabController.animateTo(index);
+                });
+              },
+              children: <Widget>[
+                Column(
+                  children: [
+                    /**/
+                    Text("${months[now.month - 1]} ayının günlük gelir analizleri ",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Expanded(
+                      child: CustomLineChart(
+                          valueList: monthlyRevenueValues),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text("${months[now.month - 1]} ayının haftalar halinde gelir analizleri",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Expanded(
+                      child:
+                      CustomLineChart(valueList: weeklyRevenueValues),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text("${months[now.month - 1]} ayının ürün satış miktar verileri",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Expanded(
+                      child: CustomPieChart(
+                        itemList: monthlyItemValues,
                       ),
-                      Column(
-                        children: [
-                          Expanded(
-                            child:
-                                CustomLineChart(valueList: weeklyRevenueValues),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Expanded(
-                            child: CustomPieChart(
-                              itemList: monthlyItemValues,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           Expanded(
             flex: 1,
@@ -200,7 +219,7 @@ Future<List<double>> fetchMonthlyRevenueValues() async {
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
   Map<String, double>? monthlySales =
-      await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
+  await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
   List<double> revenueValues = monthlySales.values.toList();
   return revenueValues;
 }
@@ -209,7 +228,7 @@ Future<List<double>> fetchWeeklyRevenueValues() async {
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
   Map<String, double>? weeklySales =
-      await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
+  await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
   List<double> revenueValues = weeklySales.values.toList();
   print("revenueValues:$revenueValues");
   return revenueValues;
@@ -220,7 +239,7 @@ Future<Map<int, Map<String, int>>?> fetchMonthlyItemValues() async {
   DateTime now = DateTime.now();
 
   Map<int, Map<String, int>>? monthlySales =
-      await analysesReader.getWeeklyProductSalesForMonth(now.month, now.year);
+  await analysesReader.getWeeklyProductSalesForMonth(now.month, now.year);
   print("revenueValues:$monthlySales");
   return monthlySales;
 }
