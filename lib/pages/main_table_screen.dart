@@ -148,7 +148,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                               setState(() {
                                 WriteTableData writeTableData =
                                     WriteTableData();
-
+                                WriteAnalysesData writeAnalysesData = WriteAnalysesData();
                                 Map<String, int> separetedItems = {};
 
                                 for (TableOrderClass i in orderClass) {
@@ -157,8 +157,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
                                 Future<void> addItemToAnalyses(
                                     Map<String, int> separetedItems) async {
-                                  WriteAnalysesData writeAnalysesData =
-                                      WriteAnalysesData();
+
                                   for (var item in separetedItems.entries) {
                                     await writeAnalysesData
                                         .addItemToAnalysesJson(

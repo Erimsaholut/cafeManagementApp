@@ -6,112 +6,129 @@ class ResetAllAnalysesJsonData {
   Future<void> resetAllTableJsonFiles() async {
     AnalysesReader analysesReader = AnalysesReader();
     await analysesReader.writeJsonData('{"sales": {}}');
+
+    //todo buralara falan hep adamına göre reset gelecek
   }
 
-  Future<void> loadExampleJsonData() async {
+  Future<void> loadExampleJsonData(int code) async {
+    DateTime now = DateTime.now();
+    int month = now.month;
+    int year = now.year;
+    if (code == 0) {
+      loadExampleDayJsonData(month,year);
+    } else if (code == 1) {
+      loadExampleMonthJsonData(month,year);
+    } else if (code == 2) {
+      loadExampleYearJsonData(year);
+    } else {
+      print("Hatalı Kod girdiniz");
+    }
+  }
+
+  Future<void> loadExampleDayJsonData(int month,int year) async{
     AnalysesReader analysesReader = AnalysesReader();
     await analysesReader.writeJsonData('''
     {
   "sales": {
-    "1.3.2024": {
+    "1.$month.$year}": {
       "products": {
         "Çay": {"quantity": 5, "revenue": 25.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "2.3.2024": {
+    "2.$month.$year}": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
         "Limonata": {"quantity": 3, "revenue": 45.0}
       }
     },
-    "3.3.2024": {
+    "3.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
         "Kefir": {"quantity": 2, "revenue": 40.0}
       }
     },
-    "4.3.2024": {
+    "4.$month.$year": {
       "products": {
         "Çay": {"quantity": 6, "revenue": 30.0},
         "Su": {"quantity": 2, "revenue": 10.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0}
       }
     },
-    "5.3.2024": {
+    "5.$month.$year": {
       "products": {
         "Nescafe": {"quantity": 5, "revenue": 50.0},
         "Limonata": {"quantity": 4, "revenue": 60.0},
         "Ayran": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "6.3.2024": {
+    "6.$month.$year": {
       "products": {
         "Kokoreç": {"quantity": 3, "revenue": 166.5},
         "Türk Kahvesi": {"quantity": 2, "revenue": 40.0},
         "Ekmek": {"quantity": 6, "revenue": 42.0}
       }
     },
-    "7.3.2024": {
+    "7.$month.$year": {
       "products": {
         "Çay": {"quantity": 7, "revenue": 35.0},
         "Su": {"quantity": 4, "revenue": 20.0},
         "Nescafe": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "8.3.2024": {
+    "8.$month.$year": {
       "products": {
         "Çay": {"quantity": 6, "revenue": 30.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "9.3.2024": {
+    "9.$month.$year": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
         "Limonata": {"quantity": 3, "revenue": 45.0}
       }
     },
-    "10.3.2024": {
+    "10.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
         "Kefir": {"quantity": 2, "revenue": 40.0}
       }
     },
-    "11.3.2024": {
+    "11.$month.$year": {
       "products": {
         "Çay": {"quantity": 6, "revenue": 30.0},
         "Su": {"quantity": 2, "revenue": 10.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0}
       }
     },
-    "12.3.2024": {
+    "12.$month.$year": {
       "products": {
         "Nescafe": {"quantity": 5, "revenue": 50.0},
         "Limonata": {"quantity": 4, "revenue": 60.0},
         "Ayran": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "13.3.2024": {
+    "13.$month.$year": {
       "products": {
         "Kokoreç": {"quantity": 3, "revenue": 166.5},
         "Türk Kahvesi": {"quantity": 2, "revenue": 40.0},
         "Ekmek": {"quantity": 6, "revenue": 42.0}
       }
     },
-    "14.3.2024": {
+    "14.$month.$year": {
       "products": {
         "Çay": {"quantity": 7, "revenue": 35.0},
         "Su": {"quantity": 4, "revenue": 20.0},
         "Nescafe": {"quantity": 3, "revenue": 30.0}
       }
     },
-        "15.3.2024": {
+        "15.$month.$year": {
       "products": {
         "Çay": {"quantity": 8, "revenue": 40.0},
         "Su": {"quantity": 3, "revenue": 15.0},
@@ -121,7 +138,7 @@ class ResetAllAnalysesJsonData {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0}
       }
     },
-    "16.3.2024": {
+    "16.$month.$year": {
       "products": {
         "Kokoreç": {"quantity": 4, "revenue": 222.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0},
@@ -129,7 +146,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 5, "revenue": 35.0}
       }
     },
-    "17.3.2024": {
+    "17.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
@@ -138,7 +155,7 @@ class ResetAllAnalysesJsonData {
         "Su": {"quantity": 2, "revenue": 10.0}
       }
     },
-    "18.3.2024": {
+    "18.$month.$year": {
       "products": {
         "Türk Kahvesi": {"quantity": 3, "revenue": 60.0},
         "Nescafe": {"quantity": 5, "revenue": 50.0},
@@ -146,7 +163,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 6, "revenue": 42.0}
       }
     },
-    "19.3.2024": {
+    "19.$month.$year": {
       "products": {
         "Limonata": {"quantity": 4, "revenue": 60.0},
         "Ayran": {"quantity": 3, "revenue": 30.0},
@@ -155,7 +172,7 @@ class ResetAllAnalysesJsonData {
         "Su": {"quantity": 4, "revenue": 20.0}
       }
     },
-    "20.3.2024": {
+    "20.$month.$year": {
       "products": {
         "Kefir": {"quantity": 3, "revenue": 60.0},
         "Nescafe": {"quantity": 4, "revenue": 40.0},
@@ -163,7 +180,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 5, "revenue": 35.0}
       }
     },
-    "21.3.2024": {
+    "21.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 2, "revenue": 90.0},
         "Ayran": {"quantity": 3, "revenue": 30.0},
@@ -172,7 +189,7 @@ class ResetAllAnalysesJsonData {
         "Nescafe": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "22.3.2024": {
+    "22.$month.$year": {
       "products": {
         "Çay": {"quantity": 8, "revenue": 40.0},
         "Su": {"quantity": 3, "revenue": 15.0},
@@ -182,7 +199,7 @@ class ResetAllAnalysesJsonData {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0}
       }
     },
-    "23.3.2024": {
+    "23.$month.$year": {
       "products": {
         "Kokoreç": {"quantity": 4, "revenue": 222.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0},
@@ -190,7 +207,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 5, "revenue": 35.0}
       }
     },
-    "24.3.2024": {
+    "24.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
@@ -199,7 +216,7 @@ class ResetAllAnalysesJsonData {
         "Su": {"quantity": 2, "revenue": 10.0}
       }
     },
-    "25.3.2024": {
+    "25.$month.$year": {
       "products": {
         "Türk Kahvesi": {"quantity": 3, "revenue": 60.0},
         "Nescafe": {"quantity": 5, "revenue": 50.0},
@@ -207,7 +224,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 6, "revenue": 42.0}
       }
     },
-    "26.3.2024": {
+    "26.$month.$year": {
       "products": {
         "Limonata": {"quantity": 4, "revenue": 60.0},
         "Ayran": {"quantity": 3, "revenue": 30.0},
@@ -216,7 +233,7 @@ class ResetAllAnalysesJsonData {
         "Su": {"quantity": 4, "revenue": 20.0}
       }
     },
-    "27.3.2024": {
+    "27.$month.$year": {
       "products": {
         "Kefir": {"quantity": 3, "revenue": 60.0},
         "Nescafe": {"quantity": 4, "revenue": 40.0},
@@ -224,7 +241,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 5, "revenue": 35.0}
       }
     },
-    "28.3.2024": {
+    "28.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 2, "revenue": 90.0},
         "Ayran": {"quantity": 3, "revenue": 30.0},
@@ -233,7 +250,7 @@ class ResetAllAnalysesJsonData {
         "Nescafe": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "29.3.2024": {
+    "29.$month.$year": {
       "products": {
         "Çay": {"quantity": 8, "revenue": 40.0},
         "Su": {"quantity": 3, "revenue": 15.0},
@@ -243,7 +260,7 @@ class ResetAllAnalysesJsonData {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0}
       }
     },
-    "30.3.2024": {
+    "30.$month.$year": {
       "products": {
         "Kokoreç": {"quantity": 4, "revenue": 222.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0},
@@ -251,7 +268,7 @@ class ResetAllAnalysesJsonData {
         "Ekmek": {"quantity": 5, "revenue": 35.0}
       }
     },
-    "31.3.2024": {
+    "31.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
@@ -264,4 +281,131 @@ class ResetAllAnalysesJsonData {
 }
     ''');
   }
+
+  Future<void> loadExampleMonthJsonData(int month,int year) async {
+    AnalysesReader analysesReader = AnalysesReader();
+    await analysesReader.writeJsonData('''
+        {
+  "sales": {
+    "$month.$year}": {
+      "products": {
+        "Çay": {"quantity": 5, "revenue": 25.0},
+        "Su": {"quantity": 3, "revenue": 15.0},
+        "Nescafe": {"quantity": 2, "revenue": 20.0}
+      }
+    },
+    "$month.$year}": {
+      "products": {
+        "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
+        "Kokoreç": {"quantity": 2, "revenue": 111.0},
+        "Limonata": {"quantity": 3, "revenue": 45.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
+        "Ayran": {"quantity": 4, "revenue": 40.0},
+        "Kefir": {"quantity": 2, "revenue": 40.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Çay": {"quantity": 6, "revenue": 30.0},
+        "Su": {"quantity": 2, "revenue": 10.0},
+        "Tavuk Döner": {"quantity": 2, "revenue": 60.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Nescafe": {"quantity": 5, "revenue": 50.0},
+        "Limonata": {"quantity": 4, "revenue": 60.0},
+        "Ayran": {"quantity": 3, "revenue": 30.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Kokoreç": {"quantity": 3, "revenue": 166.5},
+        "Türk Kahvesi": {"quantity": 2, "revenue": 40.0},
+        "Ekmek": {"quantity": 6, "revenue": 42.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Çay": {"quantity": 7, "revenue": 35.0},
+        "Su": {"quantity": 4, "revenue": 20.0},
+        "Nescafe": {"quantity": 3, "revenue": 30.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Çay": {"quantity": 6, "revenue": 30.0},
+        "Su": {"quantity": 3, "revenue": 15.0},
+        "Nescafe": {"quantity": 2, "revenue": 20.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
+        "Kokoreç": {"quantity": 2, "revenue": 111.0},
+        "Limonata": {"quantity": 3, "revenue": 45.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
+        "Ayran": {"quantity": 4, "revenue": 40.0},
+        "Kefir": {"quantity": 2, "revenue": 40.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Çay": {"quantity": 6, "revenue": 30.0},
+        "Su": {"quantity": 2, "revenue": 10.0},
+        "Tavuk Döner": {"quantity": 2, "revenue": 60.0}
+      }
+    },
+    "$month.$year": {
+      "products": {
+        "Nescafe": {"quantity": 5, "revenue": 50.0},
+        "Limonata": {"quantity": 4, "revenue": 60.0},
+        "Ayran": {"quantity": 3, "revenue": 30.0}
+      }
+    }  
+  }
 }
+    ''');
+  }
+
+  Future<void> loadExampleYearJsonData(int year) async {
+    AnalysesReader analysesReader = AnalysesReader();
+    await analysesReader.writeJsonData('''
+           {
+  "sales": {
+    "$year}": {
+      "products": {
+        "Çay": {"quantity": 5, "revenue": 25.0},
+        "Su": {"quantity": 3, "revenue": 15.0},
+        "Nescafe": {"quantity": 2, "revenue": 20.0}
+      }
+    },
+    "${year+1}}": {
+      "products": {
+        "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
+        "Kokoreç": {"quantity": 2, "revenue": 111.0},
+        "Limonata": {"quantity": 3, "revenue": 45.0}
+      }
+    },
+    "${year+2}": {
+      "products": {
+        "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
+        "Ayran": {"quantity": 4, "revenue": 40.0},
+        "Kefir": {"quantity": 2, "revenue": 40.0}
+      }
+    }
+  }
+}
+    ''');
+  }
+}
+
+//todo araya null günler atmayı dene

@@ -277,7 +277,6 @@ class Indicator extends StatelessWidget {
   }
 }
 
-
-
 //todo Eğer toplam veri sayısı 5 ten az ise ne kadar veri var ise onları göstermeli hiç yoksa kocaman bir beyaz boşuk
+//todo line ve pieChart için eksik veri konrolü
 

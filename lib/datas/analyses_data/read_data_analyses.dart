@@ -9,30 +9,61 @@ class AnalysesReader {
     return directory.path;
   }
 
-  Future<File> get _localFile async {
+  Future<File> get _localDailyFile async {
     final path = join(await _localPath, 'analyses.json');
     return File(path);
   }
 
-  Future<Map<String, dynamic>?> getRawData() async {
-    try {
-      final file = await _localFile;
+  Future<File> get _localMonthlyFile async {
+    final path = join(await _localPath, 'analysesMonth.json');
+    return File(path);
+  }
 
-      if (await file.exists()) {
+  Future<File> get _localYearlyFile async {
+    final path = join(await _localPath, 'analysesYear.json');
+    return File(path);
+  }
+
+  Future<File?> selectFileDataType(int code) async {
+    try {
+      late File file; // File nesnesini burada tanımlayın
+
+      if (code == 0) {
+        file = await _localDailyFile; // file değişkenini güncelledik
+      } else if (code == 1) {
+        file = await _localMonthlyFile; // file değişkenini güncelledik
+      } else if (code == 2) {
+        file = await _localYearlyFile; // file değişkenini güncelledik
+      } else {
+        throw ArgumentError('Geçersiz kod: $code');
+      }
+
+      return file;
+    } catch (e) {
+      print('Veri okuma hatası: $e');
+      return null; // Hata durumunda null döndürün
+    }
+  }
+
+  Future<Map<String, dynamic>?> getRawData(int code) async {
+    try {
+      final file = await selectFileDataType(code); // selectFileDataType metodunu await ile çağırın ve sonucu alın
+
+      if (file != null && await file.exists()) { // file null değilse ve varsa
         String content = await file.readAsString();
         if (content.isNotEmpty) {
           return jsonDecode(content);
         }
       }
     } catch (e) {
-      print('Analyses data read error: $e');
+      print('Veri okuma hatası: $e');
     }
     return null;
   }
 
   Future<Map<String, dynamic>?> getDaySet(int day, int month, int year) async {
     String date = "$day.$month.$year";
-    Map<String, dynamic>? rawData = await getRawData();
+    Map<String, dynamic>? rawData = await getRawData(0);
 
     if (rawData != null && rawData.containsKey("sales")) {
       Map<String, dynamic> salesData = rawData["sales"];
@@ -65,7 +96,8 @@ class AnalysesReader {
   }
 
   Future<void> writeJsonData(String jsonData) async {
-    final file = await _localFile;
+    final file = await _localDailyFile;
+
     try {
       await file.writeAsString(jsonData);
       print("Başarılı");
@@ -74,9 +106,10 @@ class AnalysesReader {
     }
   }
 
-  Future<Map<String, int>?> getDailyProductSales(int day, int month, int year) async {
+  Future<Map<String, int>?> getDailyProductSales(
+      int day, int month, int year) async {
     String date = "$day.$month.$year";
-    Map<String, dynamic>? rawData = await getRawData();
+    Map<String, dynamic>? rawData = await getRawData(0);
 
     if (rawData != null && rawData.containsKey("sales")) {
       Map<String, dynamic> salesData = rawData["sales"];
@@ -103,27 +136,35 @@ class AnalysesReader {
     }
   }
 
-  Future<Map<int, Map<String, int>>?> getWeeklyProductSalesForMonth(int month, int year, {bool splitIntoWeeks = false}) async {
+  Future<Map<int, Map<String, int>>?> getWeeklyProductSalesForMonth(
+      int month, int year,
+      {bool splitIntoWeeks = false}) async {
     Map<int, Map<String, int>> monthlySales = {};
 
     // İlgili ayın ilk günü ve son günü
     DateTime startDate = DateTime(year, month, 1);
     DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
 
-    for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(Duration(days: 1))) {
-      int weekNumber = splitIntoWeeks ? (date.day / 7).ceil() : 1; // splitIntoWeeks true ise haftalara bölecek, false ise 1 olarak ayarlanacak
+    for (DateTime date = startDate;
+        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+        date = date.add(Duration(days: 1))) {
+      int weekNumber = splitIntoWeeks
+          ? (date.day / 7).ceil()
+          : 1; // splitIntoWeeks true ise haftalara bölecek, false ise 1 olarak ayarlanacak
       int day = date.day;
       int month = date.month;
       int year = date.year;
 
-      Map<String, int>? dailySales = await getDailyProductSales(day, month, year);
+      Map<String, int>? dailySales =
+          await getDailyProductSales(day, month, year);
       if (dailySales != null) {
         // Haftalık satışları güncelle
         if (!monthlySales.containsKey(weekNumber)) {
           monthlySales[weekNumber] = {};
         }
         dailySales.forEach((product, quantity) {
-          monthlySales[weekNumber]!.update(product, (value) => value + quantity, ifAbsent: () => quantity);
+          monthlySales[weekNumber]!.update(product, (value) => value + quantity,
+              ifAbsent: () => quantity);
         });
       }
     }
@@ -131,7 +172,8 @@ class AnalysesReader {
     return monthlySales.isNotEmpty ? monthlySales : null;
   }
 
-  Future<Map<String, double>> getWeeklyTotalRevenueForMonth(int month, int year) async {
+  Future<Map<String, double>> getWeeklyTotalRevenueForMonth(
+      int month, int year) async {
     Map<String, double> monthlyRevenue = {};
 
     // İlgili ayın ilk günü ve son günü
@@ -141,7 +183,9 @@ class AnalysesReader {
     double totalRevenue = 0.0;
     int currentWeek = 1;
 
-    for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(Duration(days: 1))) {
+    for (DateTime date = startDate;
+        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+        date = date.add(Duration(days: 1))) {
       int weekNumber = (date.day / 7).ceil();
       int day = date.day;
 
@@ -166,15 +210,17 @@ class AnalysesReader {
     return monthlyRevenue.isNotEmpty ? monthlyRevenue : {};
   }
 
-
-  Future<Map<String, double>> getDailyTotalRevenueForMonth(int month, int year) async {
+  Future<Map<String, double>> getDailyTotalRevenueForMonth(
+      int month, int year) async {
     Map<String, double> dailyTotalRevenue = {};
 
     // İlgili ayın ilk günü ve son günü
     DateTime startDate = DateTime(year, month, 1);
     DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
 
-    for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(Duration(days: 1))) {
+    for (DateTime date = startDate;
+        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+        date = date.add(Duration(days: 1))) {
       int day = date.day;
       int month = date.month;
       int year = date.year;
@@ -187,5 +233,4 @@ class AnalysesReader {
 
     return dailyTotalRevenue.isNotEmpty ? dailyTotalRevenue : {};
   }
-
 }

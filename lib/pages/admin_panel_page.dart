@@ -89,7 +89,7 @@ class _AdminPanelState extends State<AdminPanel> {
 
               }
             },
-            child: Text("Aylık Satış Verilerini Getir"),
+            child: const Text("Aylık Satış Verilerini Getir"),
           ),
           TextButton(
             onPressed: () async {
@@ -124,10 +124,26 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               Object analysesRaw =
-                  (await analysesReader.getRawData()) as Object;
+                  (await analysesReader.getRawData(0)) as Object;
               print(analysesRaw);
             },
-            child: const Text("show dates"),
+            child: const Text("print analyses raw 0"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Object analysesRaw =
+              (await analysesReader.getRawData(1)) as Object;
+              print(analysesRaw);
+            },
+            child: const Text("print analyses raw 1"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Object analysesRaw =
+              (await analysesReader.getRawData(2)) as Object;
+              print(analysesRaw);
+            },
+            child: const Text("print analyses raw 2"),
           ),
           TextButton(
             onPressed: () async {
@@ -137,9 +153,24 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
           TextButton(
             onPressed: () async {
-              resetAllAnalysesJsonData.loadExampleJsonData();
+              resetAllAnalysesJsonData.loadExampleJsonData(0);
+
             },
-            child: const Text("LoadExampleJsonData"),
+            child: const Text("LoadExampleJsonData 0 "),
+          ),
+          TextButton(
+            onPressed: () async {
+              resetAllAnalysesJsonData.loadExampleJsonData(1);
+
+            },
+            child: const Text("LoadExampleJsonData 1 "),
+          ),
+          TextButton(
+            onPressed: () async {
+              resetAllAnalysesJsonData.loadExampleJsonData(2);
+
+            },
+            child: const Text("LoadExampleJsonData 2 "),
           ),
 
           Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),

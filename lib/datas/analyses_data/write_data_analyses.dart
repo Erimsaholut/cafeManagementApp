@@ -9,7 +9,7 @@ class WriteAnalysesData {
   Future<void> addItemToAnalysesJson(String prodName,
       int prodQuantity) async {
     try {
-      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData();
+      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(0);
       double _prodPrice = await readData.getItemPrice(prodName);
 
 
@@ -17,25 +17,20 @@ class WriteAnalysesData {
       String dateNow = "${date.day}.${date.month}.${date.year}";
 
       if (rawData != null) {
-        // Eğer rawData boş değilse işlemleri gerçekleştir
         if (!rawData.containsKey("sales")) {
-          // Eğer "sales" anahtarı yoksa yeni bir harita oluştur
           rawData["sales"] = {};
         }
 
         if (!rawData["sales"].containsKey(dateNow)) {
-          // Eğer verilen tarih için bir giriş yoksa, yeni bir giriş oluştur
           rawData["sales"][dateNow] = {"products": {}};
         }
 
         if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
-          // Eğer ürünün listeye eklenmediyse, yeni bir ürün ekle
           rawData["sales"][dateNow]["products"][prodName] = {
             "quantity": prodQuantity,
             "revenue": _prodPrice * prodQuantity
           };
         } else {
-          // Eğer ürün listedeyse, miktarını ve gelirini güncelle
           rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
           rawData["sales"][dateNow]["products"][prodName]["revenue"] += _prodPrice * prodQuantity;
         }

@@ -1,6 +1,5 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
 import '../utils/analysesWidgets/custom_pie_graph.dart';
 import '../constants/custom_colors.dart';
@@ -100,7 +99,7 @@ class _AnalysesPageState extends State<AnalysesPage>
   void initState() {
     super.initState();
     _pageController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_handleTabSelection);
 
     _loadRevenueValues();
@@ -165,7 +164,9 @@ class _AnalysesPageState extends State<AnalysesPage>
                 Column(
                   children: [
                     /**/
-                    Text("${months[now.month - 1]} ayının günlük gelir analizleri ",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Text("${months[now.month -
+                        1]} ayının günlük gelir analizleri ",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,),
                     Expanded(
                       child: CustomLineChart(
                           valueList: monthlyRevenueValues),
@@ -174,7 +175,9 @@ class _AnalysesPageState extends State<AnalysesPage>
                 ),
                 Column(
                   children: [
-                    Text("${months[now.month - 1]} ayının haftalar halinde gelir analizleri",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Text("${months[now.month -
+                        1]} ayının haftalar halinde gelir analizleri",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,),
                     Expanded(
                       child:
                       CustomLineChart(valueList: weeklyRevenueValues),
@@ -183,11 +186,26 @@ class _AnalysesPageState extends State<AnalysesPage>
                 ),
                 Column(
                   children: [
-                    Text("${months[now.month - 1]} ayının ürün satış miktar verileri",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Text("${months[now.month -
+                        1]} ayının ürün satış miktar verileri",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,),
                     Expanded(
                       child: CustomPieChart(
                         itemList: monthlyItemValues,
                       ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Expanded(
+                      child: Column(children: [
+                        Text("${months[now.month - 1]} Ayı Yazısal Veriler ",
+                          style: CustomTextStyles.blackAndBoldTextStyleM,),
+
+
+
+                      ]),
                     ),
                   ],
                 ),
@@ -202,7 +220,7 @@ class _AnalysesPageState extends State<AnalysesPage>
               onUpdateCurrentPageIndex: (index) {
                 _pageController.animateToPage(
                   index,
-                  duration: const Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );
               },
