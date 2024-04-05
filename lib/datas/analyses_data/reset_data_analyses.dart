@@ -3,11 +3,11 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/r
 class ResetAllAnalysesJsonData {
   AnalysesReader analysesReader = AnalysesReader();
 
-  Future<void> resetAllTableJsonFiles() async {
+  Future<void> resetAllTableJsonFiles(int code) async {
     AnalysesReader analysesReader = AnalysesReader();
-    await analysesReader.writeJsonData('{"sales": {}}');
 
-    //todo buralara falan hep adamına göre reset gelecek
+    await analysesReader.writeJsonData('{"sales": {}}', code);
+
   }
 
   Future<void> loadExampleJsonData(int code) async {
@@ -15,9 +15,9 @@ class ResetAllAnalysesJsonData {
     int month = now.month;
     int year = now.year;
     if (code == 0) {
-      loadExampleDayJsonData(month,year);
+      loadExampleDayJsonData(month, year);
     } else if (code == 1) {
-      loadExampleMonthJsonData(month,year);
+      loadExampleMonthJsonData(month, year);
     } else if (code == 2) {
       loadExampleYearJsonData(year);
     } else {
@@ -25,19 +25,19 @@ class ResetAllAnalysesJsonData {
     }
   }
 
-  Future<void> loadExampleDayJsonData(int month,int year) async{
+  Future<void> loadExampleDayJsonData(int month, int year) async {
     AnalysesReader analysesReader = AnalysesReader();
     await analysesReader.writeJsonData('''
     {
   "sales": {
-    "1.$month.$year}": {
+    "1.$month.$year": {
       "products": {
         "Çay": {"quantity": 5, "revenue": 25.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "2.$month.$year}": {
+    "2.$month.$year": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
@@ -279,92 +279,92 @@ class ResetAllAnalysesJsonData {
     }    
   }
 }
-    ''');
+    ''', 0);
   }
 
-  Future<void> loadExampleMonthJsonData(int month,int year) async {
+  Future<void> loadExampleMonthJsonData(int month, int year) async {
     AnalysesReader analysesReader = AnalysesReader();
     await analysesReader.writeJsonData('''
         {
   "sales": {
-    "$month.$year}": {
+    "1.$year": {
       "products": {
         "Çay": {"quantity": 5, "revenue": 25.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "$month.$year}": {
+    "2.$year": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
         "Limonata": {"quantity": 3, "revenue": 45.0}
       }
     },
-    "$month.$year": {
+    "3.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
         "Kefir": {"quantity": 2, "revenue": 40.0}
       }
     },
-    "$month.$year": {
+    "4.$year": {
       "products": {
         "Çay": {"quantity": 6, "revenue": 30.0},
         "Su": {"quantity": 2, "revenue": 10.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0}
       }
     },
-    "$month.$year": {
+    "5.$year": {
       "products": {
         "Nescafe": {"quantity": 5, "revenue": 50.0},
         "Limonata": {"quantity": 4, "revenue": 60.0},
         "Ayran": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "$month.$year": {
+    "6.$year": {
       "products": {
         "Kokoreç": {"quantity": 3, "revenue": 166.5},
         "Türk Kahvesi": {"quantity": 2, "revenue": 40.0},
         "Ekmek": {"quantity": 6, "revenue": 42.0}
       }
     },
-    "$month.$year": {
+    "7.$year": {
       "products": {
         "Çay": {"quantity": 7, "revenue": 35.0},
         "Su": {"quantity": 4, "revenue": 20.0},
         "Nescafe": {"quantity": 3, "revenue": 30.0}
       }
     },
-    "$month.$year": {
+    "8.$year": {
       "products": {
         "Çay": {"quantity": 6, "revenue": 30.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "$month.$year": {
+    "9.$year": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
         "Limonata": {"quantity": 3, "revenue": 45.0}
       }
     },
-    "$month.$year": {
+    "10.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
         "Kefir": {"quantity": 2, "revenue": 40.0}
       }
     },
-    "$month.$year": {
+    "11.$year": {
       "products": {
         "Çay": {"quantity": 6, "revenue": 30.0},
         "Su": {"quantity": 2, "revenue": 10.0},
         "Tavuk Döner": {"quantity": 2, "revenue": 60.0}
       }
     },
-    "$month.$year": {
+    "12.$year": {
       "products": {
         "Nescafe": {"quantity": 5, "revenue": 50.0},
         "Limonata": {"quantity": 4, "revenue": 60.0},
@@ -373,29 +373,29 @@ class ResetAllAnalysesJsonData {
     }  
   }
 }
-    ''');
+    ''', 1);
   }
 
   Future<void> loadExampleYearJsonData(int year) async {
     AnalysesReader analysesReader = AnalysesReader();
     await analysesReader.writeJsonData('''
-           {
+{
   "sales": {
-    "$year}": {
+    "$year": {
       "products": {
         "Çay": {"quantity": 5, "revenue": 25.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "${year+1}}": {
+    "${year + 1}": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
         "Limonata": {"quantity": 3, "revenue": 45.0}
       }
     },
-    "${year+2}": {
+    "${year + 2}": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
@@ -404,8 +404,8 @@ class ResetAllAnalysesJsonData {
     }
   }
 }
-    ''');
+    ''', 2);
   }
 }
 
-//todo araya null günler atmayı dene
+//todo araya null atınca patlıyor.

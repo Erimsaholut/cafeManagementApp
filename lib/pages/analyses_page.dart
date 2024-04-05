@@ -115,19 +115,16 @@ class _AnalysesPageState extends State<AnalysesPage>
     try {
       // Paralel istekler yapılıyor
       final monthlyFuture = fetchMonthlyRevenueValues();
-      final weeklyFuture = fetchWeeklyRevenueValues();
       final monthlyItem = fetchMonthlyItemValues();
 
       // Veriler beklendiği gibi alınıyor
       monthlyRevenueValues = await monthlyFuture;
-      weeklyRevenueValues = await weeklyFuture;
       monthlyItemValues = (await monthlyItem)!;
     } catch (error) {
       // Hata durumunda kullanıcıya bilgi vermek için uygun bir geri bildirim sağlanabilir
       print("Hata oluştu: $error");
       // Hata durumunda verileri sıfırlayabilir veya varsayılan bir değer atayabilirsiniz
       monthlyRevenueValues = [];
-      weeklyRevenueValues = [];
       monthlyItemValues = {};
     } finally {
       // setState çağrısı veri yüklendikten sonra yapılıyor
@@ -170,17 +167,6 @@ class _AnalysesPageState extends State<AnalysesPage>
                     Expanded(
                       child: CustomLineChart(
                           valueList: monthlyRevenueValues),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text("${months[now.month -
-                        1]} ayının haftalar halinde gelir analizleri",
-                      style: CustomTextStyles.blackAndBoldTextStyleM,),
-                    Expanded(
-                      child:
-                      CustomLineChart(valueList: weeklyRevenueValues),
                     ),
                   ],
                 ),
@@ -242,15 +228,6 @@ Future<List<double>> fetchMonthlyRevenueValues() async {
   return revenueValues;
 }
 
-Future<List<double>> fetchWeeklyRevenueValues() async {
-  AnalysesReader analysesReader = AnalysesReader();
-  DateTime now = DateTime.now();
-  Map<String, double>? weeklySales =
-  await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
-  List<double> revenueValues = weeklySales.values.toList();
-  print("revenueValues:$revenueValues");
-  return revenueValues;
-}
 
 Future<Map<int, Map<String, int>>?> fetchMonthlyItemValues() async {
   AnalysesReader analysesReader = AnalysesReader();

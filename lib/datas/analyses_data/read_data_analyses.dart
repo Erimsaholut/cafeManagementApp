@@ -95,11 +95,11 @@ class AnalysesReader {
     }
   }
 
-  Future<void> writeJsonData(String jsonData) async {
-    final file = await _localDailyFile;
+  Future<void> writeJsonData(String jsonData, int code) async {
+    final file = await selectFileDataType(code);
 
     try {
-      await file.writeAsString(jsonData);
+      await file?.writeAsString(jsonData);
       print("Başarılı");
     } catch (e) {
       print('JSON data write error: $e');
@@ -112,19 +112,22 @@ class AnalysesReader {
     Map<String, dynamic>? rawData = await getRawData(0);
 
     if (rawData != null && rawData.containsKey("sales")) {
+
       Map<String, dynamic> salesData = rawData["sales"];
+      Map<String, int> dailySales = {};
+
       if (salesData.containsKey(date)) {
         Map<String, dynamic> dayData = salesData[date];
         if (dayData.containsKey("products")) {
           Map<String, dynamic> products = dayData["products"];
-          Map<String, int> dailySales = {};
+
           products.forEach((key, value) {
             dailySales[key] = value["quantity"];
           });
           return dailySales;
         } else {
           print("Belirtilen tarihe ait ürün verisi bulunamadı.");
-          return null;
+          return dailySales;
         }
       } else {
         print("Belirtilen tarihe ait satış verisi bulunamadı.");
@@ -146,8 +149,8 @@ class AnalysesReader {
     DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
 
     for (DateTime date = startDate;
-        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
-        date = date.add(Duration(days: 1))) {
+    date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+    date = date.add(Duration(days: 1))) {
       int weekNumber = splitIntoWeeks
           ? (date.day / 7).ceil()
           : 1; // splitIntoWeeks true ise haftalara bölecek, false ise 1 olarak ayarlanacak
@@ -156,7 +159,7 @@ class AnalysesReader {
       int year = date.year;
 
       Map<String, int>? dailySales =
-          await getDailyProductSales(day, month, year);
+      await getDailyProductSales(day, month, year);
       if (dailySales != null) {
         // Haftalık satışları güncelle
         if (!monthlySales.containsKey(weekNumber)) {
@@ -171,6 +174,31 @@ class AnalysesReader {
 
     return monthlySales.isNotEmpty ? monthlySales : null;
   }
+
+  Future<Map<String, double>> getDailyTotalRevenueForMonth(
+      int month, int year) async {
+    Map<String, double> dailyTotalRevenue = {};
+
+    // İlgili ayın ilk günü ve son günü
+    DateTime startDate = DateTime(year, month, 1);
+    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
+
+    for (DateTime date = startDate;
+    date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+    date = date.add(const Duration(days: 1))) {
+      int day = date.day;
+      int month = date.month;
+      int year = date.year;
+
+      double dayRevenue = await getDaysTotalRevenue(day, month, year);
+      if (dayRevenue != -1.0) {
+        dailyTotalRevenue["$day.$month.$year"] = dayRevenue;
+      }
+    }
+
+    return dailyTotalRevenue.isNotEmpty ? dailyTotalRevenue : {};
+  }
+
 
   Future<Map<String, double>> getWeeklyTotalRevenueForMonth(
       int month, int year) async {
@@ -210,27 +238,5 @@ class AnalysesReader {
     return monthlyRevenue.isNotEmpty ? monthlyRevenue : {};
   }
 
-  Future<Map<String, double>> getDailyTotalRevenueForMonth(
-      int month, int year) async {
-    Map<String, double> dailyTotalRevenue = {};
 
-    // İlgili ayın ilk günü ve son günü
-    DateTime startDate = DateTime(year, month, 1);
-    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
-
-    for (DateTime date = startDate;
-        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
-        date = date.add(Duration(days: 1))) {
-      int day = date.day;
-      int month = date.month;
-      int year = date.year;
-
-      double dayRevenue = await getDaysTotalRevenue(day, month, year);
-      if (dayRevenue != -1.0) {
-        dailyTotalRevenue["$day.$month.$year"] = dayRevenue;
-      }
-    }
-
-    return dailyTotalRevenue.isNotEmpty ? dailyTotalRevenue : {};
-  }
 }

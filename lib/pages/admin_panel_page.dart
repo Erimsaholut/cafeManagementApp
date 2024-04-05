@@ -45,51 +45,29 @@ class _AdminPanelState extends State<AdminPanel> {
       ),
       body: ListView(
         children: [
-          Container(color: Colors.red,child: const SizedBox(width: 20,height: 20,),),
-          TextButton(onPressed: (){}, child: const Text("Reset Everything")),
-          Container(color: Colors.red,child: const SizedBox(width: 20,height: 20,),),
-          TextButton(
-            onPressed: () async {
-              DateTime now = DateTime.now();
-              Map<String, dynamic>? monthlySales = await analysesReader.getWeeklyTotalRevenueForMonth(now.month, now.year);
-              print(monthlySales);
-            },
-            child: const Text("Aylık kazanç salla her hafta"),
+          Container(
+            color: Colors.red,
+            child: const SizedBox(
+              width: 20,
+              height: 20,
+            ),
           ),
-
+          TextButton(onPressed: () {}, child: const Text("Reset Everything")),
+          Container(
+            color: Colors.red,
+            child: const SizedBox(
+              width: 20,
+              height: 20,
+            ),
+          ),
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
-              Map<String, double>? monthlySales = await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
+              Map<String, double>? monthlySales = await analysesReader
+                  .getDailyTotalRevenueForMonth(now.month, now.year);
               print(monthlySales);
             },
             child: const Text("Aylık kazanç salla her gün"),
-          ),
-
-          TextButton(
-            onPressed: () async {
-              DateTime now = DateTime.now();
-              int month = now.month;
-              int year = now.year;
-
-              Map<int, Map<String, int>>? monthlySales =
-                  await analysesReader.getWeeklyProductSalesForMonth(month, year);
-              if (monthlySales != null) {
-                // Sonuçları yazdır
-
-                monthlySales.forEach((week, sales) {
-                  print('Hafta $week Satışları:');
-                  sales.forEach((product, quantity) {
-                    print('$product: $quantity');
-                  });
-                });
-                print("#############");
-                print(monthlySales);
-              } else {
-
-              }
-            },
-            child: const Text("Aylık Satış Verilerini Getir"),
           ),
           TextButton(
             onPressed: () async {
@@ -99,7 +77,6 @@ class _AdminPanelState extends State<AdminPanel> {
               analysesFuture.then((analyses) {
                 if (analyses != null) {
                   print("Bugünkü analizler: $analyses");
-                  // Analiz verilerini kullanabilirsiniz
                   Future<double> totalRevenueFuture = analysesReader
                       .getDaysTotalRevenue(now.day, now.month, now.year);
                   totalRevenueFuture.then((totalRevenue) {
@@ -110,71 +87,96 @@ class _AdminPanelState extends State<AdminPanel> {
                 }
               });
             },
-            child: Text("Bugünün analizlerini al"),
+            child: const Text("Bugünün analizlerini al"),
           ),
-          TextButton(
-            onPressed: () {
-              DateTime now = DateTime.now();
-
-              print("${now.day}.${now.month}.${now.year}");
-              print(now.day);
-            },
-            child: const Text("Date"),
+          Container(
+            color: Colors.red,
+            child: SizedBox(
+              width: 20,
+              height: 20,
+            ),
           ),
-          TextButton(
-            onPressed: () async {
-              Object analysesRaw =
-                  (await analysesReader.getRawData(0)) as Object;
-              print(analysesRaw);
-            },
-            child: const Text("print analyses raw 0"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () async {
+                  Object analysesRaw =
+                      (await analysesReader.getRawData(0)) as Object;
+                  print(analysesRaw);
+                },
+                child: const Text("print analyses raw 0"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Object analysesRaw =
+                      (await analysesReader.getRawData(1)) as Object;
+                  print(analysesRaw);
+                },
+                child: const Text("print analyses raw 1"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Object analysesRaw =
+                      (await analysesReader.getRawData(2)) as Object;
+                  print(analysesRaw);
+                },
+                child: const Text("print analyses raw 2"),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () async {
-              Object analysesRaw =
-              (await analysesReader.getRawData(1)) as Object;
-              print(analysesRaw);
-            },
-            child: const Text("print analyses raw 1"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            TextButton(
+              onPressed: () async {
+                resetAllAnalysesJsonData.resetAllTableJsonFiles(0);
+              },
+              child: const Text("Reset all the analyses data 0 "),
+            ),
+            TextButton(
+              onPressed: () async {
+                resetAllAnalysesJsonData.resetAllTableJsonFiles(1);
+              },
+              child: const Text("Reset all the analyses data 1 "),
+            ),
+            TextButton(
+              onPressed: () async {
+                resetAllAnalysesJsonData.resetAllTableJsonFiles(2);
+              },
+              child: const Text("Reset all the analyses data 2 "),
+            ),
+          ],),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () async {
+                  resetAllAnalysesJsonData.loadExampleJsonData(0);
+                },
+                child: const Text("LoadExampleJsonData 0 "),
+              ),
+              TextButton(
+                onPressed: () async {
+                  resetAllAnalysesJsonData.loadExampleJsonData(1);
+                },
+                child: const Text("LoadExampleJsonData 1 "),
+              ),
+              TextButton(
+                onPressed: () async {
+                  resetAllAnalysesJsonData.loadExampleJsonData(2);
+                },
+                child: const Text("LoadExampleJsonData 2 "),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () async {
-              Object analysesRaw =
-              (await analysesReader.getRawData(2)) as Object;
-              print(analysesRaw);
-            },
-            child: const Text("print analyses raw 2"),
+          Container(
+            color: Colors.red,
+            child: SizedBox(
+              width: 20,
+              height: 20,
+            ),
           ),
-          TextButton(
-            onPressed: () async {
-              resetAllAnalysesJsonData.resetAllTableJsonFiles();
-            },
-            child: const Text("Reset all the analyses data"),
-          ),
-          TextButton(
-            onPressed: () async {
-              resetAllAnalysesJsonData.loadExampleJsonData(0);
-
-            },
-            child: const Text("LoadExampleJsonData 0 "),
-          ),
-          TextButton(
-            onPressed: () async {
-              resetAllAnalysesJsonData.loadExampleJsonData(1);
-
-            },
-            child: const Text("LoadExampleJsonData 1 "),
-          ),
-          TextButton(
-            onPressed: () async {
-              resetAllAnalysesJsonData.loadExampleJsonData(2);
-
-            },
-            child: const Text("LoadExampleJsonData 2 "),
-          ),
-
-          Container(color: Colors.red,child: SizedBox(width: 20,height: 20,),),
-
           TextButton(
             onPressed: () async {
               Object menu = (await readNewData.readJsonData()) as Object;
@@ -199,7 +201,6 @@ class _AdminPanelState extends State<AdminPanel> {
             },
             child: const Text("separeted menu items"),
           ),
-          Container(color: Colors.red,child: const SizedBox(width: 20,height: 20,),),
           TextButton(
             onPressed: () async {
               String? cafeName = await readNewData.getCafeName();

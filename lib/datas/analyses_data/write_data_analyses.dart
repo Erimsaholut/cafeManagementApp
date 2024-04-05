@@ -6,7 +6,13 @@ class WriteAnalysesData {
   AnalysesReader analysesDataHandler = AnalysesReader();
   ReadData readData = ReadData();
 
-  Future<void> addItemToAnalysesJson(String prodName,
+  addItemToAnalysesJson(String prodName,int prodQuantity){
+    addItemToDailyAnalysesJson(prodName,prodQuantity);
+    addItemToMonthlyAnalysesJson(prodName,prodQuantity);
+    addItemToYearlyAnalysesJson(prodName,prodQuantity);
+  }
+
+  Future<void> addItemToDailyAnalysesJson(String prodName,
       int prodQuantity) async {
     try {
       Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(0);
@@ -35,10 +41,103 @@ class WriteAnalysesData {
           rawData["sales"][dateNow]["products"][prodName]["revenue"] += _prodPrice * prodQuantity;
         }
 
-        await analysesDataHandler.writeJsonData(jsonEncode(rawData));
+        await analysesDataHandler.writeJsonData(jsonEncode(rawData),0);//todo şimdilik 0 ekledim ama 3 tür için de aynı muhabbet dönecek
       }
     } catch (e) {
       print('Ürün analizi eklenirken hata oluştu: $e');
     }
   }
+
+
+
+
+
+
+  Future<void> addItemToMonthlyAnalysesJson(String prodName,
+      int prodQuantity) async {
+    try {
+      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(1);
+      double prodPrice = await readData.getItemPrice(prodName);
+
+
+      DateTime date = DateTime.now();
+      String dateNow = "${date.month}.${date.year}";
+
+      if (rawData != null) {
+
+        if (!rawData.containsKey("sales")) {
+          rawData["sales"] = {};
+        }
+
+        if (!rawData["sales"].containsKey(dateNow)) {
+          rawData["sales"][dateNow] = {"products": {}};
+        }
+
+        if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
+          rawData["sales"][dateNow]["products"][prodName] = {
+            "quantity": prodQuantity,
+            "revenue": prodPrice * prodQuantity
+          };
+        } else {
+          rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
+          rawData["sales"][dateNow]["products"][prodName]["revenue"] += prodPrice * prodQuantity;
+        }
+
+        await analysesDataHandler.writeJsonData(jsonEncode(rawData),1);
+      }
+    } catch (e) {
+      print('Ürün analizi eklenirken hata oluştu: $e');
+    }
+  }
+
+
+  Future<void> addItemToYearlyAnalysesJson(String prodName,
+      int prodQuantity) async {
+    try {
+      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(1);
+      double prodPrice = await readData.getItemPrice(prodName);
+
+
+      DateTime date = DateTime.now();
+      String dateNow = "${date.year}";
+
+      if (rawData != null) {
+
+        if (!rawData.containsKey("sales")) {
+          rawData["sales"] = {};
+        }
+
+        if (!rawData["sales"].containsKey(dateNow)) {
+          rawData["sales"][dateNow] = {"products": {}};
+        }
+
+        if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
+          rawData["sales"][dateNow]["products"][prodName] = {
+            "quantity": prodQuantity,
+            "revenue": prodPrice * prodQuantity
+          };
+        } else {
+          rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
+          rawData["sales"][dateNow]["products"][prodName]["revenue"] += prodPrice * prodQuantity;
+        }
+
+        await analysesDataHandler.writeJsonData(jsonEncode(rawData),2);
+      }
+    } catch (e) {
+      print('Ürün analizi eklenirken hata oluştu: $e');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
