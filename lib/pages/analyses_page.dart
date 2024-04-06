@@ -76,7 +76,10 @@ class _AnalysesPageState extends State<AnalysesPage>
   late PageController _pageController;
   late TabController _tabController;
   int _currentPageIndex = 0;
+  List<double> dayRevenueValues = [];
   List<double> monthlyRevenueValues = [];
+  List<double> yearRevenueValues = [];
+
   List<double> weeklyRevenueValues = [];
   Map<int, Map<String, int>> monthlyItemValues = {};
   List<String> months = [
@@ -114,17 +117,25 @@ class _AnalysesPageState extends State<AnalysesPage>
   Future<void> _loadRevenueValues() async {
     try {
       // Paralel istekler yapılıyor
-      final monthlyFuture = fetchMonthlyRevenueValues();
-      final monthlyItem = fetchMonthlyItemValues();
+      final revenueForDays = fetchDailyRevenueValues();
+      final revenueForMonths = fetchMonthlyRevenueValues();
+      final revenueForYear = fetchYearyRevenueValues();
+
+      final monthlyItem = fetchMonthlyItemCounts();
 
       // Veriler beklendiği gibi alınıyor
-      monthlyRevenueValues = await monthlyFuture;
+      dayRevenueValues = await revenueForDays;
+      monthlyRevenueValues = await revenueForMonths;
+      yearRevenueValues = await revenueForYear;
+
       monthlyItemValues = (await monthlyItem)!;
     } catch (error) {
       // Hata durumunda kullanıcıya bilgi vermek için uygun bir geri bildirim sağlanabilir
       print("Hata oluştu: $error");
       // Hata durumunda verileri sıfırlayabilir veya varsayılan bir değer atayabilirsiniz
+      dayRevenueValues = [];
       monthlyRevenueValues = [];
+      yearRevenueValues = [];
       monthlyItemValues = {};
     } finally {
       // setState çağrısı veri yüklendikten sonra yapılıyor
@@ -144,7 +155,7 @@ class _AnalysesPageState extends State<AnalysesPage>
         children: [
           Expanded(
             flex: 6,
-            child: monthlyRevenueValues.isEmpty
+            child: dayRevenueValues.isEmpty
                 ? const Center(
               child:
               CircularProgressIndicator(), // veya uygun bir yüklenme göstergesi
@@ -163,6 +174,17 @@ class _AnalysesPageState extends State<AnalysesPage>
                     /**/
                     Text("${months[now.month -
                         1]} ayının günlük gelir analizleri ",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,),
+                    Expanded(
+                      child: CustomLineChart(
+                          valueList: dayRevenueValues),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    /**/
+                    Text("${now.year} yılıın aylık gelir analizleri ",
                       style: CustomTextStyles.blackAndBoldTextStyleM,),
                     Expanded(
                       child: CustomLineChart(
@@ -188,7 +210,7 @@ class _AnalysesPageState extends State<AnalysesPage>
                       child: Column(children: [
                         Text("${months[now.month - 1]} Ayı Yazısal Veriler ",
                           style: CustomTextStyles.blackAndBoldTextStyleM,),
-
+                      Text(yearRevenueValues.toString()),
 
 
                       ]),
@@ -219,7 +241,8 @@ class _AnalysesPageState extends State<AnalysesPage>
   }
 }
 
-Future<List<double>> fetchMonthlyRevenueValues() async {
+/*for daily line chart*/
+Future<List<double>> fetchDailyRevenueValues() async {
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
   Map<String, double>? monthlySales =
@@ -228,8 +251,28 @@ Future<List<double>> fetchMonthlyRevenueValues() async {
   return revenueValues;
 }
 
+/*for monthly line chart*/
+Future<List<double>> fetchMonthlyRevenueValues() async {
+  AnalysesReader analysesReader = AnalysesReader();
+  DateTime now = DateTime.now();
+  Map<String, double>? monthlySales =
+  await analysesReader.getMonthlyTotalRevenueForYear(now.year);
+  List<double> revenueValues = monthlySales.values.toList();
+  return revenueValues;
+}
 
-Future<Map<int, Map<String, int>>?> fetchMonthlyItemValues() async {
+/*for yearly line chart*/
+Future<List<double>> fetchYearyRevenueValues() async {
+  AnalysesReader analysesReader = AnalysesReader();
+  DateTime now = DateTime.now();
+  Map<String, double>? monthlySales =
+  await analysesReader.getYearlyTotalRevenueForYear(now.year);
+  List<double> revenueValues = monthlySales.values.toList();
+  return revenueValues;
+}
+
+/*for pie chart*/
+Future<Map<int, Map<String, int>>?> fetchMonthlyItemCounts() async {
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
 

@@ -77,8 +77,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
 
   List<FlSpot> flSpotList(List<double> datas) {
     List<FlSpot> spotList = [];
-    int index = 0; // Sıra numarası için bir sayaç
-
+    int index = 0;
     // Verilen göreli sıklık verilerini döngüye al
     datas.forEach((frequency) {
       spotList.add(FlSpot(
@@ -91,17 +90,15 @@ class _CustomLineChartState extends State<CustomLineChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: 18,
-          left: 18,
-          top: 24,
-          bottom: 12,
-        ),
-        child: LineChart(
-          mainData(),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: 18,
+        left: 18,
+        top: 24,
+        bottom: 12,
+      ),
+      child: LineChart(
+        mainData(),
       ),
     );
   }
@@ -188,7 +185,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
       ), /*yazılar*/
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        border: Border.all(color: Colors.black),
       ),
       minX: 0,
       maxX: (itemCount - 1.0),
@@ -205,6 +202,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
           isStrokeCapRound: true,
           dotData: const FlDotData(
             show: true,
+//todo buradan noktalara tıkladığımızda değer + bir value daha eklemeye baksana [25 mayıs] yazsın mesela
           ),
           belowBarData: BarAreaData(
             show: true,

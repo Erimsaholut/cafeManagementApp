@@ -79,6 +79,42 @@ class AnalysesReader {
     }
   }
 
+  Future<Map<String, dynamic>?> getMonthSet(int month, int year) async {
+    String date = "$month.$year";
+    Map<String, dynamic>? rawData = await getRawData(1);
+
+    if (rawData != null && rawData.containsKey("sales")) {
+      Map<String, dynamic> salesData = rawData["sales"];
+      if (salesData.containsKey(date)) {
+        return salesData[date];
+      } else {
+        print("Belirtilen tarihe ait satış verisi bulunamadı.");
+        return null;
+      }
+    } else {
+      print("Satış verileri bulunamadı veya işlenemedi.");
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getYearSet(int year) async {
+    String date = "$year";
+    Map<String, dynamic>? rawData = await getRawData(2);
+
+    if (rawData != null && rawData.containsKey("sales")) {
+      Map<String, dynamic> salesData = rawData["sales"];
+      if (salesData.containsKey(date)) {
+        return salesData[date];
+      } else {
+        print("Belirtilen tarihe ait satış verisi bulunamadı.");
+        return null;
+      }
+    } else {
+      print("Satış verileri bulunamadı veya işlenemedi.");
+      return null;
+    }
+  }
+
   Future<double> getDaysTotalRevenue(int day, int month, int year) async {
     double totalRevenue = 0.0;
     Map<String, dynamic>? daySet = await getDaySet(day, month, year);
@@ -95,6 +131,39 @@ class AnalysesReader {
     }
   }
 
+  Future<double> getMonthsTotalRevenue(int month, int year) async {
+    double totalRevenue = 0.0;
+    Map<String, dynamic>? daySet = await getMonthSet(month, year);
+
+    if (daySet != null && daySet.containsKey("products")) {
+      Map<String, dynamic> products = daySet["products"];
+      products.forEach((key, value) {
+        totalRevenue += value["revenue"];
+      });
+      return totalRevenue;
+    } else {
+      print("Belirtilen tarihe ait satış verisi bulunamadı veya işlenemedi.");
+      return -1.0;
+    }
+  }
+
+  Future<double> getYearsTotalRevenue(int year) async {
+    double totalRevenue = 0.0;
+    Map<String, dynamic>? daySet = await getYearSet(year);
+
+    if (daySet != null && daySet.containsKey("products")) {
+      Map<String, dynamic> products = daySet["products"];
+      products.forEach((key, value) {
+        totalRevenue += value["revenue"];
+      });
+      return totalRevenue;
+    } else {
+      print("Belirtilen tarihe ait satış verisi bulunamadı veya işlenemedi.");
+      return -1.0;
+    }
+  }
+
+
   Future<void> writeJsonData(String jsonData, int code) async {
     final file = await selectFileDataType(code);
 
@@ -106,7 +175,8 @@ class AnalysesReader {
     }
   }
 
-  Future<Map<String, int>?> getDailyProductSales(
+  /*belirli bir günün verilerini alıyor*/
+  Future<Map<String, int>?> getProductSalesForOneDay(
       int day, int month, int year) async {
     String date = "$day.$month.$year";
     Map<String, dynamic>? rawData = await getRawData(0);
@@ -139,6 +209,7 @@ class AnalysesReader {
     }
   }
 
+  /*bunu 30 kere çalıştırıp 1 ay için günlük veri alıyor*/
   Future<Map<int, Map<String, int>>?> getWeeklyProductSalesForMonth(
       int month, int year,
       {bool splitIntoWeeks = false}) async {
@@ -150,7 +221,7 @@ class AnalysesReader {
 
     for (DateTime date = startDate;
     date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
-    date = date.add(Duration(days: 1))) {
+    date = date.add(const Duration(days: 1))) {
       int weekNumber = splitIntoWeeks
           ? (date.day / 7).ceil()
           : 1; // splitIntoWeeks true ise haftalara bölecek, false ise 1 olarak ayarlanacak
@@ -159,7 +230,7 @@ class AnalysesReader {
       int year = date.year;
 
       Map<String, int>? dailySales =
-      await getDailyProductSales(day, month, year);
+      await getProductSalesForOneDay(day, month, year);
       if (dailySales != null) {
         // Haftalık satışları güncelle
         if (!monthlySales.containsKey(weekNumber)) {
@@ -174,6 +245,9 @@ class AnalysesReader {
 
     return monthlySales.isNotEmpty ? monthlySales : null;
   }
+  //üstteki ikisi piechart için veri sağlıyor
+
+
 
   Future<Map<String, double>> getDailyTotalRevenueForMonth(
       int month, int year) async {
@@ -181,11 +255,9 @@ class AnalysesReader {
 
     // İlgili ayın ilk günü ve son günü
     DateTime startDate = DateTime(year, month, 1);
-    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
+    DateTime endDate = DateTime(year, month + 1, 1).subtract(const Duration(days: 1));
 
-    for (DateTime date = startDate;
-    date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
-    date = date.add(const Duration(days: 1))) {
+    for (DateTime date = startDate; date.isBefore(endDate) || date.isAtSameMomentAs(endDate); date = date.add(const Duration(days: 1))) {
       int day = date.day;
       int month = date.month;
       int year = date.year;
@@ -193,50 +265,43 @@ class AnalysesReader {
       double dayRevenue = await getDaysTotalRevenue(day, month, year);
       if (dayRevenue != -1.0) {
         dailyTotalRevenue["$day.$month.$year"] = dayRevenue;
+      }else{
+        dailyTotalRevenue["$day.$month.$year"] = 0.0;
       }
+
     }
 
     return dailyTotalRevenue.isNotEmpty ? dailyTotalRevenue : {};
   }
 
+  Future<Map<String, double>> getMonthlyTotalRevenueForYear(int year) async {
+    Map<String, double> monthlyTotalRevenue = {};
 
-  Future<Map<String, double>> getWeeklyTotalRevenueForMonth(
-      int month, int year) async {
-    Map<String, double> monthlyRevenue = {};
-
-    // İlgili ayın ilk günü ve son günü
-    DateTime startDate = DateTime(year, month, 1);
-    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
-
-    double totalRevenue = 0.0;
-    int currentWeek = 1;
-
-    for (DateTime date = startDate;
-        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
-        date = date.add(Duration(days: 1))) {
-      int weekNumber = (date.day / 7).ceil();
-      int day = date.day;
-
-      if (weekNumber != currentWeek) {
-        // Yeni hafta başladı, toplam geliri sıfırla
-        monthlyRevenue[currentWeek.toString()] = totalRevenue;
-        totalRevenue = 0.0;
-        currentWeek = weekNumber;
-      }
-
-      double dayRevenue = await getDaysTotalRevenue(day, month, year);
-      if (dayRevenue != -1.0) {
-        totalRevenue += dayRevenue;
-      }
-
-      if (date == endDate) {
-        // Son gün, toplamı ekle
-        monthlyRevenue[currentWeek.toString()] = totalRevenue;
+    for (int month = 1; month <= 12; month++) {
+      double monthRevenue = await getMonthsTotalRevenue(month, year);
+      if (monthRevenue != -1.0) {
+        monthlyTotalRevenue["$month.$year"] = monthRevenue;
+      }else{
+        monthlyTotalRevenue["$month.$year"] = 0.0;
       }
     }
 
-    return monthlyRevenue.isNotEmpty ? monthlyRevenue : {};
+    return monthlyTotalRevenue.isNotEmpty ? monthlyTotalRevenue : {};
   }
 
+  Future<Map<String, double>> getYearlyTotalRevenueForYear(int year) async {
+    Map<String, double> yearlyTotalRevenue = {};
+
+      double yearRevenue = await getYearsTotalRevenue(year);
+      if (yearRevenue != -1.0) {
+        yearlyTotalRevenue["$year"] = yearRevenue;
+      }else{
+        yearlyTotalRevenue["$year"] = 0.0;
+      }
+    return yearlyTotalRevenue.isNotEmpty ? yearlyTotalRevenue : {};
+  }
+  //todo bunu iki yıl için karşılaştırmalı olarak yapabilirin
+
+//üstteki linechart için veri sağlıyor
 
 }

@@ -72,8 +72,10 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               DateTime now = DateTime.now();
+
               Future<Map<String, dynamic>?> analysesFuture =
                   analysesReader.getDaySet(now.day, now.month, now.year);
+
               analysesFuture.then((analyses) {
                 if (analyses != null) {
                   print("Bugünkü analizler: $analyses");
@@ -87,8 +89,46 @@ class _AdminPanelState extends State<AdminPanel> {
                 }
               });
             },
-            child: const Text("Bugünün analizlerini al"),
+            child: const Text("ay için günlük"),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () async {
+                    // Fonksiyon sonucunu beklemek için await kullanılır
+                    Map<String, double> result = await analysesReader
+                        .getMonthlyTotalRevenueForYear(DateTime.now().year);
+                    print(result);
+                  },
+                  child: const Text("Yıl için aylık")),
+              TextButton(
+                  onPressed: () async {
+                    // Fonksiyon sonucunu beklemek için await kullanılır
+                    Map<String, double> result = await analysesReader
+                        .getYearlyTotalRevenueForYear(DateTime.now().year);
+                    print(result);
+                  },
+                  child: const Text("Yıl için yıllık")),
+            ],
+          ),
+          TextButton(
+              onPressed: () async {
+                DateTime now = DateTime.now();
+
+                Future<Map<String, dynamic>?> analysesFuture =
+                    analysesReader.getMonthSet(now.month, now.year);
+
+                analysesFuture.then((analyses) {
+                  if (analyses != null) {
+                    print("Bugünkü analizler: $analyses");
+                  } else {
+                    print("Bugünkü analizler bulunamadı.");
+                  }
+                });
+              },
+              //todo bu şekilde itemlist çıkarabiliriz bunu text analyses kısmına ekle
+              child: const Text("itemlist çıkartmaya çalışıyoruz")),
           Container(
             color: Colors.red,
             child: SizedBox(
@@ -128,25 +168,26 @@ class _AdminPanelState extends State<AdminPanel> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            TextButton(
-              onPressed: () async {
-                resetAllAnalysesJsonData.resetAllTableJsonFiles(0);
-              },
-              child: const Text("Reset all the analyses data 0 "),
-            ),
-            TextButton(
-              onPressed: () async {
-                resetAllAnalysesJsonData.resetAllTableJsonFiles(1);
-              },
-              child: const Text("Reset all the analyses data 1 "),
-            ),
-            TextButton(
-              onPressed: () async {
-                resetAllAnalysesJsonData.resetAllTableJsonFiles(2);
-              },
-              child: const Text("Reset all the analyses data 2 "),
-            ),
-          ],),
+              TextButton(
+                onPressed: () async {
+                  resetAllAnalysesJsonData.resetAllTableJsonFiles(0);
+                },
+                child: const Text("Reset all the analyses data 0 "),
+              ),
+              TextButton(
+                onPressed: () async {
+                  resetAllAnalysesJsonData.resetAllTableJsonFiles(1);
+                },
+                child: const Text("Reset all the analyses data 1 "),
+              ),
+              TextButton(
+                onPressed: () async {
+                  resetAllAnalysesJsonData.resetAllTableJsonFiles(2);
+                },
+                child: const Text("Reset all the analyses data 2 "),
+              ),
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

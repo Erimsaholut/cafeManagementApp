@@ -138,14 +138,6 @@ class ResetAllAnalysesJsonData {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0}
       }
     },
-    "16.$month.$year": {
-      "products": {
-        "Kokoreç": {"quantity": 4, "revenue": 222.0},
-        "Tavuk Döner": {"quantity": 2, "revenue": 60.0},
-        "Nescafe": {"quantity": 3, "revenue": 30.0},
-        "Ekmek": {"quantity": 5, "revenue": 35.0}
-      }
-    },
     "17.$month.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
@@ -294,13 +286,6 @@ class ResetAllAnalysesJsonData {
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "2.$year": {
-      "products": {
-        "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
-        "Kokoreç": {"quantity": 2, "revenue": 111.0},
-        "Limonata": {"quantity": 3, "revenue": 45.0}
-      }
-    },
     "3.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
@@ -343,13 +328,6 @@ class ResetAllAnalysesJsonData {
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "9.$year": {
-      "products": {
-        "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
-        "Kokoreç": {"quantity": 2, "revenue": 111.0},
-        "Limonata": {"quantity": 3, "revenue": 45.0}
-      }
-    },
     "10.$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
@@ -381,21 +359,21 @@ class ResetAllAnalysesJsonData {
     await analysesReader.writeJsonData('''
 {
   "sales": {
-    "$year": {
+    "${year-2}": {
       "products": {
         "Çay": {"quantity": 5, "revenue": 25.0},
         "Su": {"quantity": 3, "revenue": 15.0},
         "Nescafe": {"quantity": 2, "revenue": 20.0}
       }
     },
-    "${year + 1}": {
+    "${year - 1}": {
       "products": {
         "Türk Kahvesi": {"quantity": 4, "revenue": 80.0},
         "Kokoreç": {"quantity": 2, "revenue": 111.0},
         "Limonata": {"quantity": 3, "revenue": 45.0}
       }
     },
-    "${year + 2}": {
+    "$year": {
       "products": {
         "Sucuklu Tost": {"quantity": 3, "revenue": 135.0},
         "Ayran": {"quantity": 4, "revenue": 40.0},
