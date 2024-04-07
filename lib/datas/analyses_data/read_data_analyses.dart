@@ -243,7 +243,7 @@ class AnalysesReader {
       }
     }
 
-    return monthlySales.isNotEmpty ? monthlySales : null;
+    return monthlySales.isNotEmpty ? monthlySales : {};
   }
   //üstteki ikisi piechart için veri sağlıyor
 

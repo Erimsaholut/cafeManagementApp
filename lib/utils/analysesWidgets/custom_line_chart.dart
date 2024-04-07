@@ -42,12 +42,10 @@ class _CustomLineChartState extends State<CustomLineChart> {
   int calculateClassCount() {
     // Veri sayısını al
     int n = widget.valueList.length;
-    print("n:$n");
 
     // Sınıf sayısını hesapla
     int classCount = (1.0 + (3.3 * (log(n) / log(10)))).ceil();
 
-    print("classCount:$classCount");
     return classCount;
   }
 
@@ -55,7 +53,6 @@ class _CustomLineChartState extends State<CustomLineChart> {
     double minValue = sortedList.first;
     double maxValue = sortedList.last;
     double classInterval = (maxValue - minValue) / classCount;
-    print("classInterval:$classInterval");
 
     return classInterval;
   }
@@ -66,11 +63,10 @@ class _CustomLineChartState extends State<CustomLineChart> {
 
     // Sınıfların orta noktalarını hesapla ve yuvarla
     int midpoint = minValue + (classInterval ~/ 2);
-    for (int i = 0; i < classCount+1; i++) {
+    for (int i = 0; i < classCount + 1; i++) {
       classMidpoints.add(midpoint);
       midpoint += classInterval.toInt();
     }
-    print("classMidpoints:$classMidpoints");
 
     return classMidpoints;
   }
@@ -142,12 +138,12 @@ class _CustomLineChartState extends State<CustomLineChart> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: classInterval,
+        horizontalInterval: (classInterval>0)?classInterval:1,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return const FlLine(
             color: Colors.blueAccent,
-            strokeWidth: 1 ,
+            strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
@@ -182,7 +178,8 @@ class _CustomLineChartState extends State<CustomLineChart> {
             reservedSize: 62,
           ),
         ),
-      ), /*yazılar*/
+      ),
+      /*yazılar*/
       borderData: FlBorderData(
         show: true,
         border: Border.all(color: Colors.black),
@@ -202,7 +199,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
           isStrokeCapRound: true,
           dotData: const FlDotData(
             show: true,
-//todo buradan noktalara tıkladığımızda değer + bir value daha eklemeye baksana [25 mayıs] yazsın mesela
+              //todo buradan noktalara tıkladığımızda değer + bir value daha eklemeye baksana [25 mayıs] yazsın mesela
           ),
           belowBarData: BarAreaData(
             show: true,

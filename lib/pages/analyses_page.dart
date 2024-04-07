@@ -120,14 +120,12 @@ class _AnalysesPageState extends State<AnalysesPage>
       final revenueForDays = fetchDailyRevenueValues();
       final revenueForMonths = fetchMonthlyRevenueValues();
       final revenueForYear = fetchYearyRevenueValues();
-
       final monthlyItem = fetchMonthlyItemCounts();
 
       // Veriler beklendiği gibi alınıyor
       dayRevenueValues = await revenueForDays;
       monthlyRevenueValues = await revenueForMonths;
       yearRevenueValues = await revenueForYear;
-
       monthlyItemValues = (await monthlyItem)!;
     } catch (error) {
       // Hata durumunda kullanıcıya bilgi vermek için uygun bir geri bildirim sağlanabilir
@@ -258,6 +256,7 @@ Future<List<double>> fetchMonthlyRevenueValues() async {
   Map<String, double>? monthlySales =
   await analysesReader.getMonthlyTotalRevenueForYear(now.year);
   List<double> revenueValues = monthlySales.values.toList();
+  print("xxxx $revenueValues");
   return revenueValues;
 }
 
@@ -279,6 +278,7 @@ Future<Map<int, Map<String, int>>?> fetchMonthlyItemCounts() async {
   Map<int, Map<String, int>>? monthlySales =
   await analysesReader.getWeeklyProductSalesForMonth(now.month, now.year);
   print("revenueValues:$monthlySales");
+
   return monthlySales;
 }
 
