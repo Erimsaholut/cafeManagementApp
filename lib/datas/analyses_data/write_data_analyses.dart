@@ -6,6 +6,7 @@ class WriteAnalysesData {
   AnalysesReader analysesDataHandler = AnalysesReader();
   ReadData readData = ReadData();
 
+  /*bu çavo buraya salladı direkt*/
   addItemToAnalysesJson(String prodName,int prodQuantity){
     addItemToDailyAnalysesJson(prodName,prodQuantity);
     addItemToMonthlyAnalysesJson(prodName,prodQuantity);
@@ -41,7 +42,7 @@ class WriteAnalysesData {
           rawData["sales"][dateNow]["products"][prodName]["revenue"] += _prodPrice * prodQuantity;
         }
 
-        await analysesDataHandler.writeJsonData(jsonEncode(rawData),0);//todo şimdilik 0 ekledim ama 3 tür için de aynı muhabbet dönecek
+        await analysesDataHandler.writeJsonData(jsonEncode(rawData),0);
       }
     } catch (e) {
       print('Ürün analizi eklenirken hata oluştu: $e');
@@ -49,10 +50,7 @@ class WriteAnalysesData {
   }
 
 
-
-
-
-
+  /*monthlyde sıkıntı yok ama diğerlerinde var*/
   Future<void> addItemToMonthlyAnalysesJson(String prodName,
       int prodQuantity) async {
     try {
@@ -82,7 +80,6 @@ class WriteAnalysesData {
           rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
           rawData["sales"][dateNow]["products"][prodName]["revenue"] += prodPrice * prodQuantity;
         }
-
         await analysesDataHandler.writeJsonData(jsonEncode(rawData),1);
       }
     } catch (e) {
@@ -94,7 +91,7 @@ class WriteAnalysesData {
   Future<void> addItemToYearlyAnalysesJson(String prodName,
       int prodQuantity) async {
     try {
-      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(1);
+      Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(2);
       double prodPrice = await readData.getItemPrice(prodName);
 
 

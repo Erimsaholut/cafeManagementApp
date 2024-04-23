@@ -131,7 +131,7 @@ class _AdminPanelState extends State<AdminPanel> {
               child: const Text("itemlist çıkartmaya çalışıyoruz")),
           Container(
             color: Colors.red,
-            child: SizedBox(
+            child: const SizedBox(
               width: 20,
               height: 20,
             ),

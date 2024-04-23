@@ -213,7 +213,8 @@ class _Decrease0rderState extends State<Decrease0rder> {
     itemCounts.forEach((item, count) {
       textMap[item] = count;
     });
-
     return textMap;
   }
 }
+// flutter: {testItem2: 1, çeşme suyu : 4, Ayran: 2, Su: 5, Oralet: 3, Çay: 2, Türk Kahvesi: 1}
+//flutter: {Çay: 2, Su: 3, Limonata: 3, Oralet: 5, testItem2: 2}

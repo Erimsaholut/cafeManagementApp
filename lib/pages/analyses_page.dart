@@ -262,12 +262,17 @@ Future<List<double>> fetchMonthlyRevenueValues() async {
 
 /*for yearly line chart*/
 Future<List<double>> fetchYearyRevenueValues() async {
+  try{
   AnalysesReader analysesReader = AnalysesReader();
   DateTime now = DateTime.now();
   Map<String, double>? monthlySales =
   await analysesReader.getYearlyTotalRevenueForYear(now.year);
   List<double> revenueValues = monthlySales.values.toList();
   return revenueValues;
+  }catch(e){
+    print("fetchYearyRevenueValues problem:$e");
+    return [];
+  }
 }
 
 /*for pie chart*/

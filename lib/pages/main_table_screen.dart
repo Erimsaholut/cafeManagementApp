@@ -24,6 +24,8 @@ class MainTableScreen extends StatefulWidget {
 }
 
 class _MainTableScreenState extends State<MainTableScreen> {
+  WriteAnalysesData writeAnalysesData = WriteAnalysesData();
+  WriteTableData writeTableData = WriteTableData();
   List<TableOrderClass> orderClass = [];
   final List<Widget> orderWidgets = [];
 
@@ -146,23 +148,11 @@ class _MainTableScreenState extends State<MainTableScreen> {
                             text2: 'Emin misiniz ?',
                             customFunction: () {
                               setState(() {
-                                WriteTableData writeTableData =
-                                    WriteTableData();
-                                WriteAnalysesData writeAnalysesData = WriteAnalysesData();
+
                                 Map<String, int> separetedItems = {};
 
                                 for (TableOrderClass i in orderClass) {
                                   separetedItems[i.name] = i.quantity;
-                                }
-
-                                Future<void> addItemToAnalyses(
-                                    Map<String, int> separetedItems) async {
-
-                                  for (var item in separetedItems.entries) {
-                                    await writeAnalysesData
-                                        .addItemToAnalysesJson(
-                                            item.key, item.value);
-                                  }
                                 }
 
                                 addItemToAnalyses(separetedItems);
@@ -186,6 +176,16 @@ class _MainTableScreenState extends State<MainTableScreen> {
       ),
       backgroundColor: CustomColors.backGroundColor,
     );
+  }
+
+  Future<void> addItemToAnalyses(
+      Map<String, int> separetedItems) async {
+
+    for (var item in separetedItems.entries) {
+      await writeAnalysesData
+          .addItemToAnalysesJson(
+          item.key, item.value);
+    }
   }
 
   void initialFunction() async {
@@ -273,4 +273,7 @@ Widget orderShown(int quantity, String itemName, double price) {
       const SizedBox(height: 8),
     ],
   );
+
+
+
 }

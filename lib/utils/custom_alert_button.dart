@@ -27,7 +27,7 @@ class CustomAlertButton extends StatelessWidget {
           child: Text(answer1),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             customFunction();
           },
           child: const Text('Onayla'),
