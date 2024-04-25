@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/analysesTest/analysesTest.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
@@ -66,6 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
           buttonName: "Admin Panel", goToPage: AdminPanel()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Analyses', goToPage: AnalysesPage()))
+      ..add(const CustomUtilPagesButton(
+          buttonName: 'AnalysesTest', goToPage: AnalysesTest()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()));
 
