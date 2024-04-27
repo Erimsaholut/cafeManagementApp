@@ -1,6 +1,6 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import '../../../utils/price_picker.dart';
 import '../../../constants/styles.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +41,7 @@ class _ItemStudioState extends State<ItemStudio> {
 
 
     return Scaffold(
-      backgroundColor: CustomColors.backGroundColorForTexts,
+      backgroundColor: CustomColors.backGroundColor,
       appBar: AppBar(
         title: Text("Edit  ${widget.item.name}"),
         backgroundColor: CustomColors.appbarColor,

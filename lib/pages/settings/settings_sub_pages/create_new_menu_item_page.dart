@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/custom_colors.dart';
 import '../../../datas/menu_data/write_data_menu.dart';
@@ -23,14 +24,18 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
     option2: 'İçecek',
     itemType: "Yiyecek",
   );
+
   List<String> indList = [];
   int moneyValue = 15;
   int pennyValue = 0;
+  double profit = 0;
   late String beverageName;
   String itemType = "Yiyecek";
+  bool isValueEnteredForProfit = true;
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create New Menu Item"),
@@ -58,6 +63,81 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                   },
                 ),
                 CustomDivider(),
+                Column(
+                  children: [
+                    Text(
+                      "Ürün adetindeki kâr miktarı",
+                      style: CustomTextStyles.blackAndBoldTextStyleXl,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                isValueEnteredForProfit = true;
+                              });
+                            },
+                            child: const Text("Değer gir")),
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                isValueEnteredForProfit = false;
+                              });
+                            },
+                            child: const Text("Yüzde gir")),
+                      ],
+                    ),
+                    SizedBox(
+                      width: (screenSize.width / 4),
+                      child: Row(
+                        children: [
+                          (isValueEnteredForProfit)
+                              ? const Text("Değer:    ")
+                              : const Text("Yüzde: %"),
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: (isValueEnteredForProfit)
+                                    ? "Değer Giriniz"
+                                    : "Yüzde giriniz",
+                                errorText: (isValueEnteredForProfit)
+                                    ? null
+                                    : (double.tryParse(value) < 0 || double.tryParse(value) > 100)
+                                        ? "Değer 0 ile 100 arasında olmalıdır."
+                                        : null,
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (isValueEnteredForProfit) {
+                                    profit = double.tryParse(value) ?? 0.0;
+                                  } else {
+                                    profit = ((moneyValue * 100 + pennyValue) /
+                                            10000) *
+                                        (double.tryParse(value) ?? 0.0 / 100);
+                                    profit =
+                                        double.parse(profit.toStringAsFixed(2));
+                                    //todo bunu bitir sonra profit alacak şekilde data düzenle
+                                    //todo ürün düzenleme kısmına da ekle
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Text("1 adet üründen elde edilen kâr: $profit ₺"),
+                    SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ),
+                CustomDivider(),
                 Ingredients(indList: indList),
                 CustomDivider(),
                 const SizedBox(height: 16),
@@ -70,26 +150,32 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                     String selectedItemType = customItemTypeSelector.itemType;
                     print("Selected Item Type: $selectedItemType");
 
-                    if(beverageName.isEmpty){
+                    if (beverageName.isEmpty) {
                       scaffoldMessage("Ürün ismi boş olamaz", context);
-                    }
-                    else{
-
-                      bool? result = await writeData.addNewItemToMenu(beverageName, moneyValue, pennyValue, indList, selectedItemType);
+                    } else {
+                      bool? result = await writeData.addNewItemToMenu(
+                          beverageName,
+                          moneyValue,
+                          pennyValue,
+                          indList,
+                          selectedItemType);
 
                       if (result != null) {
                         if (result) {
-                          scaffoldMessage("Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType", context);
+                          scaffoldMessage(
+                              "Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType",
+                              context);
                         } else {
-                          scaffoldMessage("Yeni ürün eklenirken bir hata ile karşılaşıldı", context);
+                          scaffoldMessage(
+                              "Yeni ürün eklenirken bir hata ile karşılaşıldı",
+                              context);
                         }
                       } else {
                         // Handle null case here
-                        print("Beklenmeyen bir hata oluştu. addNewItemToMenu null değer döndürdü.");
+                        print(
+                            "Beklenmeyen bir hata oluştu. addNewItemToMenu null değer döndürdü.");
                       }
-
                     }
-
                   },
                   child: const Text("Kaydet"),
                 ),

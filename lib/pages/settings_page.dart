@@ -82,7 +82,7 @@ class SettingsPageState extends State<SettingsPage> {
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           opaque: false,
-                          pageBuilder: (_, __, ___) => EditItemsPage(),
+                          pageBuilder: (_, __, ___) => const EditItemsPage(),
                           transitionsBuilder: (_, anim, __, child) {
                             return ScaleTransition(
                               scale: anim,
