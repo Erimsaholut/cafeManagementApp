@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/reset_datas_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'dart:convert';
@@ -57,7 +59,7 @@ class WriteData {
   }
 
   Future<bool?> addNewItemToMenu(String itemName, int moneyValue,
-      int pennyValue, List<String> indList, String type) async {
+      int pennyValue, List<String> indList, String type, {double profit = 0}) async {
     if (type == "Yiyecek") {
       type = "food";
     }
@@ -71,8 +73,6 @@ class WriteData {
       if (rawData != null) {
         List<dynamic> menu = rawData["menu"];
 
-        int newId = _generateNewItemId(menu);
-
         String lowercaseItemName = itemName.toLowerCase();
         bool itemExists =
         menu.any((item) => item["name"].toLowerCase() == lowercaseItemName);
@@ -84,9 +84,9 @@ class WriteData {
         }
 
         Map<String, dynamic> newItem = {
-          "id": newId,
           "name": itemName,
           "price": moneyValue + pennyValue / 100,
+          "profit": profit,
           "type": type,
           "ingredients": indList,
         };
@@ -108,7 +108,7 @@ class WriteData {
   }
 
 
-  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney, int newPricePenny, List<String> indList) async {
+  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney, int newPricePenny, List<String> indList, {int newProfit = 0}) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
 
@@ -136,6 +136,7 @@ class WriteData {
             "id": oldItem["id"],
             "name": itemName,
             "price": newPriceMoney + newPricePenny / 100,
+            "profit": newProfit, // newProfit değeri burada kullanılıyor
             "type": oldItem["type"],
             "ingredients": indList,
           };
@@ -160,18 +161,5 @@ class WriteData {
     }
   }
 
-  int _generateNewItemId(List<dynamic> menu) {
-    int maxId = 0;
-
-    for (var item in menu) {
-      int itemId = item["id"];
-      if (itemId > maxId) {
-        maxId = itemId;
-      }
-    }
-
-    return maxId + 1;
-  }
-//todo itemId kalksa hayat daha güzel olurdu
 
 }

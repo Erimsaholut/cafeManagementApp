@@ -89,7 +89,7 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                       ],
                     ),
                     SizedBox(
-                      width: (screenSize.width / 4),
+                      width: (screenSize.width / 3),
                       child: Row(
                         children: [
                           (isValueEnteredForProfit)
@@ -111,7 +111,7 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                               ),
                               onChanged: (value) {
                                 setState(() {
-                                  if (profit > moneyValue && profit < 0) {
+
                                     if (isValueEnteredForProfit) {
                                       profit = double.tryParse(value) ?? 0.0;
                                     } else {
@@ -122,10 +122,12 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                                       profit = double.parse(
                                           profit.toStringAsFixed(2));
                                       //todo ürün düzenleme kısmına da ekle
+
                                     }
-                                  }else{
-                                    profit=0;
-                                  }
+
+
+
+
                                 });
                               },
                             ),
@@ -163,7 +165,8 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                           moneyValue,
                           pennyValue,
                           indList,
-                          selectedItemType);
+                          selectedItemType,
+                          profit: profit);
 
                       if (result != null) {
                         if (result) {

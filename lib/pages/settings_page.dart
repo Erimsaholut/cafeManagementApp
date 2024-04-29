@@ -139,12 +139,13 @@ class SettingsPageState extends State<SettingsPage> {
                                       const SnackBar(
                                         content: Text(
                                             'Bütün veriler başarı ile resetlendi'),),);
+                                    //todo analizleri de resetlemeli
                                   } else {
                                     // Onay metni doğru değilse kullanıcıyı uyar
                                     print('Lütfen doğru onay metnini girin.');
                                   }
                                 },
-                                child: Text('Onayla'),
+                                child: const Text('Onayla'),
                               ),
                             ],
                           );

@@ -191,6 +191,36 @@ class ReadData {
     return 0;
   }
 
+  Future<double> getItemProfit(String itemName) async {
+    try {
+      final file = await _localFile;
+
+      if (await file.exists()) {
+
+        String content = await file.readAsString();
+
+        if (content.isNotEmpty) {
+
+          Map<String, dynamic> jsonData = jsonDecode(content);
+
+          List<dynamic> menu = jsonData["menu"];
+
+          for(var i in menu){
+            if(i["name"]==itemName){
+              return i["profit"];
+            }
+          }
+          return 0;
+
+        }
+
+      }
+    } catch (e) {
+      print('ürünün fiyatı alınırken hata oluştu: $e');
+    }
+    return 0;
+  }
+
   Future<int> getTableCount() async {
     try {
       Map<String, dynamic>? rawData = await getRawData();

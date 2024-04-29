@@ -210,6 +210,7 @@ class _ItemStudioState extends State<ItemStudio> {
           id: itemData["id"],
           name: itemData["name"],
           price: itemData["price"],
+          profit: itemData["profit"],
           ingredients: List<String>.from(itemData["ingredients"]),
         );
         items.add(newItem);

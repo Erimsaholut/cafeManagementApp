@@ -7,13 +7,13 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/r
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import '../constants/custom_colors.dart';
+import '../datas/menu_data/reset_datas_menu.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
 
-/* For now I'm using this page to test data files */
   @override
   State<AdminPanel> createState() => _AdminPanelState();
 }
@@ -26,6 +26,8 @@ class _AdminPanelState extends State<AdminPanel> {
   ResetAllTableJsonData resetAllTableJsonData = ResetAllTableJsonData();
 
   WriteTableData writeTableData = WriteTableData();
+
+  ResetAllJsonData resetAllJsonData = ResetAllJsonData();
 
   WriteAnalysesData writeAnalysesData = WriteAnalysesData();
 
@@ -52,7 +54,10 @@ class _AdminPanelState extends State<AdminPanel> {
               height: 20,
             ),
           ),
-          TextButton(onPressed: () {}, child: const Text("Reset Everything")),
+          TextButton(onPressed: () async{
+            resetAllJsonData.resetJsonFile();
+
+          }, child: const Text("Reset menu")),
           Container(
             color: Colors.red,
             child: const SizedBox(

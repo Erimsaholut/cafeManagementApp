@@ -77,6 +77,7 @@ class _EditItemsPageState extends State<EditItemsPage> {
           id: itemData["id"],
           name: itemData["name"],
           price: itemData["price"],
+          profit: itemData["profit"],
           ingredients: List<String>.from(itemData["ingredients"]),
         );
         items.add(newItem);
@@ -90,12 +91,14 @@ class EditableItem {
   final int id;
   final String name;
   double price;
+  double profit;
   final List<String> ingredients;
 
   EditableItem({
     required this.id,
     required this.name,
     required this.price,
+    required this.profit,
     required this.ingredients,
   });
 
