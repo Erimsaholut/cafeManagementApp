@@ -100,3 +100,4 @@ class EditableItem {
   });
 
 }
+//todo buraya profit hesaplayıcı gelecek

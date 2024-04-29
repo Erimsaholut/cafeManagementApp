@@ -3,44 +3,44 @@
   "table_count": 22,
   "menu": [
     {
-      "id": 1,
       "name": "Çay",
       "price": 5.0,
+      "profit": 2.5,
       "type": "drink",
       "ingredients": []
     },
     {
-      "id": 2,
       "name": "Su",
       "price": 5.0,
+      "profit": 2.5,
       "type": "drink",
       "ingredients": []
     },
     {
-      "id": 3,
       "name": "Ayran",
       "price": 10.0,
+      "profit": 5.0,
       "type": "drink",
       "ingredients": []
     },
     {
-      "id": 4,
       "name": "Limonata",
       "price": 15.0,
+      "profit": 7.5,
       "type": "drink",
       "ingredients": []
     },
     {
-      "id": 5,
       "name": "Kefir",
       "price": 20.0,
+      "profit": 10.0,
       "type": "drink",
       "ingredients": []
     },
     {
-      "id": 6,
       "name": "Nescafe",
       "price": 10.0,
+      "profit": 5.0,
       "type": "drink",
       "ingredients": [
         "Sade",
@@ -49,9 +49,9 @@
       ]
     },
     {
-      "id": 7,
       "name": "Türk Kahvesi",
       "price": 20.0,
+      "profit": 10.0,
       "type": "drink",
       "ingredients": [
         "Sade",
@@ -61,9 +61,9 @@
       ]
     },
     {
-      "id": 8,
       "name": "Oralet",
       "price": 5.0,
+      "profit": 2.5,
       "type": "drink",
       "ingredients": [
         "Portakal",
@@ -73,9 +73,9 @@
       ]
     },
     {
-      "id": 9,
       "name": "Sucuklu Tost",
       "price": 45.0,
+      "profit": 22.5,
       "type": "food",
       "ingredients": [
         "Ketçap",
@@ -86,9 +86,9 @@
       ]
     },
     {
-      "id": 10,
       "name": "Tavuk Döner",
       "price": 30.0,
+      "profit": 15.0,
       "type": "food",
       "ingredients": [
         "Ketçap",
@@ -98,9 +98,9 @@
       ]
     },
     {
-      "id": 11,
       "name": "Kokoreç",
       "price": 55.50,
+      "profit": 27.75,
       "type": "food",
       "ingredients": [
         "Acı",
@@ -109,9 +109,9 @@
       ]
     },
     {
-      "id": 12,
       "name": "Ekmek",
       "price": 7.0,
+      "profit": 3.5,
       "type": "food",
       "ingredients": []
     }

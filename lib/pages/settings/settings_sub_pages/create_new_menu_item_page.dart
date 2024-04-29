@@ -102,24 +102,29 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                                 hintText: (isValueEnteredForProfit)
                                     ? "Değer Giriniz"
                                     : "Yüzde giriniz",
-                                errorText: (isValueEnteredForProfit)
-                                    ? null
-                                    : (double.tryParse(value) < 0 || double.tryParse(value) > 100)
-                                        ? "Değer 0 ile 100 arasında olmalıdır."
+                                errorText: (profit > moneyValue)
+                                    //profit değil value ya da profit < moneyvalue
+                                    ? "Kâr satış fiyatından fazla olamaz"
+                                    : (profit < 0)
+                                        ? "Kâr sıfırdan küçük olamaz"
                                         : null,
                               ),
                               onChanged: (value) {
                                 setState(() {
-                                  if (isValueEnteredForProfit) {
-                                    profit = double.tryParse(value) ?? 0.0;
-                                  } else {
-                                    profit = ((moneyValue * 100 + pennyValue) /
-                                            10000) *
-                                        (double.tryParse(value) ?? 0.0 / 100);
-                                    profit =
-                                        double.parse(profit.toStringAsFixed(2));
-                                    //todo bunu bitir sonra profit alacak şekilde data düzenle
-                                    //todo ürün düzenleme kısmına da ekle
+                                  if (profit > moneyValue && profit < 0) {
+                                    if (isValueEnteredForProfit) {
+                                      profit = double.tryParse(value) ?? 0.0;
+                                    } else {
+                                      profit = ((moneyValue * 100 +
+                                                  pennyValue) /
+                                              10000) *
+                                          (double.tryParse(value) ?? 0.0 / 100);
+                                      profit = double.parse(
+                                          profit.toStringAsFixed(2));
+                                      //todo ürün düzenleme kısmına da ekle
+                                    }
+                                  }else{
+                                    profit=0;
                                   }
                                 });
                               },
@@ -128,11 +133,11 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     Text("1 adet üründen elde edilen kâr: $profit ₺"),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                   ],
@@ -163,7 +168,7 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                       if (result != null) {
                         if (result) {
                           scaffoldMessage(
-                              "Yeni ürün başarı ile kaydedildi. $beverageName, $moneyValue, $pennyValue $indList, $selectedItemType",
+                              "Yeni ürün başarı ile kaydedildi.. $beverageName, $moneyValue, $pennyValue $indList,$profit $selectedItemType",
                               context);
                         } else {
                           scaffoldMessage(
