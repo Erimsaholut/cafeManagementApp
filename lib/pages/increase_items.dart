@@ -6,11 +6,11 @@ import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 
-
 /*itemlerin seçilip eklendiği o sayfa*/
 
 class IncreaseOrder extends StatefulWidget {
-  const IncreaseOrder({super.key,required this.tableNum,required this.initialFunction});
+  const IncreaseOrder(
+      {super.key, required this.tableNum, required this.initialFunction});
 
   final int tableNum;
   final Function initialFunction;
@@ -34,7 +34,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 
   List<Widget> foodsIn = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -55,7 +54,13 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: () {Navigator.pop(context); widget.initialFunction();  print("çıkıldı");  }, icon: const Icon(Icons.arrow_back_ios_new)),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+                widget.initialFunction();
+                print("çıkıldı");
+              },
+              icon: const Icon(Icons.arrow_back_ios_new)),
           title: Text(
             "Menü",
             style: CustomTextStyles.blackAndBoldTextStyleXl,
@@ -74,15 +79,25 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
                   child: ListView(
                     children: [
                       buildItemTypeTextContainer("İçecekler"),
-                      const SizedBox(height: 16,),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       buildGridView(drinksNoIn),
-                      const SizedBox(height: 32,),
+                      const SizedBox(
+                        height: 32,
+                      ),
                       ...drinksIn,
-                      const SizedBox(height: 16,),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       buildItemTypeTextContainer("Yiyecekler"),
-                      const SizedBox(height: 16,),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       buildGridView(foodsNoIn),
-                      const SizedBox(height: 32,),
+                      const SizedBox(
+                        height: 32,
+                      ),
                       ...foodsIn,
                     ],
                   ),
@@ -100,16 +115,14 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
                           flex: 4,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-
                             child: Padding(
                               padding: const EdgeInsets.all(8),
-
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: _buildOrderWidgets(),
                               ),
                             ),
-
                           ),
                         ),
                         Expanded(
@@ -154,7 +167,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     return orderWidgets;
   }
 
-
   void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) async {
     for (var itemName in items) {
       widgets.add(
@@ -179,13 +191,12 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
           buttonText: name,
           checkboxTexts: ingredients,
           onPressed: () {
-            _performAsyncOperationsForInd(name,widget.tableNum);
+            _performAsyncOperationsForInd(name, widget.tableNum);
           },
         ),
       );
     }
   }
-
 
   void makeWidgetsForIndDrink(
       List<Map<String, dynamic>> items, List<Widget> widgets) {
@@ -197,27 +208,24 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
           buttonText: name,
           checkboxTexts: ingredients,
           onPressed: () {
-            _performAsyncOperationsForInd(name,widget.tableNum);
+            _performAsyncOperationsForInd(name, widget.tableNum);
           },
         ),
       );
     }
   }
 
-
   Future<void> _performAsyncOperations(String itemName) async {
     WriteTableData writeTableData = WriteTableData();
     double itemPrice = await readNewData.getItemPrice(itemName);
     setState(() {
-      print(itemName);
       orders.add(itemName);
       totalPrice += itemPrice;
       writeTableData.addItemToTable(widget.tableNum, itemName, 1, itemPrice);
     });
   }
 
-
-  Future<void> _performAsyncOperationsForInd(String name,tableNum) async {
+  Future<void> _performAsyncOperationsForInd(String name, tableNum) async {
     double itemPrice = await readNewData.getItemPrice(name);
 
     WriteTableData writeTableData = WriteTableData();
@@ -240,9 +248,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     );
   }
 
-
-
-
   Widget buildGridView(List<Widget> list) {
     return GridView.builder(
       shrinkWrap: true,
@@ -258,9 +263,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
       },
     );
   }
-
-
-
 }
 
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
@@ -271,9 +273,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 
 //todo analiz sayfası ve dışarı aktarabilme özelliği
 
-
 //todo masalara renk değiştirme özelliği
 //todo değişiklik anında read çağır seperate mesela
 
 //todo analyseslara text halinde veriler gelecek
-

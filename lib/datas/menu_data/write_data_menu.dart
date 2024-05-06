@@ -108,7 +108,7 @@ class WriteData {
   }
 
 
-  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney, int newPricePenny, List<String> indList, {int newProfit = 0}) async {
+  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney, int newPricePenny, List<String> indList, {double newProfit = 0}) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
 

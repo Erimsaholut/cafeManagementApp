@@ -209,10 +209,11 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
     orderClass.clear();
 
+
     for (var i in tableData?["orders"]) {
       orderClass.add(
         TableOrderClass(
-            name: i["name"], price: i["price"], quantity: i["quantity"]),
+            name: i["name"], price: i["price"], quantity: i["quantity"],),
       );
     }
   }

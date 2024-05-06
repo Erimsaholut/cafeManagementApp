@@ -111,23 +111,16 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                               ),
                               onChanged: (value) {
                                 setState(() {
-
-                                    if (isValueEnteredForProfit) {
-                                      profit = double.tryParse(value) ?? 0.0;
-                                    } else {
-                                      profit = ((moneyValue * 100 +
-                                                  pennyValue) /
-                                              10000) *
-                                          (double.tryParse(value) ?? 0.0 / 100);
-                                      profit = double.parse(
-                                          profit.toStringAsFixed(2));
-                                      //todo ürün düzenleme kısmına da ekle
-
-                                    }
-
-
-
-
+                                  if (isValueEnteredForProfit) {
+                                    profit = double.tryParse(value) ?? 0.0;
+                                  } else {
+                                    profit = ((moneyValue * 100 + pennyValue) /
+                                            10000) *
+                                        (double.tryParse(value) ?? 0.0 / 100);
+                                    profit =
+                                        double.parse(profit.toStringAsFixed(2));
+                                    //todo ürün düzenleme kısmına da ekle
+                                  }
                                 });
                               },
                             ),

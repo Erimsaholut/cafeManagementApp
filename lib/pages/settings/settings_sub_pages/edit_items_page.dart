@@ -69,12 +69,10 @@ class _EditItemsPageState extends State<EditItemsPage> {
 /*raw datayı okutup EditableItem(dümdüz class) olarak yaratıyor*/
   Future<void> _processMenuData() async {
     Map<String, dynamic>? rawMenu = await readData.getRawData();
-
     setState(() {
       items.clear();
       for (var itemData in rawMenu?["menu"]) {
         EditableItem newItem = EditableItem(
-          id: itemData["id"],
           name: itemData["name"],
           price: itemData["price"],
           profit: itemData["profit"],
@@ -88,14 +86,12 @@ class _EditItemsPageState extends State<EditItemsPage> {
 
 /*bu bizim aslan parçası classımız*/
 class EditableItem {
-  final int id;
   final String name;
   double price;
   double profit;
   final List<String> ingredients;
 
   EditableItem({
-    required this.id,
     required this.name,
     required this.price,
     required this.profit,
@@ -103,4 +99,6 @@ class EditableItem {
   });
 
 }
-//todo buraya profit hesaplayıcı gelecek
+
+
+

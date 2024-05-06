@@ -21,15 +21,21 @@ class _ItemStudioState extends State<ItemStudio> {
   late int initialPennyValue;
   late int newMoneyValue;
   late int newPennyValue;
-
+  late double initialProfit;
+  bool isValueEnteredForProfit = true;
+  late double profit;
   @override
   void initState() {
     super.initState();
     initialMoneyValue = widget.item.price.floor();
     initialPennyValue =
         ((widget.item.price - widget.item.price.floor()) * 100).round();
+    initialProfit = widget.item.profit;
     newMoneyValue = initialMoneyValue;
     newPennyValue = initialPennyValue;
+    profit = initialProfit;
+
+
     _processMenuData();
   }
 
@@ -38,7 +44,6 @@ class _ItemStudioState extends State<ItemStudio> {
     final TextEditingController itemNameController = TextEditingController();
     WriteData writeData = WriteData();
     Size screenSize = MediaQuery.of(context).size;
-
 
     return Scaffold(
       backgroundColor: CustomColors.backGroundColor,
@@ -54,6 +59,7 @@ class _ItemStudioState extends State<ItemStudio> {
                 name: "Ürün Fiyatını Güncelle",
                 initialMoney: initialMoneyValue,
                 initialPenny: initialPennyValue,
+
                 onValueChanged: (int money, int penny) {
                   setState(() {
                     newMoneyValue = money;
@@ -61,6 +67,82 @@ class _ItemStudioState extends State<ItemStudio> {
 
                   });
                 },
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Ürün adetindeki kâr miktarı",
+                    style: CustomTextStyles.blackAndBoldTextStyleXl,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              print(profit);
+                              isValueEnteredForProfit = true;
+                            });
+                          },
+                          child: const Text("Değer gir")),
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              isValueEnteredForProfit = false;
+                            });
+                          },
+                          child: const Text("Yüzde gir")),
+                    ],
+                  ),
+                  SizedBox(
+                    width: (screenSize.width / 3),
+                    child: Row(
+                      children: [
+                        (isValueEnteredForProfit)
+                            ? const Text("Değer:    ")
+                            : const Text("Yüzde: %"),
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText:(initialProfit!=0)?"$initialProfit":((isValueEnteredForProfit) ? "Değer Giriniz" : "Yüzde giriniz"),
+
+
+
+
+                              errorText: (profit > newMoneyValue)
+                                  ? "Kâr satış fiyatından fazla olamaz"
+                                  : (profit < 0)
+                                  ? "Kâr sıfırdan küçük olamaz"
+                                  : null,
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                if (isValueEnteredForProfit) {
+                                  profit = double.tryParse(value) ?? 0.0;
+                                } else {
+                                  profit = ((newMoneyValue * 100 +
+                                      newPennyValue) /
+                                      10000) *
+                                      (double.tryParse(value) ?? 0.0 / 100);
+                                  profit = double.parse(
+                                      profit.toStringAsFixed(2));
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Text("1 adet üründen elde edilen kâr: $profit ₺"),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                ],
               ),
               Text(
                 "Mevcut Çeşitleri Kaldır",
@@ -132,11 +214,14 @@ class _ItemStudioState extends State<ItemStudio> {
 
                         print("gelmeden önce");
                         print("$newMoneyValue tl $newPennyValue krş");
+                        print("profit miktarı = $profit");
                         writeData.setExistingItemInMenu(
                             widget.item.name,
                             newMoneyValue,
                             newPennyValue,
-                            widget.item.ingredients);
+                            widget.item.ingredients,
+                            newProfit: profit,
+                        );
                         //todo değiştirmemiş
                       },
                       child: const Text("Kaydet")),
@@ -207,7 +292,6 @@ class _ItemStudioState extends State<ItemStudio> {
       items.clear();
       for (var itemData in rawMenu?["menu"]) {
         EditableItem newItem = EditableItem(
-          id: itemData["id"],
           name: itemData["name"],
           price: itemData["price"],
           profit: itemData["profit"],
@@ -218,6 +302,7 @@ class _ItemStudioState extends State<ItemStudio> {
     });
   }
 }
+
 //todo fileda girilen karaketerleri sınırlamayı her yere ekle
 //todo item silinecektir emin misiniz
 //ya her şey güzel ama tekrar refreshlenmiyor ind değiştirildiğinde.
