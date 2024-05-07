@@ -7,17 +7,18 @@ class WriteAnalysesData {
   ReadData readData = ReadData();
 
   /*bu çavo buraya salladı direkt*/
-  addItemToAnalysesJson(String prodName,int prodQuantity){
-    addItemToDailyAnalysesJson(prodName,prodQuantity);
-    addItemToMonthlyAnalysesJson(prodName,prodQuantity);
-    addItemToYearlyAnalysesJson(prodName,prodQuantity);
+  addItemToAnalysesJson(String prodName,int prodQuantity) async{
+    await addItemToDailyAnalysesJson(prodName,prodQuantity);
+    await addItemToMonthlyAnalysesJson(prodName,prodQuantity);
+    await addItemToYearlyAnalysesJson(prodName,prodQuantity);
   }
 
   Future<void> addItemToDailyAnalysesJson(String prodName,
       int prodQuantity) async {
     try {
       Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(0);
-      double _prodPrice = await readData.getItemPrice(prodName);
+      double prodPrice = await readData.getItemPrice(prodName);
+      double profitValue = await readData.getItemProfit(prodName);
 
 
       DateTime date = DateTime.now();
@@ -35,11 +36,12 @@ class WriteAnalysesData {
         if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
           rawData["sales"][dateNow]["products"][prodName] = {
             "quantity": prodQuantity,
-            "revenue": _prodPrice * prodQuantity
+            "revenue": prodPrice * prodQuantity,
+            "profit": profitValue * prodQuantity
           };
         } else {
           rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
-          rawData["sales"][dateNow]["products"][prodName]["revenue"] += _prodPrice * prodQuantity;
+          rawData["sales"][dateNow]["products"][prodName]["revenue"] += prodPrice * prodQuantity;
         }
 
         await analysesDataHandler.writeJsonData(jsonEncode(rawData),0);
@@ -56,6 +58,7 @@ class WriteAnalysesData {
     try {
       Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(1);
       double prodPrice = await readData.getItemPrice(prodName);
+      double profitValue = await readData.getItemProfit(prodName);
 
 
       DateTime date = DateTime.now();
@@ -74,7 +77,8 @@ class WriteAnalysesData {
         if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
           rawData["sales"][dateNow]["products"][prodName] = {
             "quantity": prodQuantity,
-            "revenue": prodPrice * prodQuantity
+            "revenue": prodPrice * prodQuantity,
+            "profit": profitValue * prodQuantity
           };
         } else {
           rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
@@ -93,6 +97,7 @@ class WriteAnalysesData {
     try {
       Map<String, dynamic>? rawData = await analysesDataHandler.getRawData(2);
       double prodPrice = await readData.getItemPrice(prodName);
+      double profitValue = await readData.getItemProfit(prodName);
 
 
       DateTime date = DateTime.now();
@@ -111,7 +116,8 @@ class WriteAnalysesData {
         if (!rawData["sales"][dateNow]["products"].containsKey(prodName)) {
           rawData["sales"][dateNow]["products"][prodName] = {
             "quantity": prodQuantity,
-            "revenue": prodPrice * prodQuantity
+            "revenue": prodPrice * prodQuantity,
+            "profit": profitValue * prodQuantity
           };
         } else {
           rawData["sales"][dateNow]["products"][prodName]["quantity"] += prodQuantity;
@@ -125,16 +131,7 @@ class WriteAnalysesData {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+//todo analyses data alırken isim alıp fiyatı kendi ekliyor ama profit de ekleyecek
+//todo hatta analiz jsonuna profit kısmı ekle, türünü yerini belirleyip

@@ -274,6 +274,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 //todo analiz sayfası ve dışarı aktarabilme özelliği
 
 //todo masalara renk değiştirme özelliği
+
 //todo değişiklik anında read çağır seperate mesela
 
 //todo analyseslara text halinde veriler gelecek

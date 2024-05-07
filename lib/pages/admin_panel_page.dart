@@ -218,7 +218,7 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
           Container(
             color: Colors.red,
-            child: SizedBox(
+            child: const SizedBox(
               width: 20,
               height: 20,
             ),

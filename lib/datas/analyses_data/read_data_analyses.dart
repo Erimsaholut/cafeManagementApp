@@ -217,7 +217,7 @@ class AnalysesReader {
 
     // İlgili ayın ilk günü ve son günü
     DateTime startDate = DateTime(year, month, 1);
-    DateTime endDate = DateTime(year, month + 1, 1).subtract(Duration(days: 1));
+    DateTime endDate = DateTime(year, month + 1, 1).subtract(const Duration(days: 1));
 
     for (DateTime date = startDate;
     date.isBefore(endDate) || date.isAtSameMomentAs(endDate);

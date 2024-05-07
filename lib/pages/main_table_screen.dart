@@ -37,7 +37,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: isTableNameNull(widget.tableName, widget.tableNum),
@@ -55,6 +54,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                 child: Column(
                   children: [
                     /*masadaki itemler*/
+                    //todo burada ürün eklendikten sonra iptal etme gelecek uzun basma ile
                     Expanded(
                       flex: 4,
                       child: Container(
@@ -77,7 +77,10 @@ class _MainTableScreenState extends State<MainTableScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text('Toplam Fiyat: ${getTotalPrice(orderClass)} TL',style: CustomTextStyles.blackAndBoldTextStyleL,),
+                            Text(
+                              'Toplam Fiyat: ${getTotalPrice(orderClass)} TL',
+                              style: CustomTextStyles.blackAndBoldTextStyleL,
+                            ),
                             const SizedBox(width: 8),
                           ],
                         ),
@@ -94,26 +97,30 @@ class _MainTableScreenState extends State<MainTableScreen> {
                 /*masadaki itemler*/
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomMenuButton("Ekle Sipariş", onPressedFunction: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => IncreaseOrder(
-                          tableNum: widget.tableNum,
-                          initialFunction: () {
-                            initialFunction();
+                  CustomMenuButton(
+                    "Ekle Sipariş",
+                    onPressedFunction: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => IncreaseOrder(
+                            tableNum: widget.tableNum,
+                            initialFunction: () {
+                              initialFunction();
+                            },
+                          ),
+                          transitionsBuilder: (_, anim, __, child) {
+                            return ScaleTransition(
+                              scale: anim,
+                              child: child,
+                            );
                           },
+                          transitionDuration: const Duration(milliseconds: 300),
                         ),
-                        transitionsBuilder: (_, anim, __, child) {
-                          return ScaleTransition(
-                            scale: anim,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(milliseconds: 300),
-                      ),
-                    );
-                  }, context: context,),
+                      );
+                    },
+                    context: context,
+                  ),
                   CustomMenuButton(
                     "Azalt Sipariş",
                     onPressedFunction: () {
@@ -135,7 +142,8 @@ class _MainTableScreenState extends State<MainTableScreen> {
                           transitionDuration: const Duration(milliseconds: 300),
                         ),
                       );
-                    }, context: context,
+                    },
+                    context: context,
                   ),
                   CustomMenuButton(
                     "Masa Ödendi",
@@ -148,14 +156,15 @@ class _MainTableScreenState extends State<MainTableScreen> {
                             text2: 'Emin misiniz ?',
                             customFunction: () {
                               setState(() {
-
                                 Map<String, int> separetedItems = {};
 
                                 for (TableOrderClass i in orderClass) {
                                   separetedItems[i.name] = i.quantity;
                                 }
 
+                                print("separetedItems: $separetedItems");
                                 addItemToAnalyses(separetedItems);
+
                                 writeTableData.resetOneTable(widget.tableNum);
                                 orderWidgets.clear();
                                 orderClass.clear();
@@ -166,7 +175,8 @@ class _MainTableScreenState extends State<MainTableScreen> {
                           );
                         },
                       );
-                    }, context: context,
+                    },
+                    context: context,
                   ),
                 ],
               ),
@@ -178,13 +188,10 @@ class _MainTableScreenState extends State<MainTableScreen> {
     );
   }
 
-  Future<void> addItemToAnalyses(
-      Map<String, int> separetedItems) async {
-
+  Future<void> addItemToAnalyses(Map<String, int> separetedItems) async {
     for (var item in separetedItems.entries) {
-      await writeAnalysesData
-          .addItemToAnalysesJson(
-          item.key, item.value);
+      print("Item: $item" );
+      await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
     }
   }
 
@@ -209,11 +216,13 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
     orderClass.clear();
 
-
     for (var i in tableData?["orders"]) {
       orderClass.add(
         TableOrderClass(
-            name: i["name"], price: i["price"], quantity: i["quantity"],),
+          name: i["name"],
+          price: i["price"],
+          quantity: i["quantity"],
+        ),
       );
     }
   }
@@ -243,7 +252,7 @@ Widget orderShown(int quantity, String itemName, double price) {
   return Column(
     children: [
       Container(
-        color: Colors.white,//todo buraya ve eklendikten sonraki menüye iptal etme gelecek
+        color: Colors.white,
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
@@ -274,7 +283,4 @@ Widget orderShown(int quantity, String itemName, double price) {
       const SizedBox(height: 8),
     ],
   );
-
-
-
 }
