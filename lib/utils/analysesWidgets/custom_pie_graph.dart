@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import '../../constants/pie_chart_colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +107,7 @@ class PieChart2State extends State<CustomPieChart> {
     int totalOtherValue = sortedEntries
         .sublist(5)
         .map((entry) => entry.value)
-        .fold(0, (previousValue, element) => previousValue + element);
+        .fold(0, (previousValue, element) => previousValue + element);//todo buraya boşluk kontrolü ekle
 
     List<PieChartSectionData> pieChartSections = topEntries.map((entry) {
       Size screenSize = MediaQuery.of(context).size;
