@@ -304,21 +304,31 @@ class ResetAllAnalysesJsonData {
       "products": {
         "Nescafe": {"quantity": 5, "revenue": 50.0},
         "Limonata": {"quantity": 4, "revenue": 60.0},
-        "Ayran": {"quantity": 3, "revenue": 30.0}
+        "Ayran": {"quantity": 3, "revenue": 30.0},
+        "Çay": {"quantity": 6, "revenue": 30.0},
+        "Su": {"quantity": 2, "revenue": 10.0},
+        "Tavuk Döner": {"quantity": 2, "revenue": 60.0},
+        "Kefir": {"quantity": 7, "revenue": 40.0}
       }
     },
     "6.$year": {
       "products": {
         "Kokoreç": {"quantity": 3, "revenue": 166.5},
         "Türk Kahvesi": {"quantity": 2, "revenue": 40.0},
-        "Ekmek": {"quantity": 6, "revenue": 42.0}
+        "Ekmek": {"quantity": 6, "revenue": 42.0},
+        "Çay": {"quantity": 7, "revenue": 35.0},
+        "Su": {"quantity": 4, "revenue": 20.0},
+        "Nescafe": {"quantity": 3, "revenue": 30.0},
+        "Kefir": {"quantity": 1, "revenue": 40.0}
       }
     },
     "7.$year": {
       "products": {
         "Çay": {"quantity": 7, "revenue": 35.0},
         "Su": {"quantity": 4, "revenue": 20.0},
-        "Nescafe": {"quantity": 3, "revenue": 30.0}
+        "Nescafe": {"quantity": 3, "revenue": 30.0},
+        "Kefir": {"quantity": 1, "revenue": 40.0},
+        "Türk Kahvesi": {"quantity": 5, "revenue": 40.0}
       }
     },
     "8.$year": {
@@ -386,4 +396,4 @@ class ResetAllAnalysesJsonData {
   }
 }
 
-//todo araya null atınca patlıyor.
+//todo araya null atınca patlıyor. artık patlamıyordu ama bi kontrol et

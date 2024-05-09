@@ -18,7 +18,7 @@ class _AnalysesTestState extends State<AnalysesTest> {
     return Scaffold(
       backgroundColor: CustomColors.backGroundColor,
       appBar: AppBar(
-        title: const Text("xxxx"),
+        title: const Text("Analyses"),
         backgroundColor: CustomColors.appbarColor,
       ),
       body: Container(
@@ -28,7 +28,7 @@ class _AnalysesTestState extends State<AnalysesTest> {
             children: [
               Column(
                 children: [
-                  CustomMenuButton("Ürün Satış Adetleri", context: context,
+                  CustomMenuButton("Satış Adet Grafiği", context: context,
                       onPressedFunction: () {
                     Navigator.of(context).push(
                       PageRouteBuilder(
@@ -83,6 +83,12 @@ class _AnalysesTestState extends State<AnalysesTest> {
                     },
                     context: context,
                   ),
+                  CustomMenuButton(
+                    "Yazısal Veriler",
+                    onPressedFunction: () {},
+                    context: context,
+                  ),
+
 
                 ],
               ),
@@ -97,3 +103,5 @@ class _AnalysesTestState extends State<AnalysesTest> {
 //todo veresiye
 //todo ürünlere kar gelecek
 //todo ürünlere kar düzenleme
+
+//todo flex yerine ekran boyutu yüzdelerini kullan grafik alt sayfalarında

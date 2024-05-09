@@ -29,11 +29,11 @@ class AnalysesReader {
       late File file; // File nesnesini burada tanımlayın
 
       if (code == 0) {
-        file = await _localDailyFile; // file değişkenini güncelledik
+        file = await _localDailyFile;
       } else if (code == 1) {
-        file = await _localMonthlyFile; // file değişkenini güncelledik
+        file = await _localMonthlyFile;
       } else if (code == 2) {
-        file = await _localYearlyFile; // file değişkenini güncelledik
+        file = await _localYearlyFile;
       } else {
         throw ArgumentError('Geçersiz kod: $code');
       }
@@ -246,6 +246,61 @@ class AnalysesReader {
     return monthlySales.isNotEmpty ? monthlySales : {};
   }
   //üstteki ikisi piechart için veri sağlıyor
+
+
+/*30 kere çalıştırmak yerine direkt aylık veri dosyasından okuyacak*/
+  Future<Map<String, int>?> testAylikItemAdetleri(int month, int year) async {
+    String date = "$month.$year";
+    Map<String, dynamic>? rawData = await getRawData(1);
+
+
+
+    if (rawData != null && rawData.containsKey("sales")) {
+
+      Map<String, dynamic> salesData = rawData["sales"];
+      Map<String, int> monthlySales = {};
+
+      if (salesData.containsKey(date)) {
+
+
+        Map<String, dynamic> monthData = salesData[date];
+        if (monthData.containsKey("products")) {
+          Map<String, dynamic> products = monthData["products"];
+
+          products.forEach((key, value) {
+            monthlySales[key] = value["quantity"];
+          });
+          return monthlySales;
+        } else {
+          print("Belirtilen tarihe ait ürün verisi bulunamadı.");
+          return monthlySales;
+        }
+      }
+
+
+
+
+
+
+
+
+      else {
+        print("Belirtilen tarihe ait satış verisi bulunamadı.");
+        return null;
+      }
+    }
+
+
+
+
+
+
+    else {
+      print("Satış verileri bulunamadı veya işlenemedi.");
+      return null;
+    }
+  }
+
 
 
 

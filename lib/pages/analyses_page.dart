@@ -195,12 +195,7 @@ class _AnalysesPageState extends State<AnalysesPage>
                     Text("${months[now.month -
                         1]} ayının ürün satış miktar verileri",
                       style: CustomTextStyles.blackAndBoldTextStyleM,),
-                    Expanded(
-                      child: CustomPieChart(
-                        itemList: monthlyItemValues,
-                      ),
-                    ),
-                  ],
+                        ],
                 ),
                 Column(
                   children: [
@@ -209,8 +204,6 @@ class _AnalysesPageState extends State<AnalysesPage>
                         Text("${months[now.month - 1]} Ayı Yazısal Veriler ",
                           style: CustomTextStyles.blackAndBoldTextStyleM,),
                       Text(yearRevenueValues.toString()),
-
-
                       ]),
                     ),
                   ],
