@@ -21,16 +21,26 @@ class _SaleQuantityGraphState extends State<SaleQuantityGraph> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
-    datas = null; // Başlangıçta datas null olarak tanımla
+    datas = null;
     _fetchData(selectedDate);
   }
 
   Future<void> _fetchData(DateTime date) async {
+    if(monthOrYear=="Month"){
     Map<String, int> data = await fetchMonthlyItemCounts(date);
+
     setState(() {
       print(selectedDate);
       datas = data;
     });
+    }else{
+      Map<String, int> data = await fetchYearlyItemCounts(date);
+
+      setState(() {
+        print(selectedDate);
+        datas = data;
+      });
+    }
   }
 
   @override
@@ -57,6 +67,7 @@ class _SaleQuantityGraphState extends State<SaleQuantityGraph> {
                         onPressed: () {
                           setState(() {
                             monthOrYear = "Month";
+                            _fetchData(selectedDate);
                           });
                         },
                         child: Text(
@@ -69,6 +80,7 @@ class _SaleQuantityGraphState extends State<SaleQuantityGraph> {
                         onPressed: () {
                           setState(() {
                             monthOrYear = "Year";
+                            _fetchData(selectedDate);
                           });
                         },
                         child: Text(
@@ -162,8 +174,8 @@ class _SaleQuantityGraphState extends State<SaleQuantityGraph> {
 Future<Map<String, int>> fetchMonthlyItemCounts(DateTime selectedDate) async {
   AnalysesReader analysesReader = AnalysesReader();
 
-  Map<String, int>? monthlySales = (await analysesReader.testAylikItemAdetleri(
-      selectedDate.month, selectedDate.year));
+  Map<String, int>? monthlySales = (await analysesReader
+      .getWholeMonthlyItemSales(selectedDate.month, selectedDate.year));
   print("monthlySales:$monthlySales");
   print("yıl:${selectedDate.year} ay:${selectedDate.month}");
 
@@ -173,4 +185,18 @@ Future<Map<String, int>> fetchMonthlyItemCounts(DateTime selectedDate) async {
   }
 
   return monthlySales;
+}
+
+Future<Map<String, int>> fetchYearlyItemCounts(DateTime selectedDate) async {
+  AnalysesReader analysesReader = AnalysesReader();
+
+  Map<String, int>? yearlySales =
+      (await analysesReader.getWholeYearItemSales(selectedDate.year));
+
+  if (yearlySales == null) {
+    print("Hata: Veriler getirilemedi. ");
+    return {};
+  }
+
+  return yearlySales;
 }

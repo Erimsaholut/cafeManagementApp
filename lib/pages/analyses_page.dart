@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_utils.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
@@ -82,20 +83,6 @@ class _AnalysesPageState extends State<AnalysesPage>
 
   List<double> weeklyRevenueValues = [];
   Map<int, Map<String, int>> monthlyItemValues = {};
-  List<String> months = [
-    "Ocak",
-    "Şubat",
-    "Mart",
-    "Nisan",
-    "Mayıs",
-    "Haziran",
-    "Temmuz",
-    "Ağustos",
-    "Eylül",
-    "Ekim",
-    "Kasım",
-    "Aralık",
-  ];
   DateTime now = DateTime.now();
 
   @override
@@ -117,16 +104,13 @@ class _AnalysesPageState extends State<AnalysesPage>
   Future<void> _loadRevenueValues() async {
     try {
       // Paralel istekler yapılıyor
-      final revenueForDays = fetchDailyRevenueValues();
       final revenueForMonths = fetchMonthlyRevenueValues();
       final revenueForYear = fetchYearyRevenueValues();
-      final monthlyItem = fetchMonthlyItemCounts();
+
 
       // Veriler beklendiği gibi alınıyor
-      dayRevenueValues = await revenueForDays;
       monthlyRevenueValues = await revenueForMonths;
       yearRevenueValues = await revenueForYear;
-      monthlyItemValues = (await monthlyItem)!;
     } catch (error) {
       // Hata durumunda kullanıcıya bilgi vermek için uygun bir geri bildirim sağlanabilir
       print("Hata oluştu: $error");
@@ -170,7 +154,7 @@ class _AnalysesPageState extends State<AnalysesPage>
                 Column(
                   children: [
                     /**/
-                    Text("${months[now.month -
+                    Text("${CustomUtils.months[now.month -
                         1]} ayının günlük gelir analizleri ",
                       style: CustomTextStyles.blackAndBoldTextStyleM,),
                     Expanded(
@@ -192,7 +176,7 @@ class _AnalysesPageState extends State<AnalysesPage>
                 ),
                 Column(
                   children: [
-                    Text("${months[now.month -
+                    Text("${CustomUtils.months[now.month -
                         1]} ayının ürün satış miktar verileri",
                       style: CustomTextStyles.blackAndBoldTextStyleM,),
                         ],
@@ -201,7 +185,7 @@ class _AnalysesPageState extends State<AnalysesPage>
                   children: [
                     Expanded(
                       child: Column(children: [
-                        Text("${months[now.month - 1]} Ayı Yazısal Veriler ",
+                        Text("${CustomUtils.months[now.month - 1]} Ayı Yazısal Veriler ",
                           style: CustomTextStyles.blackAndBoldTextStyleM,),
                       Text(yearRevenueValues.toString()),
                       ]),
@@ -233,14 +217,7 @@ class _AnalysesPageState extends State<AnalysesPage>
 }
 
 /*for daily line chart*/
-Future<List<double>> fetchDailyRevenueValues() async {
-  AnalysesReader analysesReader = AnalysesReader();
-  DateTime now = DateTime.now();
-  Map<String, double>? monthlySales =
-  await analysesReader.getDailyTotalRevenueForMonth(now.month, now.year);
-  List<double> revenueValues = monthlySales.values.toList();
-  return revenueValues;
-}
+
 
 /*for monthly line chart*/
 Future<List<double>> fetchMonthlyRevenueValues() async {
@@ -269,15 +246,5 @@ Future<List<double>> fetchYearyRevenueValues() async {
 }
 
 /*for pie chart*/
-Future<Map<int, Map<String, int>>?> fetchMonthlyItemCounts() async {
-  AnalysesReader analysesReader = AnalysesReader();
-  DateTime now = DateTime.now();
-
-  Map<int, Map<String, int>>? monthlySales =
-  await analysesReader.getWeeklyProductSalesForMonth(now.month, now.year);
-  print("revenueValues:$monthlySales");
-
-  return monthlySales;
-}
 
 //todo belki yıllık özellik gelebilir hatta anlık olarak yıllık ve aylık da yazsa güzel olur yıllık çekince 1000 satır kod çalışıyor anlık amk

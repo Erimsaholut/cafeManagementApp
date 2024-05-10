@@ -40,12 +40,8 @@ class _CustomLineChartState extends State<CustomLineChart> {
   }
 
   int calculateClassCount() {
-    // Veri sayısını al
     int n = widget.valueList.length;
-
-    // Sınıf sayısını hesapla
     int classCount = (1.0 + (3.3 * (log(n) / log(10)))).ceil();
-
     return classCount;
   }
 
@@ -74,13 +70,12 @@ class _CustomLineChartState extends State<CustomLineChart> {
   List<FlSpot> flSpotList(List<double> datas) {
     List<FlSpot> spotList = [];
     int index = 0;
-    // Verilen göreli sıklık verilerini döngüye al
-    datas.forEach((frequency) {
+    for (var frequency in datas) {
       spotList.add(FlSpot(
           index.toDouble(), frequency)); // Yeni FlSpot nesnesini listeye ekle
       index++; // Sıra numarasını artır
-    });
-
+    }
+print("spotlist= $spotList");
     return spotList;
   }
 

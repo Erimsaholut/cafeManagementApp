@@ -35,12 +35,12 @@ class PieChart2State extends State<CustomPieChart> {
   @override
   Widget build(BuildContext context) {
     orderedByCount = orderByCount(widget.itemList);
-    return AspectRatio(
-      aspectRatio: 2.9,
+    return Expanded(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            flex: 7,
+            flex: 6,
             child: (widget.itemList.isNotEmpty)
                 ? PieChart(
                     PieChartData(
@@ -50,17 +50,16 @@ class PieChart2State extends State<CustomPieChart> {
                       sectionsSpace: 0,
                       centerSpaceRadius: 0,
                       sections: showingSections(
-                          orderedByCount), /*bölümleri buradan çekiyor*/
+                          orderedByCount),
                     ),
                   )
                 : const Text("Belirtilen Tarihe Ait satış verisi bulunamadı",
                     textAlign: TextAlign.center),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: buildIndicators(orderedByCount),
             ),
           ),
@@ -77,7 +76,13 @@ class PieChart2State extends State<CustomPieChart> {
     List<MapEntry<String, int>> sortedEntries = dataMap.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
+    Size screenSize = MediaQuery.of(context).size;
+    double screenHeight = screenSize.height;
+    double radius = screenHeight / 3.5;
+    double fontSize = screenHeight / 35;
+    final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
     int totalEntries = sortedEntries.length;
+
 
     int numberOfSections = totalEntries > 5 ? 5 : totalEntries;
 
@@ -91,12 +96,6 @@ class PieChart2State extends State<CustomPieChart> {
     List<PieChartSectionData> pieChartSections =
         List.generate(numberOfSections, (index) {
       MapEntry<String, int> entry = sortedEntries[index];
-      Size screenSize = MediaQuery.of(context).size;
-      double screenHeight = screenSize.height;
-      double radius = screenHeight / 3;
-
-      double fontSize = screenHeight / 30;
-      final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
 
       // Renkleri sırayla kullanmak için indeksi mod alarak hesaplayın
       Color selectedColor = colorList[index % colorList.length];
@@ -125,11 +124,6 @@ class PieChart2State extends State<CustomPieChart> {
     });
 
     if (totalEntries > 5) {
-      Size screenSize = MediaQuery.of(context).size;
-      double screenHeight = screenSize.height;
-      double y = screenHeight / 3;
-      double fontSize = screenHeight / 30;
-      final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
 
       // "Diğer" kısmı için son renk kullanılacak
       Color selectedColor = colorList[colorList.length - 1];
@@ -140,7 +134,7 @@ class PieChart2State extends State<CustomPieChart> {
           value: totalOtherValue.toDouble(),
           title:
               '${((totalOtherValue / dataMap.values.reduce((a, b) => a + b)) * 100).toStringAsFixed(2)}%\nDiğer',
-          radius: y,
+          radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
@@ -165,11 +159,19 @@ class PieChart2State extends State<CustomPieChart> {
     for (var entry in topEntries) {
       Color color = colorList[index % colorList.length];
       index++;
+      String text = entry.key;
+
+      if (entry.key.length > 18) {
+        text = '${entry.key.substring(0, 18)}\n${entry.key.substring(20)}';
+      }
+      if (text.length > 36) {
+        text = '${text.substring(0, 36)}...';
+      }
 
       indicators.add(
         Indicator(
           color: color,
-          text: entry.key,
+          text: text,
           isSquare: true,
         ),
       );
