@@ -165,6 +165,41 @@ class AnalysesReader {
     }
   }
 
+  Future<double> getDaysTotalProfit(int day, int month, int year) async {
+    double totalProfit = 0.0;
+    Map<String, dynamic>? daySet = await getDaySet(day, month, year);
+
+    if (daySet != null && daySet.containsKey("products")) {
+      Map<String, dynamic> products = daySet["products"];
+      products.forEach((key, value) {
+        if(value["profit"]!=null){
+          totalProfit += value["profit"];
+        }
+
+      });
+      return totalProfit;
+    } else {
+      print("Belirtilen tarihe ait satış verisi bulunamadı veya işlenemedi.");
+      return -1.0;
+    }
+  }
+
+  Future<double> getMonthsTotalProfit(int month, int year) async {
+    double totalProfit = 0.0;
+    Map<String, dynamic>? daySet = await getMonthSet(month, year);
+
+    if (daySet != null && daySet.containsKey("products")) {
+      Map<String, dynamic> products = daySet["products"];
+      products.forEach((key, value) {
+        totalProfit += value["profit"];
+      });
+      return totalProfit;
+    } else {
+      print("Belirtilen tarihe ait satış verisi bulunamadı veya işlenemedi.");
+      return -1.0;
+    }
+  }
+
   Future<void> writeJsonData(String jsonData, int code) async {
     final file = await selectFileDataType(code);
 
@@ -209,8 +244,6 @@ class AnalysesReader {
     }
   }
 
-
-
 /*30 kere çalıştırmak yerine direkt aylık veri dosyasından okuyacak*/
   Future<Map<String, int>?> getWholeMonthlyItemSales(
       int month, int year) async {
@@ -244,7 +277,6 @@ class AnalysesReader {
     }
   }
 
-  /*using NEW json data */
   Future<Map<String, int>?> getWholeYearItemSales(int year) async {
     String date = "$year";
     Map<String, dynamic>? rawData = await getRawData(2);
@@ -276,7 +308,7 @@ class AnalysesReader {
     }
   }
 
-
+  /*gross income için kullanılıyor*/
   Future<Map<String, double>> getDailyTotalRevenueForMonth(
       int month, int year) async {
     Map<String, double> dailyTotalRevenue = {};
@@ -304,7 +336,7 @@ class AnalysesReader {
     return dailyTotalRevenue.isNotEmpty ? dailyTotalRevenue : {};
   }
 
-
+  /*gross income için kullanılıyor*/
   Future<Map<String, double>> getMonthlyTotalRevenueForYear(int year) async {
     Map<String, double> monthlyTotalRevenue = {};
 
@@ -320,6 +352,51 @@ class AnalysesReader {
     return monthlyTotalRevenue.isNotEmpty ? monthlyTotalRevenue : {};
   }
 
+  Future<Map<String, double>> getDailyTotalProfitForMonth(
+      int month, int year) async {
+    Map<String, double> dailyTotalProfit = {};
+
+    DateTime startDate = DateTime(year, month, 1);
+    DateTime endDate =
+    DateTime(year, month + 1, 1).subtract(const Duration(days: 1));
+
+    for (DateTime date = startDate;
+    date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+    date = date.add(const Duration(days: 1))) {
+      int day = date.day;
+      int month = date.month;
+      int year = date.year;
+
+      double dayProfit = await getDaysTotalProfit(day, month, year);
+      print(dayProfit);
+      if (dayProfit != -1.0) {
+        dailyTotalProfit["$day.$month.$year"] = dayProfit;
+      } else {
+        dailyTotalProfit["$day.$month.$year"] = 0.0;
+      }
+    }
+
+    return dailyTotalProfit.isNotEmpty ? dailyTotalProfit : {};
+  }
+
+  Future<Map<String, double>> getMonthlyTotalProfitForYear(int year) async {
+    Map<String, double> monthlyTotalProfit = {};
+
+    for (int month = 1; month <= 12; month++) {
+      double monthRevenue = await getMonthsTotalProfit(month, year);
+      if (monthRevenue != -1.0) {
+        monthlyTotalProfit["$month.$year"] = monthRevenue;
+      } else {
+        monthlyTotalProfit["$month.$year"] = 0.0;
+      }
+    }
+
+    return monthlyTotalProfit.isNotEmpty ? monthlyTotalProfit : {};
+  }
+
+
+
+  /*bu kod text verileri için lazım olacak gelebilir*/
   Future<Map<String, double>> getYearlyTotalRevenueForYear(int year) async {
     Map<String, double> yearlyTotalRevenue = {};
 
@@ -332,6 +409,4 @@ class AnalysesReader {
     return yearlyTotalRevenue.isNotEmpty ? yearlyTotalRevenue : {};
   }
 //todo bunu iki yıl için karşılaştırmalı olarak yapabilirin
-
-//üstteki linechart için veri sağlıyor
 }

@@ -30,14 +30,11 @@ class _SaleQuantityGraphState extends State<SaleQuantityGraph> {
     Map<String, int> data = await fetchMonthlyItemCounts(date);
 
     setState(() {
-      print(selectedDate);
       datas = data;
     });
     }else{
       Map<String, int> data = await fetchYearlyItemCounts(date);
-
       setState(() {
-        print(selectedDate);
         datas = data;
       });
     }

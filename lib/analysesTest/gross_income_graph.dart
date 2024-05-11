@@ -15,7 +15,7 @@ class GrossIncomeGraph extends StatefulWidget {
 
 class _GrossIncomeGraphState extends State<GrossIncomeGraph> {
   DateTime selectedDate = DateTime.now();
-  String monthOrYear = "Aylık";
+  String monthOrYear = "Month";
   late List<double> datas;
 
   @override
@@ -25,16 +25,17 @@ class _GrossIncomeGraphState extends State<GrossIncomeGraph> {
     datas = [];
     _fetchData(selectedDate);
   }
+
   Future<void> _fetchData(DateTime date) async {
     if(monthOrYear=="Month"){
-      List<double> data = await fetchMonthlyRevenueValues(date);
+      List<double> data = await fetchMonthlyProfitValues(date);
 
       setState(() {
         print(selectedDate);
         datas = data;
       });
     }else{
-      List<double> data = await fetchYearlyRevenueValues(date);
+      List<double> data = await fetchYearlyProfitValues(date);
 
       setState(() {
         print(selectedDate);
@@ -44,6 +45,7 @@ class _GrossIncomeGraphState extends State<GrossIncomeGraph> {
   }
 
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.backGroundColor,
@@ -168,21 +170,18 @@ class _GrossIncomeGraphState extends State<GrossIncomeGraph> {
   }
 }
 
-Future<List<double>> fetchYearlyRevenueValues(DateTime selectedDate) async {
+Future<List<double>> fetchYearlyProfitValues(DateTime selectedDate) async {
   AnalysesReader analysesReader = AnalysesReader();
   Map<String, double>? monthlySales =
       await analysesReader.getMonthlyTotalRevenueForYear(selectedDate.year);
   List<double> revenueValues = monthlySales.values.toList();
-  print("elimize geçen bütün yıllık veriler $revenueValues");
   return revenueValues;
-  /*dönmesi gereken örnek [60.0, 0.0, 215.0, 100.0, 280.0, 373.5, 165.0, 65.0, 0.0, 215.0, 100.0, 140.0]*/
 }
 
-Future<List<double>> fetchMonthlyRevenueValues(DateTime selectedDate) async {
+Future<List<double>> fetchMonthlyProfitValues(DateTime selectedDate) async {
   AnalysesReader analysesReader = AnalysesReader();
   Map<String, double>? monthlySales =
   await analysesReader.getDailyTotalRevenueForMonth(selectedDate.month,selectedDate.year);
   List<double> revenueValues = monthlySales.values.toList();
-  print("Elimize geçen bütün aylık veriler $revenueValues");
   return revenueValues;
 }

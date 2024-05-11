@@ -29,10 +29,15 @@ class _CustomLineChartState extends State<CustomLineChart> {
   @override
   void initState() {
     super.initState();
+    setUtilDatas();
+  }
+
+  void setUtilDatas(){
     sortedList = List.from(widget.valueList)..sort();
     minValue = sortedList.first;
     maxValue = sortedList.last;
     itemCount = sortedList.length;
+    print("itemCount=$itemCount");
     classCount = calculateClassCount();
     classInterval = calculateClassInterval(classCount);
     classMidpoints =
@@ -75,12 +80,13 @@ class _CustomLineChartState extends State<CustomLineChart> {
           index.toDouble(), frequency)); // Yeni FlSpot nesnesini listeye ekle
       index++; // Sıra numarasını artır
     }
-print("spotlist= $spotList");
+print("spotlist= $spotList"); 
     return spotList;
   }
 
   @override
   Widget build(BuildContext context) {
+    setUtilDatas();
     return Padding(
       padding: const EdgeInsets.only(
         right: 18,

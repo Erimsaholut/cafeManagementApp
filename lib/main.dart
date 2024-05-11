@@ -89,3 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+//todo en en en son gerekli default verilerin yüklenmesi ve kurulumun yapılması için özel bir ekran çıkacak Kafe ismi ve masa sayısını alacak.
+//sadece hard resette ve sıfır açılışta kullanılacak.
