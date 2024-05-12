@@ -1,10 +1,9 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
-import 'package:flutter/material.dart';
-
-import '../constants/custom_utils.dart';
-import '../constants/styles.dart';
-import '../datas/analyses_data/read_data_analyses.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
+import '../datas/analyses_data/read_data_analyses.dart';
+import '../constants/custom_utils.dart';
+import 'package:flutter/material.dart';
+import '../constants/styles.dart';
 
 class NetIncomeGraph extends StatefulWidget {
   const NetIncomeGraph({super.key});
@@ -159,7 +158,7 @@ class _NetIncomeGraphState extends State<NetIncomeGraph> {
           Expanded(
             flex: 11,
             child: datas.isNotEmpty
-                ? CustomLineChart(valueList: datas)
+                ? CustomLineChart(valueList: datas,selectedDate: selectedDate,)
                 : const Center(child: CircularProgressIndicator()),
           ),
 
@@ -184,5 +183,6 @@ Future<List<double>> fetchMonthlyRevenueValues(DateTime selectedDate) async {
   List<double> profitValues = monthlySales.values.toList();
   return profitValues;
 }
+
 //todo buralar çalışıyor ama istersen test aşamasında kullanmak için veri pakedini güncelle
 

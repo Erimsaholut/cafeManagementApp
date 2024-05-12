@@ -20,7 +20,7 @@ class IncreaseOrder extends StatefulWidget {
 }
 
 class _IncreaseOrderState extends State<IncreaseOrder> {
-  final ReadData readNewData = ReadData();
+  final ReadMenuData readNewData = ReadMenuData();
 
   List<String> orders = [];
 
@@ -275,6 +275,8 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 
 //todo masalara renk değiştirme özelliği
 
-//todo değişiklik anında read çağır seperate mesela
-
 //todo analyseslara text halinde veriler gelecek
+
+//todo ana menüden ürün iptal etme gelecek
+
+//todo menüler kısmına iptal etme gelecek

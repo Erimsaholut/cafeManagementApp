@@ -2,7 +2,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/analysesTest/analyses
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/analyses_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
 import 'datas/menu_data/read_data_menu.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/services.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ReadData readNewData = ReadData();
+  ReadMenuData readNewData = ReadMenuData();
   await readNewData.separateMenuItems();
   await readNewData.readJsonData();
   print("newJsonDataReaded");
@@ -67,8 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
           buttonName: "Admin Panel", goToPage: AdminPanel()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Analyses', goToPage: AnalysesPage()))
-      ..add(const CustomUtilPagesButton(
-          buttonName: 'AnalysesTest', goToPage: AnalysesTest()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()));
 

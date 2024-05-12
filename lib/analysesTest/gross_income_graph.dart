@@ -114,8 +114,6 @@ class _GrossIncomeGraphState extends State<GrossIncomeGraph> {
                           await _fetchData(newDate);
                           setState(() {
                             selectedDate = newDate;
-                            print("Selected Date:");
-                            print(selectedDate);
                           });
                         },
                         icon: const Icon(Icons.keyboard_arrow_left),
@@ -160,7 +158,7 @@ class _GrossIncomeGraphState extends State<GrossIncomeGraph> {
           Expanded(
             flex: 11,
             child: datas.isNotEmpty
-                ? CustomLineChart(valueList: datas)
+                ? CustomLineChart(valueList: datas,selectedDate: selectedDate,)
                 : const Center(child: CircularProgressIndicator()),
           ),
 

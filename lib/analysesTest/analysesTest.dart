@@ -5,14 +5,16 @@ import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colo
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
 
-class AnalysesTest extends StatefulWidget {
-  const AnalysesTest({super.key});
+import 'text_analyses.dart';
+
+class AnalysesPage extends StatefulWidget {
+  const AnalysesPage({super.key});
 
   @override
-  State<AnalysesTest> createState() => _AnalysesTestState();
+  State<AnalysesPage> createState() => _AnalysesPageState();
 }
 
-class _AnalysesTestState extends State<AnalysesTest> {
+class _AnalysesPageState extends State<AnalysesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +87,21 @@ class _AnalysesTestState extends State<AnalysesTest> {
                   ),
                   CustomMenuButton(
                     "Yazısal Veriler",
-                    onPressedFunction: () {},
+                    onPressedFunction: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => const AnalysesAsAText(),
+                          transitionsBuilder: (_, anim, __, child) {
+                            return ScaleTransition(
+                              scale: anim,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
                     context: context,
                   ),
 
@@ -99,9 +115,5 @@ class _AnalysesTestState extends State<AnalysesTest> {
     );
   }
 }
-
-//todo veresiye
-//todo ürünlere kar gelecek
-//todo ürünlere kar düzenleme
 
 //todo flex yerine ekran boyutu yüzdelerini kullan grafik alt sayfalarında

@@ -24,7 +24,7 @@ class AnalysesReader {
     return File(path);
   }
 
-  Future<File?> selectFileDataType(int code) async {
+  Future<File?> _selectFileDataType(int code) async {
     try {
       late File file; // File nesnesini burada tanımlayın
 
@@ -47,7 +47,7 @@ class AnalysesReader {
 
   Future<Map<String, dynamic>?> getRawData(int code) async {
     try {
-      final file = await selectFileDataType(
+      final file = await _selectFileDataType(
           code); // selectFileDataType metodunu await ile çağırın ve sonucu alın
 
       if (file != null && await file.exists()) {
@@ -201,7 +201,7 @@ class AnalysesReader {
   }
 
   Future<void> writeJsonData(String jsonData, int code) async {
-    final file = await selectFileDataType(code);
+    final file = await _selectFileDataType(code);
 
     try {
       await file?.writeAsString(jsonData);
@@ -325,7 +325,6 @@ class AnalysesReader {
       int year = date.year;
 
       double dayRevenue = await getDaysTotalRevenue(day, month, year);
-      print(dayRevenue);
       if (dayRevenue != -1.0) {
         dailyTotalRevenue["$day.$month.$year"] = dayRevenue;
       } else {

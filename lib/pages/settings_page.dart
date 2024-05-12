@@ -15,7 +15,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  ReadData readNewData = ReadData();
+  ReadMenuData readNewData = ReadMenuData();
 
   @override
   Widget build(BuildContext context) {

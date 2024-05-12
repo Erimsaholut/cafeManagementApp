@@ -12,7 +12,7 @@ class EditItemsPage extends StatefulWidget {
 }
 
 class _EditItemsPageState extends State<EditItemsPage> {
-  ReadData readData = ReadData();
+  ReadMenuData readData = ReadMenuData();
   List<EditableItem> items = [];
 
   @override

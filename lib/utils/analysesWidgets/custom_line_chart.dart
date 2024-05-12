@@ -1,11 +1,14 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_utils.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 class CustomLineChart extends StatefulWidget {
-  CustomLineChart({super.key, required this.valueList});
+  CustomLineChart({super.key, required this.valueList, this.selectedDate});
 
-  List<double> valueList;
+  final List<double> valueList;
+  final DateTime? selectedDate;
 
   @override
   State<CustomLineChart> createState() => _CustomLineChartState();
@@ -25,6 +28,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
   late int classCount;
   late double classInterval;
   late List<int> classMidpoints;
+  late String month;
 
   @override
   void initState() {
@@ -32,16 +36,21 @@ class _CustomLineChartState extends State<CustomLineChart> {
     setUtilDatas();
   }
 
-  void setUtilDatas(){
+  void setUtilDatas() {
     sortedList = List.from(widget.valueList)..sort();
     minValue = sortedList.first;
     maxValue = sortedList.last;
     itemCount = sortedList.length;
-    print("itemCount=$itemCount");
     classCount = calculateClassCount();
     classInterval = calculateClassInterval(classCount);
     classMidpoints =
         calculateClassMidpoints(classCount, classInterval, minValue.round());
+    if (widget.selectedDate != null) {
+      month = CustomUtils.months[widget.selectedDate!.month - 1];
+    } else {
+      month = "null";
+    }
+    print(month);
   }
 
   int calculateClassCount() {
@@ -80,7 +89,6 @@ class _CustomLineChartState extends State<CustomLineChart> {
           index.toDouble(), frequency)); // Yeni FlSpot nesnesini listeye ekle
       index++; // Sıra numarasını artır
     }
-print("spotlist= $spotList"); 
     return spotList;
   }
 
@@ -136,10 +144,43 @@ print("spotlist= $spotList");
 
   LineChartData mainData() {
     return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+            return touchedBarSpots.map((barSpot) {
+              final flSpot = barSpot;
+
+              return LineTooltipItem(
+                (itemCount == 12)
+                    ? (month != "null")
+                        ? "${CustomUtils.months[flSpot.x.toInt()]}\n"
+                        : ""
+                    : (month != "null")
+                        ? "${flSpot.x.toInt() + 1} $month\n"
+                        : '',
+                const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                children: [
+                  TextSpan(
+                    text: flSpot.y.toString(),
+                    style: CustomTextStyles.blackAndBoldTextStyleM,
+                  ),
+                  TextSpan(
+                    text: ' ₺ ',
+                    style: CustomTextStyles.blackAndBoldTextStyleM,
+                  ),
+                ],
+              );
+            }).toList();
+          },
+        ),
+      ),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: (classInterval>0)?classInterval:1,
+        horizontalInterval: (classInterval > 0) ? classInterval : 1,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return const FlLine(
@@ -200,7 +241,6 @@ print("spotlist= $spotList");
           isStrokeCapRound: true,
           dotData: const FlDotData(
             show: true,
-              //todo buradan noktalara tıkladığımızda değer + bir value daha eklemeye baksana [25 mayıs] yazsın mesela
           ),
           belowBarData: BarAreaData(
             show: true,

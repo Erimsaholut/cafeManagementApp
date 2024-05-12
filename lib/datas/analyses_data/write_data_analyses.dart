@@ -4,7 +4,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_
 
 class WriteAnalysesData {
   AnalysesReader analysesDataHandler = AnalysesReader();
-  ReadData readData = ReadData();
+  ReadMenuData readData = ReadMenuData();
 
   /*bu çavo buraya salladı direkt*/
   addItemToAnalysesJson(String prodName,int prodQuantity) async{

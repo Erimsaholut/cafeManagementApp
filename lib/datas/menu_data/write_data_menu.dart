@@ -5,7 +5,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_
 import 'dart:convert';
 
 class WriteData {
-  ReadData readData = ReadData();
+  ReadMenuData readData = ReadMenuData();
   ResetDatas resetDatas = ResetDatas();
 
   Future<void> _updateMainSettings(

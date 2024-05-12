@@ -19,7 +19,7 @@ class AdminPanel extends StatefulWidget {
 }
 
 class _AdminPanelState extends State<AdminPanel> {
-  final ReadData readNewData = ReadData();
+  final ReadMenuData readNewData = ReadMenuData();
 
   TableReader tableDataHandler = TableReader();
 
@@ -86,6 +86,7 @@ class _AdminPanelState extends State<AdminPanel> {
                   print("Bugünkü analizler: $analyses");
                   Future<double> totalRevenueFuture = analysesReader
                       .getDaysTotalRevenue(now.day, now.month, now.year);
+                  /**/
                   totalRevenueFuture.then((totalRevenue) {
                     print("Bugünün toplam geliri: $totalRevenue");
                   });
@@ -227,6 +228,7 @@ class _AdminPanelState extends State<AdminPanel> {
             onPressed: () async {
               Object menu = (await readNewData.readJsonData()) as Object;
               print(menu);
+              /* # # # # # # # #*/
               int menuItemCount = await readNewData.getMenuItemCount();
               print('Menüdeki öğe sayısı: $menuItemCount');
             },
@@ -250,6 +252,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               String? cafeName = await readNewData.getCafeName();
+              /*NEDEN OLMASIN */
               print(cafeName);
             },
             child: const Text("sadece kafe ismi"),
