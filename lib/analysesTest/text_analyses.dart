@@ -78,6 +78,7 @@ Future<List<Widget>> getDatas(Size size) async {
   Map<String, double> dayMostProfit = sortByProfit(wholeDay!); // day most prof
   Map<String, double> monthMostProfit =
       sortByProfit(wholeMonth!); // month most prof
+  print(monthMostProfit);
   widgets.add(Row(
     mainAxisSize: MainAxisSize.max,
     children: [
@@ -128,14 +129,27 @@ Future<List<Widget>> getDatas(Size size) async {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("#1 ${dayTop3[0]}",style: CustomTextStyles.blackAndBoldTextStyleM,),
-                Text("#2 ${dayTop3[1]}",style: CustomTextStyles.blackAndBoldTextStyleM,),
-                Text("#3 ${dayTop3[2]}",style: CustomTextStyles.blackAndBoldTextStyleM,),
+                Text(
+                  "#1 ${dayTop3[0]}",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+                Text(
+                  "#2 ${dayTop3[1]}",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+                Text(
+                  "#3 ${dayTop3[2]}",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
               ],
             ),
           ),
         ),
       ),
+      (dayMostProfit.isNotEmpty)?Expanded(
+        flex: 4,
+        child: customContainer(size, Colors.orangeAccent, "Bu ayın \nen kârlı ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺"),
+      ):Container(),
       Expanded(
         flex: 3,
         child: customContainer(
@@ -166,7 +180,7 @@ Future<List<Widget>> getDatas(Size size) async {
         ),
       ),
       Expanded(
-        flex: 4,
+        flex: 3,
         child: customContainer(
           size,
           Colors.greenAccent,
@@ -174,23 +188,36 @@ Future<List<Widget>> getDatas(Size size) async {
         ),
       ),
       Expanded(
-        flex: 6,
-        child:Container(
-      height: (size.height / 3),
-    color: Colors.greenAccent,
-    child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("#1 ${monthTop3[0]}",style: CustomTextStyles.blackAndBoldTextStyleM,),
-          Text("#2 ${monthTop3[1]}",style: CustomTextStyles.blackAndBoldTextStyleM,),
-          Text("#3 ${monthTop3[2]}",style: CustomTextStyles.blackAndBoldTextStyleM,),
-        ],
+        flex: 4,
+        child: Container(
+          height: (size.height / 3),
+          color: Colors.greenAccent,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "#1 ${monthTop3[0]}",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+                Text(
+                  "#2 ${monthTop3[1]}",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+                Text(
+                  "#3 ${monthTop3[2]}",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-    ),
-  ),
-      ),
+      (monthMostProfit.isNotEmpty)?Expanded(
+        flex: 4,
+        child: customContainer(size, Colors.orangeAccent, "Bu ayın \nen kârlı ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺"),
+      ):Container(),
       Expanded(
         flex: 3,
         child: customContainer(
@@ -286,11 +313,7 @@ List<String> getTop3Products(Map<String, dynamic> products) {
 }
 
 Map<String, double> sortByProfit(Map<String, dynamic> products) {
-  // "products" anahtarının değerini alalım
   Map<String, dynamic> productsMap = products["products"];
-
-  // Eğer "products" anahtarına sahip bir harita varsa ve bu harita null değilse
-  // "products" haritasındaki her bir ürünün profit değerini alarak bir Map oluşturalım
   Map<String, double> sortedByProfit = {};
   productsMap.forEach((key, value) {
     if (value is Map && value.containsKey("profit")) {
@@ -312,6 +335,7 @@ Container customContainer(Size size, Color color, String text) {
       child: Text(
         text,
         style: CustomTextStyles.blackAndBoldTextStyleM,
+        textAlign: TextAlign.center,
       ),
     ),
   );

@@ -14,7 +14,7 @@ class NetIncomeGraph extends StatefulWidget {
 
 class _NetIncomeGraphState extends State<NetIncomeGraph> {
   DateTime selectedDate = DateTime.now();
-  String monthOrYear = "Year";
+  String monthOrYear = "Month";
   late List<double> datas;
 
   @override

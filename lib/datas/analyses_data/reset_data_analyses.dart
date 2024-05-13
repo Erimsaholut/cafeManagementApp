@@ -790,6 +790,7 @@ class ResetAllAnalysesJsonData {
     ''', 0);
   }
 
+
   Future<void> loadExampleMonthJsonData(int month, int year) async {
     AnalysesReader analysesReader = AnalysesReader();
     await analysesReader.writeJsonData('''

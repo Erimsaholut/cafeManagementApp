@@ -407,5 +407,4 @@ class AnalysesReader {
     }
     return yearlyTotalRevenue.isNotEmpty ? yearlyTotalRevenue : {};
   }
-//todo bunu iki yıl için karşılaştırmalı olarak yapabilirin
 }
