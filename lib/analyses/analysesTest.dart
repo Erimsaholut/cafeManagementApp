@@ -1,10 +1,10 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/analysesTest/product_sale_quantity_graph.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/analysesTest/gross_income_graph.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/analysesTest/net_income_graph.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/analyses/product_sale_quantity_graph.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
 
+import 'gross_income_graph.dart';
+import 'net_income_graph.dart';
 import 'text_analyses.dart';
 
 class AnalysesPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/analysesTest/analysesTest.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/setup_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
@@ -7,6 +7,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.da
 import 'datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'analyses/analysesTest.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ..add(const CustomUtilPagesButton(
           buttonName: 'Analyses', goToPage: AnalysesPage()))
       ..add(const CustomUtilPagesButton(
+          buttonName: 'Setup Screen', goToPage: SetupScreen()))
+      ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()));
 
   }
@@ -89,3 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //todo en en en son gerekli default verilerin yüklenmesi ve kurulumun yapılması için özel bir ekran çıkacak Kafe ismi ve masa sayısını alacak.
 //sadece hard resette ve sıfır açılışta kullanılacak.
+
+//todo text kısmına premium olup olmadığı bilgisini ekle
+        //hatta kafe isminin yanına da ekle ezik hissetsin kendini

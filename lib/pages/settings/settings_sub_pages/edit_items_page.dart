@@ -100,5 +100,6 @@ class EditableItem {
 
 }
 
-
+//todo onaylandıktan sonra alttan snackbar mı ne o çıkmalı
+//seçenek ekleyince direkt geçirmiyor elemanlara
 

@@ -5,7 +5,6 @@ class ResetAllAnalysesJsonData {
 
   Future<void> resetAllTableJsonFiles(int code) async {
     AnalysesReader analysesReader = AnalysesReader();
-
     await analysesReader.writeJsonData('{"sales": {}}', code);
   }
 

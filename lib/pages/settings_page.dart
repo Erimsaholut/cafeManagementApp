@@ -1,3 +1,4 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_page_widgets/show_change_name_and_table_count_dialog.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_menu_item_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/edit_items_page.dart';
@@ -95,7 +96,6 @@ class SettingsPageState extends State<SettingsPage> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton("Eski Verilere Ulaş", context: context),
                   CustomMenuButton(
                     "Bütün verileri resetle",
                     onPressedFunction: () {
@@ -130,16 +130,20 @@ class SettingsPageState extends State<SettingsPage> {
                                 child: const Text('İptal'),
                               ),
                               TextButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (confirmationText == 'Onaylıyorum') {
                                     ResetAllJsonData resetAllJsonData =
                                     ResetAllJsonData();
+                                    ResetAllAnalysesJsonData resetAllAnalysesJsonData = ResetAllAnalysesJsonData();
+
                                     resetAllJsonData.resetJsonFile();
+                                    await resetAllAnalysesJsonData.resetAllTableJsonFiles(0);
+                                    await resetAllAnalysesJsonData.resetAllTableJsonFiles(1);
+                                    await resetAllAnalysesJsonData.resetAllTableJsonFiles(2);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
                                             'Bütün veriler başarı ile resetlendi'),),);
-                                    //todo analizleri de resetlemeli
                                   } else {
                                     // Onay metni doğru değilse kullanıcıyı uyar
                                     print('Lütfen doğru onay metnini girin.');

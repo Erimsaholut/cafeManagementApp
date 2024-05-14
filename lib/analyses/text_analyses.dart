@@ -1,11 +1,9 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_utils.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import '../datas/analyses_data/read_data_analyses.dart';
 import '../datas/menu_data/read_data_menu.dart';
+import 'package:flutter/material.dart';
 
 class AnalysesAsAText extends StatefulWidget {
   const AnalysesAsAText({super.key});
@@ -146,10 +144,13 @@ Future<List<Widget>> getDatas(Size size) async {
           ),
         ),
       ),
-      (dayMostProfit.isNotEmpty)?Expanded(
-        flex: 4,
-        child: customContainer(size, Colors.orangeAccent, "Bu ayın \nen kârlı ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺"),
-      ):Container(),
+      (dayMostProfit.isNotEmpty)
+          ? Expanded(
+              flex: 4,
+              child: customContainer(size, Colors.orangeAccent,
+                  "Bu ayın \nen kârlı ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺"),
+            )
+          : Container(),
       Expanded(
         flex: 3,
         child: customContainer(
@@ -214,10 +215,13 @@ Future<List<Widget>> getDatas(Size size) async {
           ),
         ),
       ),
-      (monthMostProfit.isNotEmpty)?Expanded(
-        flex: 4,
-        child: customContainer(size, Colors.orangeAccent, "Bu ayın \nen kârlı ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺"),
-      ):Container(),
+      (monthMostProfit.isNotEmpty)
+          ? Expanded(
+              flex: 4,
+              child: customContainer(size, Colors.orangeAccent,
+                  "Bu ayın \nen kârlı ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺"),
+            )
+          : Container(),
       Expanded(
         flex: 3,
         child: customContainer(
