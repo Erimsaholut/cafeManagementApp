@@ -1,3 +1,6 @@
+import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 class SetupScreen extends StatefulWidget {
@@ -10,10 +13,10 @@ class SetupScreen extends StatefulWidget {
 class _SetupScreenState extends State<SetupScreen> {
   final PageController _pageController = PageController(initialPage: 0);
 
+  bool loadExampleMenu = true;
   int _currentPage = 0;
   String cafeName = '';
   String tableCount = '';
-  bool loadExampleMenu = true; // Checkbox'un başlangıçta seçili gelmesi için true yapıldı.
 
   @override
   void initState() {
@@ -53,12 +56,18 @@ class _SetupScreenState extends State<SetupScreen> {
                       children: [
                         Text(
                           "Tols Kasa Yönetim\nSistemine Hoşgeldiniz",
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
                         SizedBox(height: 40),
                         Text(
-                          "Başlamadan önce uygulamayı sizin için özelleştirelim ",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                          "Başlamadan önce tamamlamamız gereken birkaç adım var ",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
                       ],
                     ),
@@ -66,78 +75,227 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
                 // Sayfa 2
                 Container(
-                  color: Colors.green,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: screenSize.width / 3,
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: 'Kafe İsmi',
-                            hintText: 'Kafe İsmini Giriniz',
-                          ),
-                          maxLength: 50, // Maksimum karakter sayısı
-                          onChanged: (value) {
-                            setState(() {
-                              cafeName = value;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenSize.width / 3,
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: 'Masa Sayısı',
-                            hintText: 'Masa Sayısını Giriniz',
-                          ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            setState(() {
-                              tableCount = value;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenSize.width / 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                              value: loadExampleMenu,
-                              onChanged: (value) {
-                                setState(() {
-                                  loadExampleMenu = value!;
-                                });
-                              },
-                            ),
-                            const Text('Örnek menü yüklensin mi'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Sayfa 3
-                Container(
                   color: Colors.orange,
-                  child: const Center(
+                  child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Page 3"),
+                        Text(
+                          "Tols Kasa Yönetim sistemi ile:\n",
+                          style: CustomTextStyles.blackAndBoldTextStyleXl,
+                        ),
+                        Text(
+                          "Masaların ve müşterilerin hesabını tutabilir",
+                          style: CustomTextStyles.blackAndBoldTextStyleM,
+                        ),
+                        Text(
+                          "Toplam satış miktarınızı, brüt ve net karınızı hesaplayabilir",
+                          style: CustomTextStyles.blackAndBoldTextStyleM,
+                        ),
+                        Text(
+                          "Ve analiz özelliğikleri sayesinde istediğiniz zaman dilimlerini takip edip karşılaştırabilirsiniz.",
+                          style: CustomTextStyles.blackAndBoldTextStyleM,
+                        ),
+
                         // Buraya fonksiyonellik eklenebilir
                       ],
                     ),
                   ),
                 ),
+                // Sayfa 3
+                Container(
+                  color: Colors.green,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            "Başlamadan önce birkaç özelleştirme yapalım\n",
+                            style: CustomTextStyles.blackAndBoldTextStyleL,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: screenSize.width / 3,
+                              child: TextField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Kafe İsmi',
+                                  hintText: 'Kafe İsmini Giriniz',
+                                ),
+                                maxLength: 50,
+                                onChanged: (value) {
+                                  setState(() async {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    await prefs.setString('cafeName', value);
+                                    print(prefs.getInt(
+                                        'isOpenedBefore')); //bunlar hata atarsa değişkene ata await ile
+                                  });
+                                },
+                              ),
+                            ),
+
+                            SizedBox(
+                              width: screenSize.width / 3,
+                              child: TextField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Masa Sayısı',
+                                  hintText: 'Masa Sayısını Giriniz',
+                                ),
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) {
+                                  setState(() async {
+                                    if (int.tryParse(value) != null) {
+                                      int enteredValue = int.parse(value);
+                                      if (enteredValue > 0) {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        await prefs.setInt(
+                                            'tableCount', enteredValue);
+                                        print(prefs.getInt('tableCount'));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Masa sayısı 0'dan büyük olmalıdır."),
+                                        ));
+                                      }
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+
+                            SizedBox(
+                              width: screenSize.width / 3,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Checkbox(
+                                    value: loadExampleMenu,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        loadExampleMenu = value!;
+                                      });
+                                    },
+                                  ),
+                                  const Text('Örnek menü yüklensin mi ?'),
+                                ],
+                              ),
+                            ),
+                            //todo style and functionality
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          child: Column(
+                        children: [
+                          Text(
+                            "Örnek menü uygulmanın temel özelliklerini görebileceğiniz ürünler ekler. İlk kullanım için tavsiye edilir.",
+                            style: CustomTextStyles.blackTextStyleS,
+                          ),
+                          Text(
+                            "Girdiğiniz değerleri ve menüyü daha sonra \"Ayarlar\" bölümünden güncelleştirebilirsiniz.",
+                            style: CustomTextStyles.blackTextStyleS,
+                          ),
+                        ],
+                      )),
+                    ],
+                  ),
+                ),
                 // Sayfa 4
                 Container(
                   color: Colors.red,
-                  child: const Center(
-                    child: Text("Page 4"),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "Tols Kasa sistemini 45 gün boyunca kullanabilirisiniz.\n",
+                                    style: CustomTextStyles
+                                        .blackAndBoldTextStyleL),
+                                Text(
+                                    "Deneme sürümüne örnek menü hariç 15 ürün ekleyebilirsiniz.",
+                                    style: CustomTextStyles
+                                        .blackAndBoldTextStyleL),
+                                Text(
+                                    "Uygulamayı ürün ekleme sınırı olmadan kullanmak için ana menüdeki butonları kullanabilirsiniz.",
+                                    style: CustomTextStyles
+                                        .blackAndBoldTextStyleL),
+                                //todo eğer adam premiumu varken hard reset çekerse buraya farklı bir ekran gelecek.
+                              ]),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.setInt('isOpenedBefore', 1);
+                                  print(prefs.getInt('isOpenedBefore'));
+
+                                  final DateTime now = DateTime.now();
+                                  await prefs.setInt('firstOpenDay', now.day);
+                                  await prefs.setInt(
+                                      'firstOpenMonth', now.month);
+                                  await prefs.setInt('firstOpenYear', now.year);
+
+                                  print(
+                                      "${prefs.getInt('firstOpenDay')}${prefs.getInt('firstOpenMonth')}${prefs.getInt('firstOpenYear')}");
+
+                                  Navigator.pop(context);
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                      if (states
+                                          .contains(MaterialState.disabled)) {
+                                        return Colors.grey;
+                                      }
+                                      return Colors.white.withOpacity(0.9);
+                                    },
+                                  ),
+                                  shape: MaterialStateProperty.resolveWith<
+                                      OutlinedBorder>(
+                                    (Set<MaterialState> states) {
+                                      return RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                          color: Colors.black,
+                                          width: 2.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                            8.0), // İsteğe bağlı: Köşeleri yuvarlaklaştırabilirsiniz
+                                      );
+                                    },
+                                  ),
+                                ),
+                                child: Text(
+                                  "Deneme üyeliğimi başlat !",
+                                  style:
+                                      CustomTextStyles.blackAndBoldTextStyleM,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -153,12 +311,12 @@ class _SetupScreenState extends State<SetupScreen> {
               children: List<Widget>.generate(4, (int index) {
                 return Container(
                   margin: const EdgeInsets.all(8),
-                  width: 24.0,
-                  height: 24.0,
+                  width: 18.0,
+                  height: 18.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(width: 2, color: Colors.black),
-                    color: _currentPage == index ? Colors.blue : Colors.grey,
+                    border: Border.all(width: 2, color: Colors.white),
+                    color: _currentPage == index ? Colors.white : Colors.black,
                   ),
                 );
               }),

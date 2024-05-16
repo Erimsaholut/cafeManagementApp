@@ -160,6 +160,6 @@ class WriteTableData {
     } catch (e) {
       print("An error occurred: $e");
     }
-    print("Allah kerimdir");
+    print("writeTable başarı ile tamamlandı");
   }
 }

@@ -1,4 +1,3 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/pie_chart_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextStyles {

@@ -1,37 +1,49 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/setup_screen.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
-import 'datas/menu_data/read_data_menu.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/setup_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'analyses/analysesTest.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ReadMenuData readNewData = ReadMenuData();
-  await readNewData.separateMenuItems();
-  await readNewData.readJsonData();
-  print("newJsonDataReaded");
+  // SharedPreferences objesini oluşturun
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  String cafeName = await readNewData.getCafeName();
-  int tableCount = await readNewData.getTableCount();
+  // isOpenedBefore değerini kontrol edin
+  final int? firstOpen = prefs.getInt('isOpenedBefore');
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]).then((value) => runApp(MyApp(cafeName: cafeName, tableCount: tableCount)));
+  // isOpenedBefore değeri boş ise SetupScreen sayfasını göster
+  if (firstOpen == null) {
+    runApp(const SetupApp());
+  } else {
+    // Değer dolu ise, uygulamayı normal şekilde başlat
+    runApp(const NormalApp(cafeName: '', tableCount: 1,));
+  }
 }
 
-class MyApp extends StatelessWidget {
+
+class SetupApp extends StatelessWidget {
+  const SetupApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: SetupScreen(),
+    );
+  }
+}
+
+
+class NormalApp extends StatelessWidget {
   final String cafeName;
   final int tableCount;
 
-  const MyApp({Key? key, required this.cafeName, required this.tableCount})
-      : super(key: key);
+  const NormalApp({super.key, required this.cafeName, required this.tableCount});
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ..add(const CustomUtilPagesButton(
           buttonName: 'Analyses', goToPage: AnalysesPage()))
       ..add(const CustomUtilPagesButton(
-          buttonName: 'Setup Screen', goToPage: SetupScreen()))
+          buttonName: 'Settings', goToPage: SettingsPage()))
       ..add(const CustomUtilPagesButton(
-          buttonName: 'Settings', goToPage: SettingsPage()));
+          buttonName: 'Premium Edin !\nDeneme sürümü kalan gün sayısı:', goToPage: SetupScreen()));
+
 
   }
 
@@ -90,8 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-//todo en en en son gerekli default verilerin yüklenmesi ve kurulumun yapılması için özel bir ekran çıkacak Kafe ismi ve masa sayısını alacak.
-//sadece hard resette ve sıfır açılışta kullanılacak.
-
-//todo text kısmına premium olup olmadığı bilgisini ekle
+//todo text kısmına premium olup olmadığı bilgisini ekle ve kalan ürün
         //hatta kafe isminin yanına da ekle ezik hissetsin kendini
+
+ //todo kalan ürün denetim sistemi
