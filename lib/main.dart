@@ -7,25 +7,49 @@ import 'package:cafe_management_system_for_camalti_kahvesi/setup_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'analyses/analysesTest.dart';
+import 'datas/menu_data/read_data_menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // SharedPreferences objesini oluşturun
   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final int? firstOpen = null;//prefs.getInt('isOpenedBefore');
+  final bool? loadExampleMenu = prefs.getBool('loadExampleMenu');
 
-  // isOpenedBefore değerini kontrol edin
-  final int? firstOpen = prefs.getInt('isOpenedBefore');
+  if (loadExampleMenu == null) {
+    await prefs.setBool('loadExampleMenu', true);
+  }
 
-  // isOpenedBefore değeri boş ise SetupScreen sayfasını göster
   if (firstOpen == null) {
     runApp(const SetupApp());
   } else {
-    // Değer dolu ise, uygulamayı normal şekilde başlat
-    runApp(const NormalApp(cafeName: '', tableCount: 1,));
+    await normalRun();
   }
 }
 
+Future<void> normalRun() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String cafeName = prefs.getString('cafeName') ?? 'Default Cafe';
+  int tableCount = prefs.getInt('tableCount') ?? 10;
+
+  int Fday = prefs.getInt('firstOpenDay') ?? DateTime.now().day;
+  int Fmonth = prefs.getInt('firstOpenMonth') ?? DateTime.now().month;
+  int Fyear = prefs.getInt('firstOpenYear') ?? DateTime.now().year;
+  DateTime firstOpenDate = DateTime(Fyear, Fmonth, Fday);
+
+  print(firstOpenDate);
+
+  DateTime currentDate = DateTime.now();
+  Duration difference = currentDate.difference(firstOpenDate);
+  int dayDifference = difference.inDays;
+
+  print('Uygulamanın ilk açılışından bu yana geçen gün sayısı: $dayDifference');
+
+  runApp(NormalApp(
+    cafeName: cafeName,
+    tableCount: tableCount,
+  ));
+}
 
 class SetupApp extends StatelessWidget {
   const SetupApp({super.key});
@@ -38,12 +62,12 @@ class SetupApp extends StatelessWidget {
   }
 }
 
-
 class NormalApp extends StatelessWidget {
   final String cafeName;
   final int tableCount;
 
-  const NormalApp({super.key, required this.cafeName, required this.tableCount});
+  const NormalApp(
+      {super.key, required this.cafeName, required this.tableCount});
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +75,7 @@ class NormalApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MyHomePage(
-          title: cafeName, tableCount: tableCount), // Yeni eklenen parametre
+      home: MyHomePage(title: cafeName, tableCount: tableCount),
     );
   }
 }
@@ -82,9 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()))
       ..add(const CustomUtilPagesButton(
-          buttonName: 'Premium Edin !\nDeneme sürümü kalan gün sayısı:', goToPage: SetupScreen()));
-
-
+          buttonName: 'Premium Edin !\nDeneme sürümü kalan gün sayısı:',
+          goToPage: SetupScreen()));
   }
 
   @override
@@ -93,10 +115,13 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: CustomColors.backGroundColor,
       appBar: AppBar(
         backgroundColor: CustomColors.appbarColor,
-        title: Text(widget.title,style: TextStyle(color: CustomColors.textColor),),
+        title: Text(
+          widget.title,
+          style: TextStyle(color: CustomColors.textColor),
+        ),
       ),
       body: GridView.count(
-        crossAxisCount: (widget.tableCount>100?5:4),
+        crossAxisCount: (widget.tableCount > 100 ? 5 : 4),
         children: myList,
       ),
     );
@@ -104,6 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 //todo text kısmına premium olup olmadığı bilgisini ekle ve kalan ürün
-        //hatta kafe isminin yanına da ekle ezik hissetsin kendini
+//hatta kafe isminin yanına da ekle ezik hissetsin kendini
 
- //todo kalan ürün denetim sistemi
+//todo kalan ürün denetim sistemi

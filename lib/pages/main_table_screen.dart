@@ -17,7 +17,7 @@ class MainTableScreen extends StatefulWidget {
   final int tableNum;
   final String tableName;
 
-  MainTableScreen({super.key, required this.tableNum, required this.tableName});
+  const MainTableScreen({super.key, required this.tableNum, required this.tableName});
 
   @override
   State<MainTableScreen> createState() => _MainTableScreenState();
@@ -32,7 +32,9 @@ class _MainTableScreenState extends State<MainTableScreen> {
   @override
   void initState() {
     super.initState();
+    print(widget.tableNum);
     initialFunction();
+
   }
 
   @override
@@ -188,8 +190,8 @@ class _MainTableScreenState extends State<MainTableScreen> {
     );
   }
 
-  Future<void> addItemToAnalyses(Map<String, int> separetedItems) async {
-    for (var item in separetedItems.entries) {
+  Future<void> addItemToAnalyses(Map<String, int> separatedItems) async {
+    for (var item in separatedItems.entries) {
       print("Item: $item" );
       await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
     }
@@ -205,7 +207,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
     setState(() {});
   }
 
-/*okuduğu datadaki itemleri class olarak listeliyor*/
+  /*okuduğu datadaki itemleri class olarak listeliyor*/
   /*allahın emri olarak bir kere çalışacak*/
 
   Future<void> setOrderClasses(int tableNum) async {
@@ -213,7 +215,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
     Map<String, dynamic>? tableData =
         await tableDataHandler.getTableSet(tableNum);
-
     orderClass.clear();
 
     for (var i in tableData?["orders"]) {

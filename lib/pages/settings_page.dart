@@ -1,11 +1,11 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_page_widgets/show_change_name_and_table_count_dialog.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_menu_item_page.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/edit_items_page.dart';
+import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
-import '../constants/custom_colors.dart';
 import '../datas/menu_data/reset_datas_menu.dart';
 import '../utils/custom_menu_button.dart';
+import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {

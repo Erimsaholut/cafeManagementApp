@@ -40,11 +40,12 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     createButtons();
   }
 
-  void createButtons() {
+  Future<void> createButtons() async {
+    ReadMenuData readNewData = ReadMenuData();
+    await readNewData.separateMenuItems();
     setState(() {
       makeWidgetsForNoInd(readNewData.drinksWithNoIngredients, drinksNoIn);
       makeWidgetsForIndDrink(readNewData.drinksWithIngredients, drinksIn);
-
       makeWidgetsForNoInd(readNewData.foodsWithNoIngredients, foodsNoIn);
       makeWidgetsForIndFood(readNewData.foodsWithIngredients, foodsIn);
     });
