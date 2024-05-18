@@ -1,65 +1,60 @@
-import 'dart:ffi';
-
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/reset_datas_menu.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+
 
 class WriteData {
   ReadMenuData readData = ReadMenuData();
-  ResetDatas resetDatas = ResetDatas();
-
-  Future<void> _updateMainSettings(
-
-      String newCafeName, int newTableCount) async {
-    try {
-      Map<String, dynamic>? rawData = await readData.getRawData();
-
-      if (rawData != null) {
-        rawData["cafe_name"] = newCafeName;
-        rawData["table_count"] = newTableCount;
-
-        await readData.writeJsonData(json.encode(rawData));
-        print("Settings updated successfully.");
-      }
-    } catch (e) {
-      print('Settings güncellenirken hata oluştu: $e');
-    }
-  }
+  ResetMenuDatas demoMenuDatas = ResetMenuDatas();
+  RemoveMenuDatas removeMenuDatas = RemoveMenuDatas();
 
   Future<void> setCafeName(String newCafeName) async {
-    Map<String, dynamic>? rawData = await readData.getRawData();
-    int currentTableCount = rawData?["table_count"] ?? 0;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      await _updateMainSettings(newCafeName, currentTableCount);
+      await prefs.setString('cafeName', newCafeName);
+      print("cafeName");
+      print(prefs.getString('cafeName'));
     } catch (e) {
       print('Cafe adı güncellenirken hata oluştu: $e');
     }
   }
 
   Future<void> setTableCount(int newTableCount) async {
-    Map<String, dynamic>? rawData = await readData.getRawData();
-    String currentCafeName = rawData?["cafe_name"] ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     try {
-      await _updateMainSettings(currentCafeName, newTableCount);
+      await prefs.setInt('tableCount', newTableCount);
+      int? tableCount = prefs.getInt('tableCount');
+      print(tableCount);
     } catch (e) {
       print('Cafe adı güncellenirken hata oluştu: $e');
     }
   }
 
-  Future<void> resetData() async {
-
+  Future<void> resetToDemoMenu() async {
     try {
-      Map<String, dynamic> initialMenu = resetDatas.jsonDemoRawData;
+      Map<String, dynamic> initialMenu = demoMenuDatas.jsonMenuDemoData;
       await readData.writeJsonData(jsonEncode(initialMenu));
       print("Başarı ile resetlendi");
     } catch (e) {
       print("Resetlenemedi $e");
     }
+  }
 
+  Future<void> resetToBlankMenu() async {
+    try {
+      Map<String, dynamic> initialMenu = removeMenuDatas.jsonMenuResetData;
+      await readData.writeJsonData(jsonEncode(initialMenu));
+      print("Başarı ile sıfırlandı");
+    } catch (e) {
+      print("Resetlenemedi $e");
+    }
   }
 
   Future<bool?> addNewItemToMenu(String itemName, int moneyValue,
-      int pennyValue, List<String> indList, String type, {double profit = 0}) async {
+      int pennyValue, List<String> indList, String type,
+      {double profit = 0}) async {
     if (type == "Yiyecek") {
       type = "food";
     }
@@ -75,7 +70,7 @@ class WriteData {
 
         String lowercaseItemName = itemName.toLowerCase();
         bool itemExists =
-        menu.any((item) => item["name"].toLowerCase() == lowercaseItemName);
+            menu.any((item) => item["name"].toLowerCase() == lowercaseItemName);
 
         if (itemExists) {
           print(
@@ -107,13 +102,13 @@ class WriteData {
     return null;
   }
 
-
-  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney, int newPricePenny, List<String> indList, {double newProfit = 0}) async {
+  Future<void> setExistingItemInMenu(String itemName, int newPriceMoney,
+      int newPricePenny, List<String> indList,
+      {double newProfit = 0}) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
 
       if (rawData != null) {
-
         List<dynamic> menu = rawData["menu"];
 
         Map<String, dynamic>? oldItem;
@@ -151,7 +146,6 @@ class WriteData {
 
           readData.readJsonData();
           readData.separateMenuItems();
-
         } else {
           print("Güncellenecek ürün bulunamadı: $itemName");
         }
@@ -160,6 +154,4 @@ class WriteData {
       print('Ürün güncellenirken hata oluştu: $e');
     }
   }
-
-
 }

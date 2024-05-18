@@ -1,16 +1,18 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/write_data_menu.dart';
 
 class ResetAllJsonData {
-  void resetJsonFile() {
+  void resetMenuToDemo() {
     WriteData writeData = WriteData();
-    writeData.resetData();
+    writeData.resetToDemoMenu();
+  }
+  void resetMenuToBlank() {
+    WriteData writeData = WriteData();
+    writeData.resetToBlankMenu();
   }
 }
 
-class ResetDatas {
-  Map<String, dynamic> jsonDemoRawData ={
-    "cafe_name": "Çamaltı Kahvehanesi",
-    "table_count": 22,
+class ResetMenuDatas {
+  Map<String, dynamic> jsonMenuDemoData ={
     "menu": [
       {
         "name": "Çay",
@@ -126,6 +128,12 @@ class ResetDatas {
         "ingredients": []
       }
     ]
-  }
-  ;
+  };
+}
+
+class RemoveMenuDatas{
+  Map<String, dynamic> jsonMenuResetData ={
+    "menu": [
+    ]
+  };
 }

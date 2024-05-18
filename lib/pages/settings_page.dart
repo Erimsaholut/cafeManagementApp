@@ -4,6 +4,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settin
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
 import '../datas/menu_data/reset_datas_menu.dart';
+import '../datas/table_orders_data/reset_table_datas.dart';
 import '../utils/custom_menu_button.dart';
 import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +102,7 @@ class SettingsPageState extends State<SettingsPage> {
                     onPressedFunction: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) {
+                        builder: (BuildContext dialogContext) {
                           String confirmationText = '';
 
                           return AlertDialog(
@@ -125,7 +126,7 @@ class SettingsPageState extends State<SettingsPage> {
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  Navigator.of(dialogContext).pop();
                                 },
                                 child: const Text('İptal'),
                               ),
@@ -134,16 +135,31 @@ class SettingsPageState extends State<SettingsPage> {
                                   if (confirmationText == 'Onaylıyorum') {
                                     ResetAllJsonData resetAllJsonData =
                                     ResetAllJsonData();
-                                    ResetAllAnalysesJsonData resetAllAnalysesJsonData = ResetAllAnalysesJsonData();
+                                    ResetAllAnalysesJsonData
+                                    resetAllAnalysesJsonData =
+                                    ResetAllAnalysesJsonData();
+                                    ResetAllTableJsonData
+                                    resetAllTableJsonData =
+                                    ResetAllTableJsonData();
 
-                                    resetAllJsonData.resetJsonFile();
-                                    await resetAllAnalysesJsonData.resetAllTableJsonFiles(0);
-                                    await resetAllAnalysesJsonData.resetAllTableJsonFiles(1);
-                                    await resetAllAnalysesJsonData.resetAllTableJsonFiles(2);
+                                    resetAllJsonData.resetMenuToBlank();
+                                    await resetAllAnalysesJsonData
+                                        .resetAllTableJsonFiles(0);
+                                    await resetAllAnalysesJsonData
+                                        .resetAllTableJsonFiles(1);
+                                    await resetAllAnalysesJsonData
+                                        .resetAllTableJsonFiles(2);
+                                    resetAllTableJsonData
+                                        .resetAllTableJsonFiles();
+
+                                    Navigator.of(dialogContext).pop();
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
-                                            'Bütün veriler başarı ile resetlendi'),),);
+                                            'Bütün veriler başarı ile resetlendi'),
+                                      ),
+                                    );
                                   } else {
                                     // Onay metni doğru değilse kullanıcıyı uyar
                                     print('Lütfen doğru onay metnini girin.');
@@ -158,7 +174,6 @@ class SettingsPageState extends State<SettingsPage> {
                     },
                     context: context,
                   )
-
                 ],
               ),
             ],
@@ -168,4 +183,3 @@ class SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-//todo burada bir sıkıntı zerk etti

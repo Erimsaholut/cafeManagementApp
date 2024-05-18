@@ -2,7 +2,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-
 import 'main.dart';
 
 class SetupScreen extends StatefulWidget {
@@ -17,9 +16,6 @@ class _SetupScreenState extends State<SetupScreen> {
 
   bool loadExampleMenu = true;
   int _currentPage = 0;
-
-  String tableCount = '';
-  String cafeName = '';
 
   @override
   void initState() {
@@ -132,7 +128,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                 maxLength: 50,
                                 onChanged: (value) async {
                                   SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
+                                      await SharedPreferences.getInstance();
                                   await prefs.setString('cafeName', value);
                                   print("cafeName");
                                   print(prefs.getString('cafeName'));
@@ -155,10 +151,11 @@ class _SetupScreenState extends State<SetupScreen> {
                                     int enteredValue = int.parse(value);
                                     if (enteredValue > 0) {
                                       SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
+                                          await SharedPreferences.getInstance();
                                       await prefs.setInt(
                                           'tableCount', enteredValue);
-                                      int? tableCount = prefs.getInt('tableCount');
+                                      int? tableCount =
+                                          prefs.getInt('tableCount');
                                       print(tableCount);
                                     } else {
                                       ScaffoldMessenger.of(context)
@@ -183,10 +180,21 @@ class _SetupScreenState extends State<SetupScreen> {
                                         loadExampleMenu = value!;
                                       });
                                       SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                      await prefs.setBool('loadExampleMenu', loadExampleMenu);
+                                          await SharedPreferences.getInstance();
+                                      await prefs.setBool(
+                                          'loadExampleMenu', loadExampleMenu);
                                       print("loadExampleMenu");
                                       print(prefs.getBool('loadExampleMenu'));
+                                      if (value == false) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Örnek menü uygulmanın temel özelliklerini görebileceğiniz ürünler ekler. İlk kullanım için tavsiye edilir.",
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     },
                                   ),
                                   const Text('Örnek menü yüklensin mi ?'),
@@ -199,10 +207,6 @@ class _SetupScreenState extends State<SetupScreen> {
                       Expanded(
                         child: Column(
                           children: [
-                            Text(
-                              "Örnek menü uygulmanın temel özelliklerini görebileceğiniz ürünler ekler. İlk kullanım için tavsiye edilir.",
-                              style: CustomTextStyles.blackTextStyleS,
-                            ),
                             Text(
                               "Girdiğiniz değerleri ve menüyü daha sonra \"Ayarlar\" bölümünden güncelleştirebilirsiniz.",
                               style: CustomTextStyles.blackTextStyleS,
@@ -226,13 +230,16 @@ class _SetupScreenState extends State<SetupScreen> {
                               children: [
                                 Text(
                                     "Tols Kasa Yönetim sistemini 30 gün boyunca ücretsiz kullanabilirisiniz.\n",
-                                    style: CustomTextStyles.blackAndBoldTextStyleL),
+                                    style: CustomTextStyles
+                                        .blackAndBoldTextStyleL),
                                 Text(
                                     "Deneme sürümüne örnek menü hariç 15 ürün ekleyebilirsiniz.",
-                                    style: CustomTextStyles.blackAndBoldTextStyleL),
+                                    style: CustomTextStyles
+                                        .blackAndBoldTextStyleL),
                                 Text(
                                     "Uygulamayı ürün ekleme sınırı olmadan kullanmak için ana menüdeki butonları kullanabilirsiniz.",
-                                    style: CustomTextStyles.blackAndBoldTextStyleL),
+                                    style: CustomTextStyles
+                                        .blackAndBoldTextStyleL),
                               ]),
                         ),
                         Expanded(
@@ -241,34 +248,58 @@ class _SetupScreenState extends State<SetupScreen> {
                               ElevatedButton(
                                 onPressed: () async {
                                   SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                                  await prefs.setInt('isOpenedBefore', 1);
-                                  print(prefs.getInt('isOpenedBefore'));
+                                      await SharedPreferences.getInstance();
+                                  if (prefs.getInt('tableCount') != null &&
+                                      prefs.getString('cafeName') != null) {
+                                    await prefs.setInt('isOpenedBefore', 1);
+                                    print(prefs.getInt('isOpenedBefore'));
 
-                                  final DateTime now = DateTime.now();
-                                  await prefs.setInt('firstOpenDay', now.day);
-                                  await prefs.setInt(
-                                      'firstOpenMonth', now.month);
-                                  await prefs.setInt('firstOpenYear', now.year);
+                                    final DateTime now = DateTime.now();
+                                    await prefs.setInt('firstOpenDay', now.day);
+                                    await prefs.setInt(
+                                        'firstOpenMonth', now.month);
+                                    await prefs.setInt(
+                                        'firstOpenYear', now.year);
 
-                                  print(
-                                      "${prefs.getInt('firstOpenDay')}${prefs.getInt('firstOpenMonth')}${prefs.getInt('firstOpenYear')}");
+                                    print(
+                                        "${prefs.getInt('firstOpenDay')}${prefs.getInt('firstOpenMonth')}${prefs.getInt('firstOpenYear')}");
 
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => NormalApp(
-                                        cafeName: prefs.getString('cafeName') ?? 'Default Cafe',
-                                        tableCount: prefs.getInt('tableCount') ?? 10,
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => NormalApp(
+                                          cafeName:
+                                              prefs.getString('cafeName') ??
+                                                  'Default Cafe',
+                                          tableCount:
+                                              prefs.getInt('tableCount') ?? 10,
+                                          dayDifference: 30,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    print(
+                                        "${prefs.getInt('tableCount')} ${prefs.getString('cafeName')}");
+                                    String problem = "";
+                                    if (prefs.getString('cafeName') == null) {
+                                      problem = "Kafe ismi";
+                                    } else {
+                                      problem = "Masa sayısı";
+                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content:
+                                            Text('$problem değeri boş olamaz'),
+                                      ),
+                                    );
+                                  }
                                 },
                                 style: ButtonStyle(
                                   backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                        (Set<MaterialState> states) {
-                                      if (states.contains(MaterialState.disabled)) {
+                                      MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                      if (states
+                                          .contains(MaterialState.disabled)) {
                                         return Colors.grey;
                                       }
                                       return Colors.white.withOpacity(0.9);
@@ -276,7 +307,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                   ),
                                   shape: MaterialStateProperty.resolveWith<
                                       OutlinedBorder>(
-                                        (Set<MaterialState> states) {
+                                    (Set<MaterialState> states) {
                                       return RoundedRectangleBorder(
                                         side: const BorderSide(
                                           color: Colors.black,
@@ -291,7 +322,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                 child: Text(
                                   "Deneme üyeliğimi başlat !",
                                   style:
-                                  CustomTextStyles.blackAndBoldTextStyleM,
+                                      CustomTextStyles.blackAndBoldTextStyleM,
                                 ),
                               ),
                             ],

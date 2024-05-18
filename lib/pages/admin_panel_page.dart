@@ -54,10 +54,21 @@ class _AdminPanelState extends State<AdminPanel> {
               height: 20,
             ),
           ),
-          TextButton(onPressed: () async{
-            resetAllJsonData.resetJsonFile();
-
-          }, child: const Text("Reset menu")),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () async {
+                    resetAllJsonData.resetMenuToDemo();
+                  },
+                  child: const Text("Reset demo menu")),
+              TextButton(
+                  onPressed: () async {
+                    resetAllJsonData.resetMenuToBlank();
+                  },
+                  child: const Text("Delete Menu")),
+            ],
+          ),
           Container(
             color: Colors.red,
             child: const SizedBox(

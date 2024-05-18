@@ -8,16 +8,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'analyses/analysesTest.dart';
 import 'datas/menu_data/read_data_menu.dart';
+import 'datas/menu_data/reset_datas_menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final int? firstOpen = null;//prefs.getInt('isOpenedBefore');
+  final int? firstOpen = prefs.getInt('isOpenedBefore');
   final bool? loadExampleMenu = prefs.getBool('loadExampleMenu');
 
-  if (loadExampleMenu == null) {
-    await prefs.setBool('loadExampleMenu', true);
+/*
+resetlerken kullan
+  final int? firstOpen = null;
+  prefs.remove("cafeName");
+  prefs.remove("tableCount");
+*/
+
+
+  if (loadExampleMenu == false) {
+    ResetAllJsonData resetAllJsonData = ResetAllJsonData();
+    resetAllJsonData.resetMenuToBlank();
   }
 
   if (firstOpen == null) {
@@ -41,13 +51,14 @@ Future<void> normalRun() async {
 
   DateTime currentDate = DateTime.now();
   Duration difference = currentDate.difference(firstOpenDate);
-  int dayDifference = difference.inDays;
+  int dayDifference = 30 - difference.inDays;
 
   print('Uygulamanın ilk açılışından bu yana geçen gün sayısı: $dayDifference');
 
   runApp(NormalApp(
     cafeName: cafeName,
     tableCount: tableCount,
+    dayDifference: dayDifference,
   ));
 }
 
@@ -65,9 +76,10 @@ class SetupApp extends StatelessWidget {
 class NormalApp extends StatelessWidget {
   final String cafeName;
   final int tableCount;
+  final int dayDifference;
 
   const NormalApp(
-      {super.key, required this.cafeName, required this.tableCount});
+      {super.key, required this.cafeName, required this.tableCount, required this.dayDifference});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +87,7 @@ class NormalApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MyHomePage(title: cafeName, tableCount: tableCount),
+      home: MyHomePage(title: cafeName, tableCount: tableCount, dayDifference: dayDifference),
     );
   }
 }
@@ -83,8 +95,9 @@ class NormalApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   final String title;
   final int tableCount;
+  final int dayDifference;
 
-  const MyHomePage({super.key, required this.title, required this.tableCount});
+  const MyHomePage({super.key, required this.title, required this.tableCount, required this.dayDifference});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -104,9 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
           buttonName: 'Analyses', goToPage: AnalysesPage()))
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()))
-      ..add(const CustomUtilPagesButton(
-          buttonName: 'Premium Edin !\nDeneme sürümü kalan gün sayısı:',
-          goToPage: SetupScreen()));
+      ..add(CustomUtilPagesButton(
+          buttonName: 'Deneme Hesabı kalan gün sayısı: ${widget.dayDifference}',
+          goToPage: SizedBox()));
   }
 
   @override
@@ -128,7 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
 //todo text kısmına premium olup olmadığı bilgisini ekle ve kalan ürün
 //hatta kafe isminin yanına da ekle ezik hissetsin kendini
 
-//todo kalan ürün denetim sistemi
+//todo kalan ürün denetim sistemi //meh
+
+//todo net kar analizi premium özel olacak
+
+//todo örnek menü ayarla
