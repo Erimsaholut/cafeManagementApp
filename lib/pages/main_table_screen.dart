@@ -99,7 +99,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                 /*masadaki itemler*/
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomMenuButton(
+                  customMenuButton(
                     "Ekle Sipariş",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -123,7 +123,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Azalt Sipariş",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -147,7 +147,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Masa Ödendi",
                     onPressedFunction: () {
                       showDialog(

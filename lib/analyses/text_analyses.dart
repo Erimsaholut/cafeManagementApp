@@ -1,6 +1,7 @@
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_utils.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../datas/analyses_data/read_data_analyses.dart';
 import '../datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +29,13 @@ class _AnalysesAsATextState extends State<AnalysesAsAText> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child:
-                  CircularProgressIndicator(), // Veri yüklenirken dönme animasyonu göster
+              child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text(
-                  "Error: ${snapshot.error}"), // Hata durumunda hatayı göster
+              child: Text("Error: ${snapshot.error}"),
             );
           } else {
-            // Veri başarıyla geldiyse snapshot.data içinde bulunur
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -51,271 +49,290 @@ class _AnalysesAsATextState extends State<AnalysesAsAText> {
   }
 }
 
+// Asenkron olarak veri alınan fonksiyon
 Future<List<Widget>> getDatas(Size size) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
   AnalysesReader analysesReader = AnalysesReader();
+  Map<String, double> monthMostProfit = {};
   ReadMenuData readData = ReadMenuData();
+  Map<String, double> dayMostProfit = {};
   DateTime now = DateTime.now();
+  List<String> monthTop3 = [];
   List<Widget> widgets = [];
+  List<String> dayTop3 = [];
+  bool isPremium = prefs.getBool("isPremium") ?? false;
 
-  String cafeName = await readData.getCafeName();
+  // Cafe ismi alınıyor, varsayılan isim belirleniyor
+  String cafeName = prefs.getString('cafeName') ?? 'Default Cafe';
   int menuItemCount = await readData.getMenuItemCount();
-  double dailyProfit =
-      await analysesReader.getDaysTotalProfit(now.day, now.month, now.year);
-  double monthlyProfit =
-      await analysesReader.getMonthsTotalProfit(now.month, now.year);
-  double dailyRevenue =
-      await analysesReader.getDaysTotalRevenue(now.day, now.month, now.year);
-  double monthlyRevenue =
-      await analysesReader.getMonthsTotalRevenue(now.month, now.year);
-  Map<String, dynamic>? wholeDay =
-      await analysesReader.getDaySet(now.day, now.month, now.year); //bu gün 3
+
+  // Ayın verisi alınıyor, varsa en çok satılanlar ve en kârlılar sıralanıyor
   Map<String, dynamic>? wholeMonth =
       await analysesReader.getMonthSet(now.month, now.year);
-  List<String> monthTop3 = getTop3Products(wholeMonth?["products"]!); //bu ay 3
-  List<String> dayTop3 = getTop3Products(wholeDay?["products"]!); //bu gün 3
-  Map<String, double> dayMostProfit = sortByProfit(wholeDay!); // day most prof
-  Map<String, double> monthMostProfit =
-      sortByProfit(wholeMonth!); // month most prof
-  print(monthMostProfit);
-  widgets.add(Row(
-    mainAxisSize: MainAxisSize.max,
-    children: [
-      Expanded(
-        flex: 14,
-        child: customContainer(
-          size,
-          Colors.lightGreen,
-          cafeName,
-        ),
-      ),
-      Expanded(
-        flex: 6,
-        child: customContainer(
-          size,
-          Colors.greenAccent,
-          "Toplam Ürün Sayısı\n$menuItemCount",
-        ),
-      ),
-    ],
-  ));
+  if (wholeMonth != null) {
+    monthTop3 = getTop3Products(wholeMonth["products"]!);
+    monthMostProfit = sortByProfit(wholeMonth);
+  }
 
-  widgets.add(Row(
-    children: [
-      Expanded(
-        flex: 4,
-        child: customContainer(
-          size,
-          Colors.redAccent,
-          "Bugün",
-        ),
-      ),
-      Expanded(
-        flex: 4,
-        child: customContainer(
-          size,
-          Colors.cyanAccent,
-          "En çok satılan ürünler",
-        ),
-      ),
-      Expanded(
-        flex: 6,
-        child: Container(
-          height: (size.height / 3),
-          color: Colors.cyanAccent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "#1 ${dayTop3[0]}",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-                Text(
-                  "#2 ${dayTop3[1]}",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-                Text(
-                  "#3 ${dayTop3[2]}",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      (dayMostProfit.isNotEmpty)
-          ? Expanded(
-              flex: 4,
-              child: customContainer(size, Colors.orangeAccent,
-                  "Bu ayın \nen kârlı ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺"),
-            )
-          : Container(),
-      Expanded(
-        flex: 3,
-        child: customContainer(
-          size,
-          Colors.yellowAccent,
-          "Toplam Gelir\n$dailyRevenue",
-        ),
-      ),
-      Expanded(
-        flex: 3,
-        child: customContainer(
-          size,
-          Colors.tealAccent,
-          "Toplam Kâr\n$dailyProfit",
-        ),
-      ),
-    ],
-  ));
+  // Günlük veri alınıyor, varsa en çok satılanlar ve en kârlılar sıralanıyor
+  double monthlyProfit =
+      await analysesReader.getMonthsTotalProfit(now.month, now.year);
+  double monthlyRevenue =
+      await analysesReader.getMonthsTotalRevenue(now.month, now.year);
+  double dailyProfit =
+      await analysesReader.getDaysTotalProfit(now.day, now.month, now.year);
+  double dailyRevenue =
+      await analysesReader.getDaysTotalRevenue(now.day, now.month, now.year);
+  Map<String, dynamic>? wholeDay =
+      await analysesReader.getDaySet(now.day, now.month, now.year);
 
-  widgets.add(Row(
-    children: [
-      Expanded(
-        flex: 4,
-        child: customContainer(
-          size,
-          Colors.red,
-          "${CustomUtils.months[now.month - 1]} \nAyı boyunca",
-        ),
-      ),
-      Expanded(
-        flex: 3,
-        child: customContainer(
-          size,
-          Colors.greenAccent,
-          "En çok satılan ürünler",
-        ),
-      ),
-      Expanded(
-        flex: 4,
-        child: Container(
-          height: (size.height / 3),
-          color: Colors.greenAccent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "#1 ${monthTop3[0]}",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
+  if (wholeDay != null) {
+    dayTop3 = getTop3Products(wholeDay["products"]!);
+    dayMostProfit = sortByProfit(wholeDay);
+  }
+
+  // Gerekli widget'lar oluşturuluyor
+  widgets.add(
+    Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        (isPremium)
+            ? Expanded(
+                child: customContainer(
+                  size,
+                  CustomColors.premiumColor,
+                  "Premium Mode",
                 ),
-                Text(
-                  "#2 ${monthTop3[1]}",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
+              )
+            : Expanded(
+                child: customContainer(
+                  size,
+                  CustomColors.trailColor,
+                  "Deneme Sürümü",
                 ),
-                Text(
-                  "#3 ${monthTop3[2]}",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      (monthMostProfit.isNotEmpty)
-          ? Expanded(
-              flex: 4,
-              child: customContainer(size, Colors.orangeAccent,
-                  "Bu ayın \nen kârlı ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺"),
-            )
-          : Container(),
-      Expanded(
-        flex: 3,
-        child: customContainer(
-          size,
-          Colors.tealAccent,
-          "Toplam Gelir\n$monthlyRevenue",
-        ),
-      ),
-      Expanded(
-        flex: 3,
-        child: customContainer(
-          size,
-          Colors.yellowAccent,
-          "Toplam Kâr\n$monthlyProfit",
-        ),
-      ),
-    ],
-  ));
-  (Row(
-    children: [
-      Expanded(
+              ),
+        Expanded(
           flex: 4,
           child: customContainer(
             size,
-            Colors.redAccent,
-            "${CustomUtils.months[now.month - 1]} \nAyı boyunca",
-          )),
-      Expanded(
-          flex: 4,
-          child: Container(
-            height: (size.height / 3),
-            color: Colors.greenAccent,
-            child: const Text(
+            CustomColors.selectedColor7,
+            cafeName,
+          ),
+        ),
+        (isPremium)
+            ? Expanded(
+                child: customContainer(
+                  size,
+                  CustomColors.selectedColor8,
+                  "Toplam Ürün Sayısı\n$menuItemCount",
+                ),
+              )
+            : Expanded(
+                child: customContainer(
+                  size,
+                  CustomColors.selectedColor8,
+                  "Toplam Ürün Sayısı: $menuItemCount\n\nKalan ürün ekleme hakkı: ${30 - menuItemCount}",
+                ),
+              ),
+      ],
+    ),
+  );
+
+  if (wholeDay != null) {
+    widgets.add(
+      Row(
+        children: [
+          Expanded(
+            flex: 4,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor6,
+              "Bugün",
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor5,
               "En çok satılan ürünler",
-              textAlign: TextAlign.center,
             ),
-          )),
-      Expanded(
-          flex: 6,
-          child: Container(
-            height: (size.height / 3),
-            color: Colors.blueAccent,
-            child: Text(
-              "$monthTop3",
-              textAlign: TextAlign.center,
+          ),
+          Expanded(
+            flex: 6,
+            child: Container(
+              height: (size.height / 3),
+              color: CustomColors.selectedColor5,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "#1 ${dayTop3[0]}",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,
+                    ),
+                    Text(
+                      "#2 ${dayTop3[1]}",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,
+                    ),
+                    Text(
+                      "#3 ${dayTop3[2]}",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          )),
-      Expanded(
-          flex: 3,
-          child: Container(
-            height: (size.height / 3),
-            color: Colors.yellowAccent,
-            child: Text(
+          ),
+          (dayMostProfit.isNotEmpty)
+              ? Expanded(
+                  flex: 4,
+                  child: customContainer(
+                    size,
+                    CustomColors.selectedColor6,
+                    "Bu ayın \nen kârlı ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺",
+                  ),
+                )
+              : Container(),
+          Expanded(
+            flex: 3,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor4,
+              "Toplam Gelir\n$dailyRevenue",
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor3,
+              "Toplam Kâr\n$dailyProfit",
+            ),
+          ),
+        ],
+      ),
+    );
+  } else {
+    widgets.add(Row(
+      children: [
+        Expanded(
+            child: customContainer(size, CustomColors.missingColor,
+                "Bu Günün analizleri için yeterli veri bulunmamakta"))
+      ],
+    ));
+  }
+
+  if (wholeMonth != null) {
+    widgets.add(
+      Row(
+        children: [
+          Expanded(
+            flex: 4,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor7,
+              "${CustomUtils.months[now.month - 1]} \nAyı boyunca",
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor8,
+              "En çok satılan ürünler",
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              height: (size.height / 3),
+              color: CustomColors.selectedColor9,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "#1 ${monthTop3[0]}",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,
+                    ),
+                    Text(
+                      "#2 ${monthTop3[1]}",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,
+                    ),
+                    Text(
+                      "#3 ${monthTop3[2]}",
+                      style: CustomTextStyles.blackAndBoldTextStyleM,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          (monthMostProfit.isNotEmpty)
+              ? Expanded(
+                  flex: 4,
+                  child: customContainer(
+                    size,
+                    CustomColors.selectedColor10,
+                    "Bu ayın \nen kârlı ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺",
+                  ),
+                )
+              : Container(),
+          Expanded(
+            flex: 3,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor5,
               "Toplam Gelir\n$monthlyRevenue",
-              textAlign: TextAlign.center,
             ),
-          )),
-      Expanded(
-        flex: 3,
-        child: customContainer(
-            size, Colors.yellowAccent, "Toplam Kâr\n$monthlyProfit"),
-      )
-    ],
-  ));
+          ),
+          Expanded(
+            flex: 3,
+            child: customContainer(
+              size,
+              CustomColors.selectedColor6,
+              "Toplam Kâr\n$monthlyProfit",
+            ),
+          ),
+        ],
+      ),
+    );
+  } else {
+    widgets.add(Row(
+      children: [
+        Expanded(
+            child: customContainer(size, CustomColors.missingColor,
+                "Bu ayın analizleri için yeterli veri bulunmamakta"))
+      ],
+    ));
+  }
 
   return widgets;
 }
 
+// En çok satılan 3 ürünü getirme fonksiyonu
 List<String> getTop3Products(Map<String, dynamic> products) {
-  // Satış miktarına göre ürünleri sıralamak için bir list oluşturma
   var sortedItems = products.entries.toList()
     ..sort((a, b) => b.value['quantity'].compareTo(a.value['quantity']));
 
-  // Top 3 ürünü alarak top3 haritasını oluşturma
-  Map<String, int> top3 = {};
-  List<String> stringList = [];
+  List<String> top3List = [];
   for (var i = 0; i < 3; i++) {
     if (i < sortedItems.length) {
       var item = sortedItems[i];
-      top3[item.key] = item.value['quantity'];
-      String test = "";
-      test += item.key;
-      test += ":";
-      test += item.value["quantity"].toString();
-      test += "\n";
-      stringList.add(test);
+      String product = "${item.key}: ${item.value["quantity"]}";
+      top3List.add(product);
     } else {
-      top3['null'] = 0;
+      top3List.add("null: 0");
     }
   }
 
-  return stringList;
+  return top3List;
 }
 
+// Karlara göre ürünleri sıralama fonksiyonu
 Map<String, double> sortByProfit(Map<String, dynamic> products) {
   Map<String, dynamic> productsMap = products["products"];
   Map<String, double> sortedByProfit = {};
@@ -330,6 +347,7 @@ Map<String, double> sortByProfit(Map<String, dynamic> products) {
   return sortedByProfit;
 }
 
+// Özel bir konteyner widget'ı oluşturma fonksiyonu
 Container customContainer(Size size, Color color, String text) {
   return Container(
     padding: const EdgeInsets.all(10),

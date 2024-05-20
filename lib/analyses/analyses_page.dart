@@ -2,7 +2,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/analyses/product_sale
 import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
-
 import 'gross_income_graph.dart';
 import 'net_income_graph.dart';
 import 'text_analyses.dart';
@@ -30,7 +29,7 @@ class _AnalysesPageState extends State<AnalysesPage> {
             children: [
               Column(
                 children: [
-                  CustomMenuButton("Satış Adet Grafiği", context: context,
+                  customMenuButton("Satış Adet Grafiği", context: context,
                       onPressedFunction: () {
                     Navigator.of(context).push(
                       PageRouteBuilder(
@@ -47,7 +46,7 @@ class _AnalysesPageState extends State<AnalysesPage> {
                     );
                   }
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Brüt Gelir Grafiği",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -66,7 +65,7 @@ class _AnalysesPageState extends State<AnalysesPage> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Net Kâr Grafiği",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -85,7 +84,7 @@ class _AnalysesPageState extends State<AnalysesPage> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Yazısal Veriler",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -104,8 +103,6 @@ class _AnalysesPageState extends State<AnalysesPage> {
                     },
                     context: context,
                   ),
-
-
                 ],
               ),
             ],

@@ -6,7 +6,7 @@ import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.da
 import 'package:cafe_management_system_for_camalti_kahvesi/setup_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'analyses/analysesTest.dart';
+import 'analyses/analyses_page.dart';
 import 'datas/menu_data/read_data_menu.dart';
 import 'datas/menu_data/reset_datas_menu.dart';
 
@@ -17,6 +17,7 @@ void main() async {
   final int? firstOpen = prefs.getInt('isOpenedBefore');
   final bool? loadExampleMenu = prefs.getBool('loadExampleMenu');
 
+  prefs.setBool('isPremium',false);
 /*
 resetlerken kullan
   final int? firstOpen = null;
@@ -141,12 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-//todo text kısmına premium olup olmadığı bilgisini ekle ve kalan ürün
-//hatta kafe isminin yanına da ekle ezik hissetsin kendini
-
 //todo kalan ürün denetim sistemi //meh
 
 //todo net kar analizi premium özel olacak
-
-//todo örnek menü ayarla

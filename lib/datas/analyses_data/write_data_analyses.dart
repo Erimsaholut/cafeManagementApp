@@ -133,5 +133,4 @@ class WriteAnalysesData {
 
 }
 
-//todo analyses data alırken isim alıp fiyatı kendi ekliyor ama profit de ekleyecek
 //todo hatta analiz jsonuna profit kısmı ekle, türünü yerini belirleyip

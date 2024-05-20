@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
 
-Column CustomMenuButton(
+Column customMenuButton(
     String buttonText, {
       VoidCallback? onPressedFunction,
       VoidCallback? onLongPressFunction,
@@ -40,3 +40,5 @@ final ButtonStyle customButtonStyle = TextButton.styleFrom(
     ),
   ),
 );
+
+//todo butonlara trialdayken basılamama özelliği ekle

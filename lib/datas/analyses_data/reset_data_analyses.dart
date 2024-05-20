@@ -32,11 +32,13 @@ class ResetAllAnalysesJsonData {
       "products": {
         "Çay": {
           "quantity": 5,
-          "revenue": 25.0
+          "revenue": 25.0,
+          "profit": 12.5
         },
         "Su": {
           "quantity": 3,
-          "revenue": 15.0
+          "revenue": 15.0,
+          "profit": 7.50
         },
         "Nescafe": {
           "quantity": 2,

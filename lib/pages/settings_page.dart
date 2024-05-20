@@ -33,7 +33,7 @@ class SettingsPageState extends State<SettingsPage> {
             children: [
               Column(
                 children: [
-                  CustomMenuButton("Kafe ismi düzenle", onPressedFunction: () {
+                  customMenuButton("Kafe ismi düzenle", onPressedFunction: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -44,7 +44,7 @@ class SettingsPageState extends State<SettingsPage> {
                       },
                     );
                   }, context: context),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Masa sayısını düzenle",
                     onPressedFunction: () {
                       showDialog(
@@ -59,7 +59,7 @@ class SettingsPageState extends State<SettingsPage> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Menüye Yeni Ürün Ekle",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -78,7 +78,7 @@ class SettingsPageState extends State<SettingsPage> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Ürünleri Düzenle",
                     onPressedFunction: () {
                       Navigator.of(context).push(
@@ -97,7 +97,7 @@ class SettingsPageState extends State<SettingsPage> {
                     },
                     context: context,
                   ),
-                  CustomMenuButton(
+                  customMenuButton(
                     "Bütün verileri resetle",
                     onPressedFunction: () {
                       showDialog(
