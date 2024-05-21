@@ -6,6 +6,7 @@ Column customMenuButton(
       VoidCallback? onPressedFunction,
       VoidCallback? onLongPressFunction,
       required BuildContext context,
+      bool isEnabled = true,
     }) {
   Size screenSize = MediaQuery.of(context).size;
 
@@ -15,9 +16,14 @@ Column customMenuButton(
         width: screenSize.width * 0.3,
         height: screenSize.height * 0.15,
         child: TextButton(
-          onPressed: onPressedFunction ?? () {},
-          onLongPress: onLongPressFunction,
-          style: customButtonStyle,
+          onPressed: isEnabled ? onPressedFunction ?? () {} : null,
+          onLongPress: isEnabled ? onLongPressFunction : null,
+          style: isEnabled ? customButtonStyle : customButtonStyle.copyWith(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade400),
+            side: MaterialStateProperty.all<BorderSide>(
+              BorderSide(color: Colors.grey.shade700, width: 2.0),
+            ),
+          ),
           child: Text(
             buttonText,
             style: CustomTextStyles.blackAndBoldTextStyleL,

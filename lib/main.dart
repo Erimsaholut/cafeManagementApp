@@ -144,4 +144,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //todo kalan ürün denetim sistemi //meh
 
-//todo net kar analizi premium özel olacak
+//todo net kar analizi premium özel olacak // ekledik ama kullanmak sana kalmış
+
+//todo log eklenebilir.
+//todo İndirim ve iptal etme gelecek
+//todo kategoriler zaten olmazsa olmaz
+
+

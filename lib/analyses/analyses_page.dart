@@ -44,7 +44,7 @@ class _AnalysesPageState extends State<AnalysesPage> {
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
-                  }
+                  },
                   ),
                   customMenuButton(
                     "Brüt Gelir Grafiği",

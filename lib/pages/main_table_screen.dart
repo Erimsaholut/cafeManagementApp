@@ -17,7 +17,8 @@ class MainTableScreen extends StatefulWidget {
   final int tableNum;
   final String tableName;
 
-  const MainTableScreen({super.key, required this.tableNum, required this.tableName});
+  const MainTableScreen(
+      {super.key, required this.tableNum, required this.tableName});
 
   @override
   State<MainTableScreen> createState() => _MainTableScreenState();
@@ -34,7 +35,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
     super.initState();
     print(widget.tableNum);
     initialFunction();
-
   }
 
   @override
@@ -60,7 +60,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                     Expanded(
                       flex: 4,
                       child: Container(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(16.0),
                         color: CustomColors.selectedColor1,
                         child: ListView.builder(
                           itemCount: orderWidgets.length,
@@ -192,7 +192,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
   Future<void> addItemToAnalyses(Map<String, int> separatedItems) async {
     for (var item in separatedItems.entries) {
-      print("Item: $item" );
+      print("Item: $item");
       await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
     }
   }
@@ -201,10 +201,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
     await setOrderClasses(widget.tableNum);
 
     setItemWidgets(orderClass);
-  }
-
-  void manualSetState() {
-    setState(() {});
   }
 
   /*okuduğu datadaki itemleri class olarak listeliyor*/
@@ -232,7 +228,15 @@ class _MainTableScreenState extends State<MainTableScreen> {
     orderWidgets.clear();
     setState(() {
       for (TableOrderClass i in classList) {
-        orderWidgets.add(orderShown(i.quantity, i.name, i.price));
+        orderWidgets.add(OrderIndicatorButton(
+          quantity: i.quantity,
+          itemName: i.name,
+          price: i.price,
+          tableNum: widget.tableNum,
+          initialFunction: () {
+              initialFunction();
+          },
+        ));
       }
     });
   }
@@ -249,39 +253,118 @@ double getTotalPrice(List<TableOrderClass> classList) {
   return totalPrice;
 }
 
-Widget orderShown(int quantity, String itemName, double price) {
-  return Column(
-    children: [
-      Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                "$quantity",
-                style: CustomTextStyles.blackAndBoldTextStyleM,
+class OrderIndicatorButton extends StatelessWidget {
+  final int quantity;
+  final String itemName;
+  final double price;
+  final int tableNum;
+  final Function initialFunction;
+
+  const OrderIndicatorButton(
+      {super.key,
+      required this.quantity,
+      required this.itemName,
+      required this.price,
+      required this.tableNum,
+      required this.initialFunction,
+      });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  "$quantity",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
               ),
+              Expanded(
+                flex: 5,
+                child: Text(
+                  itemName,
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "$price ₺",
+                  style: CustomTextStyles.blackAndBoldTextStyleM,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: TextButton(
+                    onPressed: () => _showCancelDialog(context),
+                    child: const Icon(Icons.clear_rounded)),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+
+  void _showCancelDialog(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Ürün İptali'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('İptal etmek istediğiniz ürün adetini girin:'),
+              TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  hintText: 'Ürün sayısı',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('İptal'),
             ),
-            Expanded(
-              flex: 5,
-              child: Text(
-                itemName,
-                style: CustomTextStyles.blackAndBoldTextStyleM,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text(
-                "$price ₺",
-                style: CustomTextStyles.blackAndBoldTextStyleM,
-              ),
+            TextButton(
+              onPressed: () async {
+                int? cancelQuantity = int.tryParse(controller.text);
+                if (cancelQuantity == null ||
+                    cancelQuantity <= 0 ||
+                    cancelQuantity > quantity) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Geçersiz ürün sayısı')),
+                  );
+                } else {
+                  WriteTableData writeTableData = WriteTableData();
+                  Map<String, int> seperatedItem = {itemName: cancelQuantity};
+                  await writeTableData.decreaseItemList(
+                      tableNum, seperatedItem);
+                  initialFunction();
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Tamam'),
             ),
           ],
-        ),
-      ),
-      const SizedBox(height: 8),
-    ],
-  );
+        );
+      },
+    );
+  }
 }

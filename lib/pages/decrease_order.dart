@@ -13,10 +13,10 @@ class Decrease0rder extends StatefulWidget {
   final Function initialFunction;
 
   @override
-  _Decrease0rderState createState() => _Decrease0rderState();
+  DecreaseOrderState createState() => DecreaseOrderState();
 }
 
-class _Decrease0rderState extends State<Decrease0rder> {
+class DecreaseOrderState extends State<Decrease0rder> {
   WriteAnalysesData writeAnalysesData = WriteAnalysesData();
   TableReader tableDataHandler = TableReader();
   List<String> bottomStrings = [];

@@ -272,7 +272,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 
 //todo dil desteği gelecek ama nasıl gelecek bilmiyorum
 
-//todo firebase (dlc olarak sunucam onu)
 
 //todo analiz sayfası ve dışarı aktarabilme özelliği
 
