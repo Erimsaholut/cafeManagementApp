@@ -3,7 +3,6 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-
 class WriteData {
   ReadMenuData readData = ReadMenuData();
   ResetMenuDatas demoMenuDatas = ResetMenuDatas();
@@ -22,13 +21,12 @@ class WriteData {
 
   Future<void> setTableCount(int newTableCount) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     try {
       await prefs.setInt('tableCount', newTableCount);
       int? tableCount = prefs.getInt('tableCount');
       print(tableCount);
     } catch (e) {
-      print('Cafe adı güncellenirken hata oluştu: $e');
+      print('Masa sayısı güncellenirken hata oluştu: $e');
     }
   }
 
@@ -70,7 +68,7 @@ class WriteData {
 
         String lowercaseItemName = itemName.toLowerCase();
         bool itemExists =
-            menu.any((item) => item["name"].toLowerCase() == lowercaseItemName);
+        menu.any((item) => item["name"].toLowerCase() == lowercaseItemName);
 
         if (itemExists) {
           print(
@@ -128,10 +126,9 @@ class WriteData {
           print("newMoney :${newPriceMoney + (newPricePenny / 100)}");
 
           Map<String, dynamic> newItem = {
-            "id": oldItem["id"],
             "name": itemName,
             "price": newPriceMoney + newPricePenny / 100,
-            "profit": newProfit, // newProfit değeri burada kullanılıyor
+            "profit": newProfit,
             "type": oldItem["type"],
             "ingredients": indList,
           };
@@ -152,6 +149,25 @@ class WriteData {
       }
     } catch (e) {
       print('Ürün güncellenirken hata oluştu: $e');
+    }
+  }
+
+  Future<void> removeItemFromMenu(String itemName) async {
+    try {
+      Map<String, dynamic>? rawData = await readData.getRawData();
+
+      if (rawData != null) {
+        List<dynamic> menu = rawData["menu"];
+
+        menu.removeWhere((item) => item["name"] == itemName);
+
+        await readData.writeJsonData(json.encode(rawData));
+        print("Ürün başarıyla silindi: $itemName");
+        readData.readJsonData();
+        readData.separateMenuItems();
+      }
+    } catch (e) {
+      print('Ürün silinirken hata oluştu: $e');
     }
   }
 }

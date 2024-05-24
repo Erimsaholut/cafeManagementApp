@@ -45,7 +45,11 @@ class _EditItemsPageState extends State<EditItemsPage> {
                 Navigator.of(context).push(
                   PageRouteBuilder(
                     opaque: true,
-                    pageBuilder: (_, __, ___) => ItemStudio(item: items[index],
+                    pageBuilder: (_, __, ___) => ItemStudio(
+                      item: items[index],
+                      processMenu: () {
+                        _processMenuData();
+                      },
                     ),
                     transitionsBuilder: (_, anim, __, child) {
                       return ScaleTransition(
@@ -67,6 +71,12 @@ class _EditItemsPageState extends State<EditItemsPage> {
 
   /*ilk çalışan*/
 /*raw datayı okutup EditableItem(dümdüz class) olarak yaratıyor*/
+  /* duruma göre stüdyoya gönder bunu resetlesin */
+
+  void processMenuData() {
+    _processMenuData();
+  }
+
   Future<void> _processMenuData() async {
     Map<String, dynamic>? rawMenu = await readData.getRawData();
     setState(() {
@@ -84,12 +94,11 @@ class _EditItemsPageState extends State<EditItemsPage> {
   }
 }
 
-/*bu bizim aslan parçası classımız*/
 class EditableItem {
-  final String name;
+  String name;
   double price;
   double profit;
-  final List<String> ingredients;
+  List<String> ingredients;
 
   EditableItem({
     required this.name,
@@ -98,8 +107,25 @@ class EditableItem {
     required this.ingredients,
   });
 
+  // fromJson yapıcı yöntemi
+  factory EditableItem.fromJson(Map<String, dynamic> json) {
+    return EditableItem(
+      name: json['name'],
+      price: json['price'],
+      profit: json['profit'],
+      ingredients: List<String>.from(json['ingredients']),
+    );
+  }
+
+  // toJson yöntemi (eğer gerekiyorsa)
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'price': price,
+      'profit': profit,
+      'ingredients': ingredients,
+    };
+  }
 }
 
 //todo onaylandıktan sonra alttan snackbar mı ne o çıkmalı
-//seçenek ekleyince direkt geçirmiyor elemanlara
-

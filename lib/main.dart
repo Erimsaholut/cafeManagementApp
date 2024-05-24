@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ..add(const CustomUtilPagesButton(
           buttonName: 'Settings', goToPage: SettingsPage()))
       ..add(CustomUtilPagesButton(
-          buttonName: 'Deneme Hesabı kalan gün sayısı: ${widget.dayDifference}',
+          buttonName: 'Deneme Hesabı kalan gün: ${widget.dayDifference}',
           goToPage: SizedBox()));
   }
 
@@ -142,12 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-//todo kalan ürün denetim sistemi //meh
-
 //todo net kar analizi premium özel olacak // ekledik ama kullanmak sana kalmış
-
 //todo log eklenebilir.
-//todo İndirim ve iptal etme gelecek
 //todo kategoriler zaten olmazsa olmaz
 
 

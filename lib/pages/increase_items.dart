@@ -22,7 +22,8 @@ class IncreaseOrder extends StatefulWidget {
 }
 
 class _IncreaseOrderState extends State<IncreaseOrder> {
-  final ReadMenuData readNewData = ReadMenuData();
+  late Future<void> _future;
+  ReadMenuData readMenuData = ReadMenuData();
 
   List<String> orders = [];
 
@@ -39,17 +40,20 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   @override
   void initState() {
     super.initState();
+    _future = initializeMenuData();
+  }
+
+  Future<void> initializeMenuData() async {
+    await readMenuData.initialize();
     createButtons();
   }
 
-  Future<void> createButtons() async {
-    ReadMenuData readNewData = ReadMenuData();
-    await readNewData.separateMenuItems();
+  void createButtons() {
     setState(() {
-      makeWidgetsForNoInd(readNewData.drinksWithNoIngredients, drinksNoIn);
-      makeWidgetsForIndDrink(readNewData.drinksWithIngredients, drinksIn);
-      makeWidgetsForNoInd(readNewData.foodsWithNoIngredients, foodsNoIn);
-      makeWidgetsForIndFood(readNewData.foodsWithIngredients, foodsIn);
+      drinksNoIn = makeWidgetsForNoInd(readMenuData.getDrinksWithNoIngredients());
+      drinksIn = makeWidgetsForIndDrink(readMenuData.getDrinksWithIngredients());
+      foodsNoIn = makeWidgetsForNoInd(readMenuData.getFoodsWithNoIngredients());
+      foodsIn = makeWidgetsForIndFood(readMenuData.getFoodsWithIngredients());
     });
   }
 
@@ -72,82 +76,94 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
         ),
         body: Container(
           color: CustomColors.backGroundColor,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 5,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  color: CustomColors.backGroundColor2,
-                  child: ListView(
-                    children: [
-                      buildItemTypeTextContainer("İçecekler"),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      buildGridView(drinksNoIn),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      ...drinksIn,
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      buildItemTypeTextContainer("Yiyecekler"),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      buildGridView(foodsNoIn),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      ...foodsIn,
-                    ],
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: (orders.isNotEmpty),
-                child: Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: CustomColors.selectedColor1,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: _buildOrderWidgets(),
-                              ),
+          child: FutureBuilder<void>(
+            future: _future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Hata: ${snapshot.error}'));
+              } else {
+                return Column(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        color: CustomColors.backGroundColor2,
+                        child: ListView(
+                          children: [
+                            buildItemTypeTextContainer("İçecekler"),
+                            const SizedBox(
+                              height: 16,
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            color: CustomColors.selectedColor2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Toplam Fiyat: $totalPrice'),
-                              ],
+                            buildGridView(drinksNoIn),
+                            const SizedBox(
+                              height: 32,
                             ),
-                          ),
+                            ...drinksIn,
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            buildItemTypeTextContainer("Yiyecekler"),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            buildGridView(foodsNoIn),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            ...foodsIn,
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ],
+                    Visibility(
+                      visible: (orders.isNotEmpty),
+                      child: Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: CustomColors.selectedColor1,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: _buildOrderWidgets(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: CustomColors.selectedColor2,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('Toplam Fiyat: $totalPrice'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
         ));
   }
@@ -170,57 +186,49 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     return orderWidgets;
   }
 
-  void makeWidgetsForNoInd(List<String> items, List<Widget> widgets) async {
-    for (var itemName in items) {
-      widgets.add(
-        TextButton(
-          style: CustomButtonStyles.customMenuItemButtonStyle,
-          onPressed: () {
-            _performAsyncOperations(itemName);
-          },
-          child: Text(itemName),
-        ),
+  List<Widget> makeWidgetsForNoInd(List<String> items) {
+    return items.map((itemName) {
+      return TextButton(
+        style: CustomButtonStyles.customMenuItemButtonStyle,
+        onPressed: () {
+          _performAsyncOperations(itemName);
+        },
+        child: Text(itemName),
       );
-    }
+    }).toList();
   }
 
-  void makeWidgetsForIndFood(
-      List<Map<String, dynamic>> items, List<Widget> widgets) {
-    for (var item in items) {
+  List<Widget> makeWidgetsForIndFood(List<Map<String, dynamic>> items) {
+    return items.map((item) {
       List<String> ingredients = List<String>.from(item["ingredients"]);
       String name = item["name"];
-      widgets.add(
-        CustomMultiSelectionButton(
-          buttonText: name,
-          checkboxTexts: ingredients,
-          onPressed: () {
-            _performAsyncOperationsForInd(name, widget.tableNum);
-          },
-        ),
+      return CustomMultiSelectionButton(
+        buttonText: name,
+        checkboxTexts: ingredients,
+        onPressed: () {
+          _performAsyncOperationsForInd(name, widget.tableNum);
+        },
       );
-    }
+    }).toList();
   }
 
-  void makeWidgetsForIndDrink(
-      List<Map<String, dynamic>> items, List<Widget> widgets) {
-    for (var item in items) {
+  List<Widget> makeWidgetsForIndDrink(List<Map<String, dynamic>> items) {
+    return items.map((item) {
       List<String> ingredients = List<String>.from(item["ingredients"]);
       String name = item["name"];
-      widgets.add(
-        CustomSingleSelectionButton(
-          buttonText: name,
-          checkboxTexts: ingredients,
-          onPressed: () {
-            _performAsyncOperationsForInd(name, widget.tableNum);
-          },
-        ),
+      return CustomSingleSelectionButton(
+        buttonText: name,
+        checkboxTexts: ingredients,
+        onPressed: () {
+          _performAsyncOperationsForInd(name, widget.tableNum);
+        },
       );
-    }
+    }).toList();
   }
 
   Future<void> _performAsyncOperations(String itemName) async {
     WriteTableData writeTableData = WriteTableData();
-    double itemPrice = await readNewData.getItemPrice(itemName);
+    double itemPrice = await readMenuData.getItemPrice(itemName);
     setState(() {
       orders.add(itemName);
       totalPrice += itemPrice;
@@ -229,7 +237,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   }
 
   Future<void> _performAsyncOperationsForInd(String name, tableNum) async {
-    double itemPrice = await readNewData.getItemPrice(name);
+    double itemPrice = await readMenuData.getItemPrice(name);
 
     WriteTableData writeTableData = WriteTableData();
 
@@ -269,16 +277,4 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
 }
 
 //todo bi tane genel emin misiniz widgetı oluştur resetleme ve ürün eklemeye koy her yere koy
-
 //todo dil desteği gelecek ama nasıl gelecek bilmiyorum
-
-
-//todo analiz sayfası ve dışarı aktarabilme özelliği
-
-//todo masalara renk değiştirme özelliği
-
-//todo analyseslara text halinde veriler gelecek
-
-//todo ana menüden ürün iptal etme gelecek
-
-//todo menüler kısmına iptal etme gelecek

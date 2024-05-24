@@ -7,11 +7,10 @@ class ReadMenuData {
     readJsonData();
   }
 
-  static final List<String> _drinksWithNoIngredients = [];
-  static final List<Map<String, dynamic>> _drinksWithIngredients = [];
-
-  static final List<Map<String, dynamic>> _foodsWithIngredients = [];
-  static final List<String> _foodsWithNoIngredients = [];
+  final List<String> _drinksWithNoIngredients = [];
+  final List<Map<String, dynamic>> _drinksWithIngredients = [];
+  final List<Map<String, dynamic>> _foodsWithIngredients = [];
+  final List<String> _foodsWithNoIngredients = [];
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -29,7 +28,7 @@ class ReadMenuData {
       await file.writeAsString(jsonData);
       print("Settings updated successfully.");
     } catch (e) {
-      print('JSON verisi yazılırken hata oluştu: $e');
+      print('Error writing JSON data: $e');
     }
   }
 
@@ -37,15 +36,13 @@ class ReadMenuData {
     try {
       final file = await _localFile;
       if (await file.exists()) {
-
         String content = await file.readAsString();
         if (content.isNotEmpty) {
-          Map<String, dynamic> jsonData = jsonDecode(content);
-          return jsonData;
+          return jsonDecode(content);
         }
       }
     } catch (e) {
-      print('JSON verisi okunurken hata oluştu: $e');
+      print('Error reading JSON data: $e');
     }
     return null;
   }
@@ -62,20 +59,28 @@ class ReadMenuData {
         }
       }
     } catch (e) {
-      print('Menü öğe sayısı alınırken hata oluştu: $e');
+      print('Error getting menu item count: $e');
     }
     return 0;
   }
 
   Future<void> separateMenuItems() async {
     try {
-      final file = await _localFile;
+      final directory = await getApplicationDocumentsDirectory();
+      final path = directory.path;
+      final file = File('$path/menu.json');
       if (await file.exists()) {
         String content = await file.readAsString();
-
+        print("content$content");
         if (content.isNotEmpty) {
           Map<String, dynamic> jsonData = jsonDecode(content);
           List<dynamic> menu = jsonData["menu"];
+
+          // Clear the lists before separating items
+          _drinksWithNoIngredients.clear();
+          _drinksWithIngredients.clear();
+          _foodsWithIngredients.clear();
+          _foodsWithNoIngredients.clear();
 
           for (var item in menu) {
             String itemName = item["name"];
@@ -84,9 +89,7 @@ class ReadMenuData {
                 ? List<String>.from(item["ingredients"])
                 : [];
 
-            bool itemExists = _menuItemExists(itemName);
-
-            if (!itemExists) {
+            if (!_menuItemExists(itemName)) {
               if (itemType == "drink") {
                 if (ingredients.isNotEmpty) {
                   _drinksWithIngredients
@@ -107,141 +110,80 @@ class ReadMenuData {
         }
       }
     } catch (e) {
-      print('Menü öğeleri ayrıştırılırken hata oluştu: $e');
+      print('Error separating menu items: $e');
     }
   }
 
   bool _menuItemExists(String itemName) {
-    for (var existingItem in _drinksWithIngredients) {
-      if (existingItem["name"] == itemName) {
-        return true;
-      }
-    }
-
-    for (var existingItem in _drinksWithNoIngredients) {
-      if (existingItem == itemName) {
-        return true;
-      }
-    }
-
-    for (var existingItem in _foodsWithIngredients) {
-      if (existingItem["name"] == itemName) {
-        return true;
-      }
-    }
-
-    for (var existingItem in _foodsWithNoIngredients) {
-      if (existingItem == itemName) {
-        return true;
-      }
-    }
-
-    return false;
+    return _drinksWithIngredients.any((item) => item["name"] == itemName) ||
+        _drinksWithNoIngredients.contains(itemName) ||
+        _foodsWithIngredients.any((item) => item["name"] == itemName) ||
+        _foodsWithNoIngredients.contains(itemName);
   }
 
   Future<Map<String, dynamic>?> getRawData() async {
-    try {
-      return await readJsonData();
-    } catch (e) {
-      print('Raw data okunurken hata oluştu: $e');
-      return null;
-    }
-  }
-
-  Future<String> getCafeName() async {
-    try {
-      Map<String, dynamic>? rawData = await getRawData();
-
-      if (rawData != null) {
-        return rawData["cafe_name"];
-      }
-    } catch (e) {
-      print('Cafe adı okunurken hata oluştu: $e');
-    }
-    return "";
+    return await readJsonData();
   }
 
   Future<double> getItemPrice(String itemName) async {
     try {
       final file = await _localFile;
-
       if (await file.exists()) {
-
         String content = await file.readAsString();
-
         if (content.isNotEmpty) {
-
           Map<String, dynamic> jsonData = jsonDecode(content);
-
           List<dynamic> menu = jsonData["menu"];
-
-          for(var i in menu){
-            if(i["name"]==itemName){
-              return i["price"];
+          for (var item in menu) {
+            if (item["name"] == itemName) {
+              return item["price"]?.toDouble() ?? 0.0;
             }
           }
-          return 0;
-
         }
-
       }
     } catch (e) {
-      print('ürünün fiyatı alınırken hata oluştu: $e');
+      print('Error getting item price: $e');
     }
-    return 0;
+    return 0.0;
   }
 
   Future<double> getItemProfit(String itemName) async {
     try {
       final file = await _localFile;
-
       if (await file.exists()) {
-
         String content = await file.readAsString();
-
         if (content.isNotEmpty) {
-
           Map<String, dynamic> jsonData = jsonDecode(content);
-
           List<dynamic> menu = jsonData["menu"];
-
-          for(var i in menu){
-            if(i["name"]==itemName){
-              return i["profit"];
+          for (var item in menu) {
+            if (item["name"] == itemName) {
+              return item["profit"]?.toDouble() ?? 0.0;
             }
           }
-          return 0;
-
         }
-
       }
     } catch (e) {
-      print('ürünün fiyatı alınırken hata oluştu: $e');
+      print('Error getting item profit: $e');
     }
-    return 0;
+    return 0.0;
   }
 
-  Future<int> getTableCount() async {
-    try {
-      Map<String, dynamic>? rawData = await getRawData();
-
-      if (rawData != null) {
-        return rawData["table_count"];
-      }
-    } catch (e) {
-      print('Masa sayisi hata oluştu: $e');
-    }
-    return 1;
+  List<Map<String, dynamic>> getDrinksWithIngredients() {
+    return _drinksWithIngredients;
   }
 
-  List<Map<String, dynamic>> get drinksWithIngredients =>
-      _drinksWithIngredients;
+  List<String> getDrinksWithNoIngredients() {
+    return _drinksWithNoIngredients;
+  }
 
-  List<String> get drinksWithNoIngredients => _drinksWithNoIngredients;
+  List<Map<String, dynamic>> getFoodsWithIngredients() {
+    return _foodsWithIngredients;
+  }
 
-  List<Map<String, dynamic>> get foodsWithIngredients => _foodsWithIngredients;
+  List<String> getFoodsWithNoIngredients() {
+    return _foodsWithNoIngredients;
+  }
 
-  List<String> get foodsWithNoIngredients => _foodsWithNoIngredients;
-
-
+  Future<void> initialize() async {
+    await separateMenuItems();
+  }
 }

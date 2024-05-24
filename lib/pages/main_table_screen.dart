@@ -9,6 +9,7 @@ import '../constants/custom_colors.dart';
 import '../utils/custom_alert_button.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
+import 'clases/order_indicator_class.dart';
 import 'decrease_order.dart';
 
 class MainTableScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
   WriteTableData writeTableData = WriteTableData();
   List<TableOrderClass> orderClass = [];
   final List<Widget> orderWidgets = [];
+
 
   @override
   void initState() {
@@ -56,7 +58,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
                 child: Column(
                   children: [
                     /*masadaki itemler*/
-                    //todo burada ürün eklendikten sonra iptal etme gelecek uzun basma ile
                     Expanded(
                       flex: 4,
                       child: Container(
@@ -129,7 +130,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           opaque: false,
-                          pageBuilder: (_, __, ___) => Decrease0rder(
+                          pageBuilder: (_, __, ___) => DecreaseOrder(
                             tableNum: widget.tableNum,
                             initialFunction: () {
                               initialFunction();
@@ -204,7 +205,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
   }
 
   /*okuduğu datadaki itemleri class olarak listeliyor*/
-  /*allahın emri olarak bir kere çalışacak*/
 
   Future<void> setOrderClasses(int tableNum) async {
     TableReader tableDataHandler = TableReader();
@@ -253,118 +253,5 @@ double getTotalPrice(List<TableOrderClass> classList) {
   return totalPrice;
 }
 
-class OrderIndicatorButton extends StatelessWidget {
-  final int quantity;
-  final String itemName;
-  final double price;
-  final int tableNum;
-  final Function initialFunction;
 
-  const OrderIndicatorButton(
-      {super.key,
-      required this.quantity,
-      required this.itemName,
-      required this.price,
-      required this.tableNum,
-      required this.initialFunction,
-      });
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  "$quantity",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-              ),
-              Expanded(
-                flex: 5,
-                child: Text(
-                  itemName,
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  "$price ₺",
-                  style: CustomTextStyles.blackAndBoldTextStyleM,
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: TextButton(
-                    onPressed: () => _showCancelDialog(context),
-                    child: const Icon(Icons.clear_rounded)),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-      ],
-    );
-  }
-
-  void _showCancelDialog(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Ürün İptali'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('İptal etmek istediğiniz ürün adetini girin:'),
-              TextField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: 'Ürün sayısı',
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('İptal'),
-            ),
-            TextButton(
-              onPressed: () async {
-                int? cancelQuantity = int.tryParse(controller.text);
-                if (cancelQuantity == null ||
-                    cancelQuantity <= 0 ||
-                    cancelQuantity > quantity) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Geçersiz ürün sayısı')),
-                  );
-                } else {
-                  WriteTableData writeTableData = WriteTableData();
-                  Map<String, int> seperatedItem = {itemName: cancelQuantity};
-                  await writeTableData.decreaseItemList(
-                      tableNum, seperatedItem);
-                  initialFunction();
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Tamam'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}

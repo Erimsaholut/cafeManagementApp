@@ -46,5 +46,3 @@ final ButtonStyle customButtonStyle = TextButton.styleFrom(
     ),
   ),
 );
-
-//todo butonlara trialdayken basılamama özelliği ekle

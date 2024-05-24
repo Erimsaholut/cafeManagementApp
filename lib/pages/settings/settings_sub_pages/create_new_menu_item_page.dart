@@ -9,20 +9,20 @@ import '../settings_page_widgets/item_type_selector.dart';
 import '../../../utils/price_picker.dart';
 
 class AddNewItemToMenu extends StatefulWidget {
-  const AddNewItemToMenu({Key? key}) : super(key: key);
+  const AddNewItemToMenu({super.key});
 
   @override
-  _AddNewItemToMenuState createState() => _AddNewItemToMenuState();
+  AddNewItemToMenuState createState() => AddNewItemToMenuState();
 }
 
-class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
+class AddNewItemToMenuState extends State<AddNewItemToMenu> {
   final TextEditingController beverageNameController = TextEditingController();
   WriteData writeData = WriteData();
   CustomItemTypeSelector customItemTypeSelector = CustomItemTypeSelector(
     question: 'Ürün tipini seçin',
-    option1: 'Yiyecek',
-    option2: 'İçecek',
-    itemType: "Yiyecek",
+    option1: 'İçecek',
+    option2: 'Yiyecek',
+    itemType: "İçecek",
   );
 
   List<String> indList = [];
@@ -119,7 +119,6 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                                         (double.tryParse(value) ?? 0.0 / 100);
                                     profit =
                                         double.parse(profit.toStringAsFixed(2));
-                                    //todo ürün düzenleme kısmına da ekle
                                   }
                                 });
                               },
@@ -144,11 +143,8 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                 ElevatedButton(
                   onPressed: () async {
                     beverageName = beverageNameController.text;
-                    print("$beverageName, $moneyValue, $pennyValue");
-                    print(indList);
 
                     String selectedItemType = customItemTypeSelector.itemType;
-                    print("Selected Item Type: $selectedItemType");
 
                     if (beverageName.isEmpty) {
                       scaffoldMessage("Ürün ismi boş olamaz", context);
@@ -164,8 +160,7 @@ class _AddNewItemToMenuState extends State<AddNewItemToMenu> {
                       if (result != null) {
                         if (result) {
                           scaffoldMessage(
-                              "Yeni ürün başarı ile kaydedildi.. $beverageName, $moneyValue, $pennyValue $indList,$profit $selectedItemType",
-                              context);
+                              "Yeni ürün başarı ile kaydedildi..", context);
                         } else {
                           scaffoldMessage(
                               "Yeni ürün eklenirken bir hata ile karşılaşıldı",

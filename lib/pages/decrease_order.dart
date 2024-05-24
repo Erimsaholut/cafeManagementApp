@@ -2,11 +2,11 @@ import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/w
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
 import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
-import 'package:flutter/material.dart';
 import '../constants/custom_colors.dart';
+import 'package:flutter/material.dart';
 
-class Decrease0rder extends StatefulWidget {
-  const Decrease0rder(
+class DecreaseOrder extends StatefulWidget {
+  const DecreaseOrder(
       {super.key, required this.tableNum, required this.initialFunction});
 
   final int tableNum;
@@ -16,7 +16,7 @@ class Decrease0rder extends StatefulWidget {
   DecreaseOrderState createState() => DecreaseOrderState();
 }
 
-class DecreaseOrderState extends State<Decrease0rder> {
+class DecreaseOrderState extends State<DecreaseOrder> {
   WriteAnalysesData writeAnalysesData = WriteAnalysesData();
   TableReader tableDataHandler = TableReader();
   List<String> bottomStrings = [];
@@ -47,7 +47,6 @@ class DecreaseOrderState extends State<Decrease0rder> {
         color: CustomColors.backGroundColor,
         child: Column(
           children: [
-            /*yeşil buton ekranı*/
             Expanded(
               flex: 3,
               child: Container(
@@ -67,7 +66,6 @@ class DecreaseOrderState extends State<Decrease0rder> {
                 ),
               ),
             ),
-            /*mavi özet ve fiyat ekranı*/
             Expanded(
               flex: 1,
               child: Container(
@@ -96,11 +94,13 @@ class DecreaseOrderState extends State<Decrease0rder> {
                       flex: 2,
                       child: ElevatedButton(
                         onPressed: () async {
-                          Map<String, int> separetedItems = buildOrderTexts(bottomStrings);
+                          Map<String, int> separetedItems =
+                              buildOrderTexts(bottomStrings);
 
                           // Diğer işlemleri yap
                           WriteTableData writeTableData = WriteTableData();
-                          await writeTableData.decreaseItemList(widget.tableNum, separetedItems);
+                          await writeTableData.decreaseItemList(
+                              widget.tableNum, separetedItems);
 
                           // Diğer işlemler tamamlandıktan sonra analizleri JSON'a ekle
                           await addItemToAnalyses(separetedItems);
@@ -124,14 +124,12 @@ class DecreaseOrderState extends State<Decrease0rder> {
     );
   }
 
-
   Future<void> addItemToAnalyses(Map<String, int> separetedItems) async {
     for (var item in separetedItems.entries) {
       await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
     }
   }
-  /*local filestan verileri çekiyor*/
-  /*setTabelData çalıştırıyor dataları verip*/
+
   Future<void> _loadTableData() async {
     try {
       Map<String, dynamic>? data =
@@ -146,7 +144,6 @@ class DecreaseOrderState extends State<Decrease0rder> {
     setState(() {});
   }
 
-  /*rawdatadaki itemları kendi Order widgetında yaratıyor*/
   void setTableData(Map<String, dynamic>? tableData) {
     if (tableData != null && tableData.containsKey("orders")) {
       for (var orderData in tableData["orders"] as List<dynamic>) {
@@ -178,7 +175,6 @@ class DecreaseOrderState extends State<Decrease0rder> {
     }
   }
 
-  /*aldığı orderlerı */
   List<Widget> buildOrderWidgets(List<String> orders) {
     Map<String, int> itemCounts = {};
 
@@ -197,7 +193,6 @@ class DecreaseOrderState extends State<Decrease0rder> {
     return orderWidgets;
   }
 
-  /*alttaki yazıları string olarak gruplayarak yazıyor*/
   Map<String, int> buildOrderTexts(List<String> orders) {
     Map<String, int> itemCounts = {};
 
@@ -216,5 +211,3 @@ class DecreaseOrderState extends State<Decrease0rder> {
     return textMap;
   }
 }
-// flutter: {testItem2: 1, çeşme suyu : 4, Ayran: 2, Su: 5, Oralet: 3, Çay: 2, Türk Kahvesi: 1}
-//flutter: {Çay: 2, Su: 3, Limonata: 3, Oralet: 5, testItem2: 2}

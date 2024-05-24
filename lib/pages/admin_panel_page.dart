@@ -144,7 +144,6 @@ class _AdminPanelState extends State<AdminPanel> {
                   }
                 });
               },
-              //todo bu şekilde itemlist çıkarabiliriz bunu text analyses kısmına ekle
               child: const Text("itemlist çıkartmaya çalışıyoruz")),
           Container(
             color: Colors.red,
@@ -249,24 +248,16 @@ class _AdminPanelState extends State<AdminPanel> {
             onPressed: () async {
               setState(() {
                 print(
-                    'İçecekler (İçerikli): ${readNewData.drinksWithIngredients}');
+                    'İçecekler (İçerikli): ${readNewData.getDrinksWithIngredients()}');
                 print(
-                    'İçecekler (İçeriksiz): ${readNewData.drinksWithNoIngredients}');
+                    'İçecekler (İçeriksiz): ${readNewData.getDrinksWithNoIngredients()}');
                 print(
-                    'Yemekler (İçerikli): ${readNewData.foodsWithIngredients}');
+                    'Yemekler (İçerikli): ${readNewData.getFoodsWithIngredients()}');
                 print(
-                    'Yemekler (İçeriksiz): ${readNewData.foodsWithNoIngredients}');
+                    'Yemekler (İçeriksiz): ${readNewData.getDrinksWithNoIngredients()}');
               });
             },
             child: const Text("separeted menu items"),
-          ),
-          TextButton(
-            onPressed: () async {
-              String? cafeName = await readNewData.getCafeName();
-              /*NEDEN OLMASIN */
-              print(cafeName);
-            },
-            child: const Text("sadece kafe ismi"),
           ),
           TextButton(
             onPressed: () async {
