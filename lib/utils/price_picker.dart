@@ -1,6 +1,6 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:flutter/material.dart';
+import '../constants/styles.dart';
 
 class PricePicker extends StatefulWidget {
   final String name;

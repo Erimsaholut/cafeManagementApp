@@ -1,9 +1,10 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/menu_screen_widgets/order.dart';
+import '../datas/analyses_data/write_data_analyses.dart';
+import '../datas/table_orders_data/read_table_data.dart';
 import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
+
+import '../datas/table_orders_data/write_table_data.dart';
+import 'menu_screen_widgets/order.dart';
 
 class DecreaseOrder extends StatefulWidget {
   const DecreaseOrder(
@@ -37,7 +38,6 @@ class DecreaseOrderState extends State<DecreaseOrder> {
             onPressed: () {
               Navigator.pop(context);
               widget.initialFunction();
-              print("çıkıldı");
             },
             icon: const Icon(Icons.arrow_back_ios_new)),
         title: const Text("Sipariş Öde"),
@@ -136,7 +136,6 @@ class DecreaseOrderState extends State<DecreaseOrder> {
           await tableDataHandler.getTableSet(widget.tableNum);
       setTableData(data);
     } catch (error) {
-      print("Error loading table data: $error");
     }
   }
 

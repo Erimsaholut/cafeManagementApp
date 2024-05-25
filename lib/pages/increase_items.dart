@@ -1,12 +1,10 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_single_selection_checkbox_button.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../datas/table_orders_data/write_table_data.dart';
 import '../utils/custom_multi_selection_checkbox_button.dart';
 import '../datas/menu_data/read_data_menu.dart';
 import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
+import '../utils/custom_single_selection_checkbox_button.dart';
 
 /*itemlerin seçilip eklendiği o sayfa*/
 
@@ -65,7 +63,6 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
               onPressed: () {
                 Navigator.pop(context);
                 widget.initialFunction();
-                print("çıkıldı");
               },
               icon: const Icon(Icons.arrow_back_ios_new)),
           title: Text(
@@ -80,7 +77,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
             future: _future,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text('Hata: ${snapshot.error}'));
               } else {

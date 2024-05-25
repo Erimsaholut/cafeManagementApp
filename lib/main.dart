@@ -1,13 +1,12 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_util_pages_button.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/admin_panel_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/table_button.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/setup_screen.dart';
+import 'package:adisso/utils/custom_util_pages_button.dart';
+import 'package:adisso/constants/custom_colors.dart';
+import 'package:adisso/pages/admin_panel_page.dart';
+import 'package:adisso/pages/settings_page.dart';
+import 'package:adisso/utils/table_button.dart';
+import 'package:adisso/setup_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'analyses/analyses_page.dart';
-import 'datas/menu_data/read_data_menu.dart';
 import 'datas/menu_data/reset_datas_menu.dart';
 
 void main() async {
@@ -17,14 +16,13 @@ void main() async {
   final int? firstOpen = prefs.getInt('isOpenedBefore');
   final bool? loadExampleMenu = prefs.getBool('loadExampleMenu');
 
-  prefs.setBool('isPremium',false);
-/*
-resetlerken kullan
+  prefs.setBool('isPremium', false);
+
+  /*
   final int? firstOpen = null;
   prefs.remove("cafeName");
   prefs.remove("tableCount");
 */
-
 
   if (loadExampleMenu == false) {
     ResetAllJsonData resetAllJsonData = ResetAllJsonData();
@@ -43,10 +41,10 @@ Future<void> normalRun() async {
   String cafeName = prefs.getString('cafeName') ?? 'Default Cafe';
   int tableCount = prefs.getInt('tableCount') ?? 10;
 
-  int Fday = prefs.getInt('firstOpenDay') ?? DateTime.now().day;
-  int Fmonth = prefs.getInt('firstOpenMonth') ?? DateTime.now().month;
-  int Fyear = prefs.getInt('firstOpenYear') ?? DateTime.now().year;
-  DateTime firstOpenDate = DateTime(Fyear, Fmonth, Fday);
+  int dDay = prefs.getInt('firstOpenDay') ?? DateTime.now().day;
+  int fMonth = prefs.getInt('firstOpenMonth') ?? DateTime.now().month;
+  int fYear = prefs.getInt('firstOpenYear') ?? DateTime.now().year;
+  DateTime firstOpenDate = DateTime(dDay, fMonth, fYear);
 
   print(firstOpenDate);
 
@@ -80,7 +78,10 @@ class NormalApp extends StatelessWidget {
   final int dayDifference;
 
   const NormalApp(
-      {super.key, required this.cafeName, required this.tableCount, required this.dayDifference});
+      {super.key,
+      required this.cafeName,
+      required this.tableCount,
+      required this.dayDifference});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,10 @@ class NormalApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MyHomePage(title: cafeName, tableCount: tableCount, dayDifference: dayDifference),
+      home: MyHomePage(
+          title: cafeName,
+          tableCount: tableCount,
+          dayDifference: dayDifference),
     );
   }
 }
@@ -98,7 +102,11 @@ class MyHomePage extends StatefulWidget {
   final int tableCount;
   final int dayDifference;
 
-  const MyHomePage({super.key, required this.title, required this.tableCount, required this.dayDifference});
+  const MyHomePage(
+      {super.key,
+      required this.title,
+      required this.tableCount,
+      required this.dayDifference});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -145,5 +153,3 @@ class _MyHomePageState extends State<MyHomePage> {
 //todo net kar analizi premium özel olacak // ekledik ama kullanmak sana kalmış
 //todo log eklenebilir.
 //todo kategoriler zaten olmazsa olmaz
-
-

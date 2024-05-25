@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import 'package:adisso/constants/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';

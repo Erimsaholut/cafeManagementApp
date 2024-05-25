@@ -1,6 +1,8 @@
 import 'dart:convert';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
+
+import 'package:adisso/datas/analyses_data/read_data_analyses.dart';
+
+import '../menu_data/read_data_menu.dart';
 
 class WriteAnalysesData {
   AnalysesReader analysesDataHandler = AnalysesReader();

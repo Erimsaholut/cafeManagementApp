@@ -1,15 +1,16 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/reset_table_datas.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/read_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/custom_alert_button.dart';
 import '../constants/custom_colors.dart';
+import '../constants/styles.dart';
+import '../datas/analyses_data/read_data_analyses.dart';
+import '../datas/analyses_data/reset_data_analyses.dart';
+import '../datas/analyses_data/write_data_analyses.dart';
+import '../datas/menu_data/read_data_menu.dart';
 import '../datas/menu_data/reset_datas_menu.dart';
 import '../datas/table_orders_data/read_table_data.dart';
 import 'package:flutter/material.dart';
+
+import '../datas/table_orders_data/reset_table_datas.dart';
+import '../datas/table_orders_data/write_table_data.dart';
+import '../utils/custom_alert_button.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
@@ -99,7 +100,6 @@ class _AdminPanelState extends State<AdminPanel> {
                       .getDaysTotalRevenue(now.day, now.month, now.year);
                   /**/
                   totalRevenueFuture.then((totalRevenue) {
-                    print("Bugünün toplam geliri: $totalRevenue");
                   });
                 } else {
                   print("Bugünkü analizler bulunamadı.");

@@ -1,8 +1,9 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_utils.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+
+import '../../constants/custom_utils.dart';
+import '../../constants/styles.dart';
 
 class CustomLineChart extends StatefulWidget {
   CustomLineChart({super.key, required this.valueList, this.selectedDate});

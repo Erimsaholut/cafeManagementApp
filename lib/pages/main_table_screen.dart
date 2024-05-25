@@ -1,16 +1,16 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/write_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/write_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/table_orders_data/read_table_data.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/clases/table_order_class.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/utils/is_table_name_null.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/increase_items.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
 import '../constants/custom_colors.dart';
+import '../constants/styles.dart';
+import '../datas/analyses_data/write_data_analyses.dart';
+import '../datas/table_orders_data/read_table_data.dart';
+import '../datas/table_orders_data/write_table_data.dart';
 import '../utils/custom_alert_button.dart';
 import '../utils/custom_menu_button.dart';
 import 'package:flutter/material.dart';
+import '../utils/is_table_name_null.dart';
 import 'clases/order_indicator_class.dart';
+import 'clases/table_order_class.dart';
 import 'decrease_order.dart';
+import 'increase_items.dart';
 
 class MainTableScreen extends StatefulWidget {
   /*   ana,masa menüsü   */
@@ -35,7 +35,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.tableNum);
     initialFunction();
   }
 
@@ -165,7 +164,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
                                   separetedItems[i.name] = i.quantity;
                                 }
 
-                                print("separetedItems: $separetedItems");
                                 addItemToAnalyses(separetedItems);
 
                                 writeTableData.resetOneTable(widget.tableNum);
@@ -193,7 +191,6 @@ class _MainTableScreenState extends State<MainTableScreen> {
 
   Future<void> addItemToAnalyses(Map<String, int> separatedItems) async {
     for (var item in separatedItems.entries) {
-      print("Item: $item");
       await writeAnalysesData.addItemToAnalysesJson(item.key, item.value);
     }
   }

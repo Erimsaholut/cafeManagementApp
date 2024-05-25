@@ -1,5 +1,5 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/reset_datas_menu.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
+import 'package:adisso/datas/menu_data/read_data_menu.dart';
+import 'package:adisso/datas/menu_data/reset_datas_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

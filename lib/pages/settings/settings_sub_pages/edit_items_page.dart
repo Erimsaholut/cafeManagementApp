@@ -1,5 +1,5 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+import '../../../constants/custom_colors.dart';
+import '../../../constants/styles.dart';
 import '../../../datas/menu_data/read_data_menu.dart';
 import 'package:flutter/material.dart';
 import 'blank_edit_item_page.dart';

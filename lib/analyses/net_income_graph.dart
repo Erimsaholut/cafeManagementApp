@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
+import 'package:adisso/constants/custom_colors.dart';
 import '../utils/analysesWidgets/custom_line_chart.dart';
 import '../datas/analyses_data/read_data_analyses.dart';
 import '../constants/custom_utils.dart';

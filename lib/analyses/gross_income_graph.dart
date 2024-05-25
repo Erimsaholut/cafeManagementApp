@@ -1,4 +1,4 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/custom_colors.dart';
+import 'package:adisso/constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/custom_utils.dart';

@@ -1,6 +1,8 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/constants/styles.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../constants/styles.dart';
 
 class CustomMultiSelectionButton extends StatefulWidget {
   final String buttonText;
@@ -8,11 +10,11 @@ class CustomMultiSelectionButton extends StatefulWidget {
   final VoidCallback? onPressed;
 
   const CustomMultiSelectionButton({
-    Key? key,
+    super.key,
     required this.buttonText,
     required this.checkboxTexts,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   _CustomMultiSelectionButtonState createState() =>

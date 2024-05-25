@@ -1,8 +1,8 @@
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_page_widgets/show_change_name_and_table_count_dialog.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/create_new_menu_item_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/pages/settings/settings_sub_pages/edit_items_page.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/analyses_data/reset_data_analyses.dart';
-import 'package:cafe_management_system_for_camalti_kahvesi/datas/menu_data/read_data_menu.dart';
+import 'package:adisso/pages/settings/settings_page_widgets/show_change_name_and_table_count_dialog.dart';
+import 'package:adisso/pages/settings/settings_sub_pages/create_new_menu_item_page.dart';
+import 'package:adisso/pages/settings/settings_sub_pages/edit_items_page.dart';
+import '../datas/analyses_data/reset_data_analyses.dart';
+import '../datas/menu_data/read_data_menu.dart';
 import '../datas/menu_data/reset_datas_menu.dart';
 import '../datas/table_orders_data/reset_table_datas.dart';
 import '../utils/custom_menu_button.dart';
@@ -134,13 +134,13 @@ class SettingsPageState extends State<SettingsPage> {
                                 onPressed: () async {
                                   if (confirmationText == 'Onaylıyorum') {
                                     ResetAllJsonData resetAllJsonData =
-                                    ResetAllJsonData();
+                                        ResetAllJsonData();
                                     ResetAllAnalysesJsonData
-                                    resetAllAnalysesJsonData =
-                                    ResetAllAnalysesJsonData();
+                                        resetAllAnalysesJsonData =
+                                        ResetAllAnalysesJsonData();
                                     ResetAllTableJsonData
-                                    resetAllTableJsonData =
-                                    ResetAllTableJsonData();
+                                        resetAllTableJsonData =
+                                        ResetAllTableJsonData();
 
                                     resetAllJsonData.resetMenuToBlank();
                                     await resetAllAnalysesJsonData
