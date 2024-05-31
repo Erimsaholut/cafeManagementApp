@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'edit_items_page.dart';
 
 class ItemStudio extends StatefulWidget {
-  const ItemStudio({super.key, required this.item,required this.processMenu});
+  const ItemStudio({super.key, required this.item, required this.processMenu});
 
   final EditableItem item;
   final Function processMenu;
@@ -31,7 +31,8 @@ class _ItemStudioState extends State<ItemStudio> {
   void initState() {
     super.initState();
     initialMoneyValue = widget.item.price.floor();
-    initialPennyValue = ((widget.item.price - widget.item.price.floor()) * 100).round();
+    initialPennyValue =
+        ((widget.item.price - widget.item.price.floor()) * 100).round();
     initialProfit = widget.item.profit;
     newMoneyValue = initialMoneyValue;
     newPennyValue = initialPennyValue;
@@ -43,6 +44,51 @@ class _ItemStudioState extends State<ItemStudio> {
   void dispose() {
     itemNameController.dispose();
     super.dispose();
+  }
+
+  Future<void> _processMenuData() async {
+    ReadMenuData readData = ReadMenuData();
+    Map<String, dynamic>? menuData = await readData.getRawData();
+    if (menuData != null) {
+      List<dynamic> menu = menuData['menu'];
+      items = menu.map((item) => EditableItem.fromJson(item)).toList();
+      setState(() {});
+    }
+  }
+
+  Future<void> _deleteItem(WriteData writeData) async {
+    await writeData.removeItemFromMenu(widget.item.name);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Item başarı ile silindi."),
+    ));
+  }
+
+  Future<bool> _showConfirmationDialog() async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Emin misiniz?'),
+              content:
+                  const Text('Bu öğeyi silmek istediğinizden emin misiniz?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: const Text('İptal'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Sil'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
   }
 
   @override
@@ -121,20 +167,23 @@ class _ItemStudioState extends State<ItemStudio> {
                   decoration: InputDecoration(
                     hintText: initialProfit != 0
                         ? "$initialProfit"
-                        : (isValueEnteredForProfit ? "Değer Giriniz" : "Yüzde giriniz"),
+                        : (isValueEnteredForProfit
+                            ? "Değer Giriniz"
+                            : "Yüzde giriniz"),
                     errorText: (profit > newMoneyValue)
                         ? "Kâr satış fiyatından fazla olamaz"
                         : (profit < 0)
-                        ? "Kâr sıfırdan küçük olamaz"
-                        : null,
+                            ? "Kâr sıfırdan küçük olamaz"
+                            : null,
                   ),
                   onChanged: (value) {
                     setState(() {
                       if (isValueEnteredForProfit) {
                         profit = double.tryParse(value) ?? 0.0;
                       } else {
-                        profit = ((newMoneyValue * 100 + newPennyValue) / 10000) *
-                            (double.tryParse(value) ?? 0.0 / 100);
+                        profit =
+                            ((newMoneyValue * 100 + newPennyValue) / 10000) *
+                                (double.tryParse(value) ?? 0.0 / 100);
                         profit = double.parse(profit.toStringAsFixed(2));
                       }
                     });
@@ -272,7 +321,7 @@ class _ItemStudioState extends State<ItemStudio> {
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   return CustomColors.selectedColor1;
                 },
               ),
@@ -302,48 +351,5 @@ class _ItemStudioState extends State<ItemStudio> {
     indWidgetList.add(const SizedBox(height: 10));
 
     return indWidgetList;
-  }
-
-  Future<void> _processMenuData() async {
-    ReadMenuData readData = ReadMenuData();
-    Map<String, dynamic>? menuData = await readData.getRawData();
-    if (menuData != null) {
-      List<dynamic> menu = menuData['menu'];
-      items = menu.map((item) => EditableItem.fromJson(item)).toList();
-      setState(() {});
-    }
-  }
-
-  Future<void> _deleteItem(WriteData writeData) async {
-    await writeData.removeItemFromMenu(widget.item.name);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text("Item başarı ile silindi."),
-    ));
-  }
-
-  Future<bool> _showConfirmationDialog() async {
-    return await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Emin misiniz?'),
-          content: const Text('Bu öğeyi silmek istediğinizden emin misiniz?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text('İptal'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Sil'),
-            ),
-          ],
-        );
-      },
-    ) ?? false;
   }
 }

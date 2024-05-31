@@ -154,7 +154,7 @@ class _MainTableScreenState extends State<MainTableScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return CustomAlertButton(
-                            text1: ' Bütün masayı ödenecektir.',
+                            text1: ' Bütün masaya ödenecektir.',
                             text2: 'Emin misiniz ?',
                             customFunction: () {
                               setState(() {

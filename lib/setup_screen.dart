@@ -130,8 +130,6 @@ class _SetupScreenState extends State<SetupScreen> {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   await prefs.setString('cafeName', value);
-                                  print("cafeName");
-                                  print(prefs.getString('cafeName'));
                                 },
                               ),
                             ),

@@ -70,7 +70,7 @@ class _EditItemsPageState extends State<EditItemsPage> {
   }
 
   /*ilk çalışan*/
-/*raw datayı okutup EditableItem(dümdüz class) olarak yaratıyor*/
+  /*raw datayı okutup EditableItem(dümdüz class) olarak yaratıyor*/
   /* duruma göre stüdyoya gönder bunu resetlesin */
 
   void processMenuData() {
@@ -90,6 +90,8 @@ class _EditItemsPageState extends State<EditItemsPage> {
         );
         items.add(newItem);
       }
+      // Alphabetical sorting
+      items.sort((a, b) => a.name.compareTo(b.name));
     });
   }
 }
@@ -127,5 +129,3 @@ class EditableItem {
     };
   }
 }
-
-//todo onaylandıktan sonra alttan snackbar mı ne o çıkmalı

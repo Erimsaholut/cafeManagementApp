@@ -191,7 +191,7 @@ Future<List<Widget>> getDatas(Size size) async {
                   child: customContainer(
                     size,
                     CustomColors.selectedColor6,
-                    "Bu ayın \nen kârlı ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺",
+                    "Bu ayın \nen kâr getiren ürünü\n${dayMostProfit.keys.first}\n${dayMostProfit[dayMostProfit.keys.first]}₺",
                   ),
                 )
               : Container(),
@@ -200,7 +200,7 @@ Future<List<Widget>> getDatas(Size size) async {
             child: customContainer(
               size,
               CustomColors.selectedColor4,
-              "Toplam Gelir\n$dailyRevenue",
+              "Toplam Gelir\n$dailyRevenue₺",
             ),
           ),
           Expanded(
@@ -208,7 +208,7 @@ Future<List<Widget>> getDatas(Size size) async {
             child: customContainer(
               size,
               CustomColors.selectedColor3,
-              "Toplam Kâr\n$dailyProfit",
+              "Toplam Kâr\n$dailyProfit₺",
             ),
           ),
         ],
@@ -240,7 +240,7 @@ Future<List<Widget>> getDatas(Size size) async {
             flex: 3,
             child: customContainer(
               size,
-              CustomColors.selectedColor8,
+              CustomColors.selectedColor9,
               "En çok satılan ürünler",
             ),
           ),
@@ -277,7 +277,7 @@ Future<List<Widget>> getDatas(Size size) async {
                   child: customContainer(
                     size,
                     CustomColors.selectedColor10,
-                    "Bu ayın \nen kârlı ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺",
+                    "Bu ayın \nen kâr getiren ürünü\n${monthMostProfit.keys.first}\n${monthMostProfit[monthMostProfit.keys.first]}₺",
                   ),
                 )
               : Container(),
@@ -286,7 +286,7 @@ Future<List<Widget>> getDatas(Size size) async {
             child: customContainer(
               size,
               CustomColors.selectedColor5,
-              "Toplam Gelir\n$monthlyRevenue",
+              "Toplam Gelir\n$monthlyRevenue₺",
             ),
           ),
           Expanded(
@@ -294,7 +294,7 @@ Future<List<Widget>> getDatas(Size size) async {
             child: customContainer(
               size,
               CustomColors.selectedColor6,
-              "Toplam Kâr\n$monthlyProfit",
+              "Toplam Kâr\n$monthlyProfit₺",
             ),
           ),
         ],
@@ -362,3 +362,4 @@ Container customContainer(Size size, Color color, String text) {
     ),
   );
 }
+//color 8 boşta

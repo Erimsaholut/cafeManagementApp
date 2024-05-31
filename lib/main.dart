@@ -41,10 +41,10 @@ Future<void> normalRun() async {
   String cafeName = prefs.getString('cafeName') ?? 'Default Cafe';
   int tableCount = prefs.getInt('tableCount') ?? 10;
 
-  int dDay = prefs.getInt('firstOpenDay') ?? DateTime.now().day;
+  int fDay = prefs.getInt('firstOpenDay') ?? DateTime.now().day;
   int fMonth = prefs.getInt('firstOpenMonth') ?? DateTime.now().month;
   int fYear = prefs.getInt('firstOpenYear') ?? DateTime.now().year;
-  DateTime firstOpenDate = DateTime(dDay, fMonth, fYear);
+  DateTime firstOpenDate = DateTime(fYear, fMonth, fDay);
 
   print(firstOpenDate);
 
@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
           buttonName: 'Settings', goToPage: SettingsPage()))
       ..add(CustomUtilPagesButton(
           buttonName: 'Deneme Hesabı kalan gün: ${widget.dayDifference}',
-          goToPage: SizedBox()));
+          goToPage: const SizedBox()));
   }
 
   @override
@@ -153,3 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //todo net kar analizi premium özel olacak // ekledik ama kullanmak sana kalmış
 //todo log eklenebilir.
 //todo kategoriler zaten olmazsa olmaz
+
+//todo indirim kısmı ekle masa ödemeye uzun basıp
+// indirim için analiz ekleyebilir misin bak
+//todo nasıl kullanılır kısmı ekle bi salaktan tutorial
