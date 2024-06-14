@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../constants/custom_colors.dart';
 import '../constants/styles.dart';
 import '../datas/analyses_data/read_data_analyses.dart';
@@ -20,9 +22,9 @@ class AdminPanel extends StatefulWidget {
 }
 
 class _AdminPanelState extends State<AdminPanel> {
-  final ReadMenuData readNewData = ReadMenuData();
+  final ReadMenuData readMenuData = ReadMenuData();
 
-  TableReader tableDataHandler = TableReader();
+  TableReader tableReader = TableReader();
 
   ResetAllTableJsonData resetAllTableJsonData = ResetAllTableJsonData();
 
@@ -68,6 +70,13 @@ class _AdminPanelState extends State<AdminPanel> {
                     resetAllJsonData.resetMenuToBlank();
                   },
                   child: const Text("Delete Menu")),
+              TextButton(
+                  onPressed: () async {
+                    List<dynamic> categories = await readMenuData.getCategories();
+                    print(categories);
+
+                  },
+                  child: const Text("Get Categories")),
             ],
           ),
           Container(
@@ -236,10 +245,10 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
           TextButton(
             onPressed: () async {
-              Object menu = (await readNewData.readJsonData()) as Object;
+              Map<String, dynamic>? menu = await readMenuData.readJsonData();
               print(menu);
               /* # # # # # # # #*/
-              int menuItemCount = await readNewData.getMenuItemCount();
+              int menuItemCount = await readMenuData.getMenuItemCount();
               print('Menüdeki öğe sayısı: $menuItemCount');
             },
             child: const Text("menuraw + ogeSayisi"),
@@ -248,13 +257,13 @@ class _AdminPanelState extends State<AdminPanel> {
             onPressed: () async {
               setState(() {
                 print(
-                    'İçecekler (İçerikli): ${readNewData.getDrinksWithIngredients()}');
+                    'İçecekler (İçerikli): ${readMenuData.getDrinksWithIngredients()}');
                 print(
-                    'İçecekler (İçeriksiz): ${readNewData.getDrinksWithNoIngredients()}');
+                    'İçecekler (İçeriksiz): ${readMenuData.getDrinksWithNoIngredients()}');
                 print(
-                    'Yemekler (İçerikli): ${readNewData.getFoodsWithIngredients()}');
+                    'Yemekler (İçerikli): ${readMenuData.getFoodsWithIngredients()}');
                 print(
-                    'Yemekler (İçeriksiz): ${readNewData.getDrinksWithNoIngredients()}');
+                    'Yemekler (İçeriksiz): ${readMenuData.getDrinksWithNoIngredients()}');
               });
             },
             child: const Text("separeted menu items"),
@@ -262,7 +271,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               Map<String, dynamic>? cafeTables =
-                  await tableDataHandler.getRawData();
+                  await tableReader.getRawData();
               print(cafeTables);
             },
             child: const Text("test Table item"),
@@ -270,7 +279,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               Map<String, dynamic>? tableData =
-                  await tableDataHandler.getTableSet(1);
+                  await tableReader.getTableSet(1);
               print(tableData);
             },
             child: const Text("1 numaralı masanın set datasını çek"),
@@ -290,7 +299,7 @@ class _AdminPanelState extends State<AdminPanel> {
           TextButton(
             onPressed: () async {
               Map<String, dynamic>? tableData =
-                  await tableDataHandler.getTableSet(2);
+                  await tableReader.getTableSet(2);
               print(tableData);
             },
             child: const Text("2 numaralı masanın set datasını çek"),

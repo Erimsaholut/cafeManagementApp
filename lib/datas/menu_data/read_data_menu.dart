@@ -56,6 +56,16 @@ class ReadMenuData {
     return 0;
   }
 
+  Future<List<String>> getCategories() async {
+    final jsonData = await readJsonData();
+    if (jsonData != null) {
+      List<dynamic> categoriesDynamic = jsonData["categories"];
+      List<String> categories = categoriesDynamic.map((category) => category.toString()).toList();
+      return categories;
+    }
+    return [];
+  }
+
   Future<void> separateMenuItems() async {
     final jsonData = await readJsonData();
     if (jsonData != null) {
@@ -84,13 +94,15 @@ class ReadMenuData {
     if (!_menuItemExists(itemName)) {
       if (itemType == "drink") {
         if (ingredients.isNotEmpty) {
-          _drinksWithIngredients.add({"name": itemName, "ingredients": ingredients});
+          _drinksWithIngredients
+              .add({"name": itemName, "ingredients": ingredients});
         } else {
           _drinksWithNoIngredients.add(itemName);
         }
       } else if (itemType == "food") {
         if (ingredients.isNotEmpty) {
-          _foodsWithIngredients.add({"name": itemName, "ingredients": ingredients});
+          _foodsWithIngredients
+              .add({"name": itemName, "ingredients": ingredients});
         } else {
           _foodsWithNoIngredients.add(itemName);
         }

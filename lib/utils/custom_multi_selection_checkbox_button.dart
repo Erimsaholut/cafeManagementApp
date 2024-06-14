@@ -53,7 +53,7 @@ class _CustomMultiSelectionButtonState
                     alignment: WrapAlignment.spaceBetween,
                     children: List.generate(
                       widget.checkboxTexts!.length,
-                      (index) {
+                          (index) {
                         return Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

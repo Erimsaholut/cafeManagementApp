@@ -1,4 +1,3 @@
-
 import 'package:adisso/datas/menu_data/write_data_menu.dart';
 
 class ResetAllJsonData {
@@ -13,7 +12,8 @@ class ResetAllJsonData {
 }
 
 class ResetMenuDatas {
-  Map<String, dynamic> jsonMenuDemoData ={
+  Map<String, dynamic> jsonMenuDemoData = {
+    "categories": ["food", "drink", "dessert"],
     "menu": [
       {
         "name": "Çay",
@@ -55,71 +55,42 @@ class ResetMenuDatas {
         "price": 10.0,
         "profit": 5.0,
         "type": "drink",
-        "ingredients": [
-          "Sade",
-          "İkisi bir arada",
-          "Üçü Bir arada"
-        ]
+        "ingredients": ["Sade", "İkisi bir arada", "Üçü Bir arada"]
       },
       {
         "name": "Türk Kahvesi",
         "price": 20.0,
         "profit": 10.0,
         "type": "drink",
-        "ingredients": [
-          "Sade",
-          "Az Şekerli",
-          "Orta Şekerli",
-          "Şekerli"
-        ]
+        "ingredients": ["Sade", "Az Şekerli", "Orta Şekerli", "Şekerli"]
       },
       {
         "name": "Oralet",
         "price": 5.0,
         "profit": 2.5,
         "type": "drink",
-        "ingredients": [
-          "Portakal",
-          "Limon",
-          "Kivi",
-          "Muz"
-        ]
+        "ingredients": ["Portakal", "Limon", "Kivi", "Muz"]
       },
       {
         "name": "Sucuklu Tost",
         "price": 45.0,
         "profit": 22.5,
         "type": "food",
-        "ingredients": [
-          "Ketçap",
-          "Mayonez",
-          "Soğan",
-          "Yeşillik",
-          "Turşu"
-        ]
+        "ingredients": ["Ketçap", "Mayonez", "Soğan", "Yeşillik", "Turşu"]
       },
       {
         "name": "Tavuk Döner",
         "price": 30.0,
         "profit": 15.0,
         "type": "food",
-        "ingredients": [
-          "Ketçap",
-          "Mayonez",
-          "Soğan",
-          "Turşu"
-        ]
+        "ingredients": ["Ketçap", "Mayonez", "Soğan", "Turşu"]
       },
       {
         "name": "Kokoreç",
         "price": 55.50,
         "profit": 27.75,
         "type": "food",
-        "ingredients": [
-          "Acı",
-          "Kimyon",
-          "Kekik"
-        ]
+        "ingredients": ["Acı", "Kimyon", "Kekik"]
       },
       {
         "name": "Ekmek",
@@ -132,9 +103,6 @@ class ResetMenuDatas {
   };
 }
 
-class RemoveMenuDatas{
-  Map<String, dynamic> jsonMenuResetData ={
-    "menu": [
-    ]
-  };
+class RemoveMenuDatas {
+  Map<String, dynamic> jsonMenuResetData = {"categories": [], "menu": []};
 }

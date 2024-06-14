@@ -1,167 +1,123 @@
 import 'dart:convert';
-
 import 'package:adisso/datas/table_orders_data/read_table_data.dart';
 import 'package:adisso/datas/table_orders_data/reset_table_datas.dart';
-
 import '../analyses_data/write_data_analyses.dart';
 
 class WriteTableData {
-  WriteAnalysesData writeAnalysesData = WriteAnalysesData();
-  ResetTableDatas resetTableDatas = ResetTableDatas();
-  TableReader tableDataHandler = TableReader();
+  final WriteAnalysesData writeAnalysesData = WriteAnalysesData();
+  final ResetTableDatas resetTableDatas = ResetTableDatas();
+  final TableReader tableDataHandler = TableReader();
 
-  Future<void> addItemToTable(
-      int tableNum, String itemName, int quantity, double price) async {
-    Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
-    bool isItemExits = false;
-
+  Future<void> addItemToTable(int tableNum, String itemName, int quantity, double price) async {
     try {
+      final rawData = await tableDataHandler.getRawData();
+
       if (rawData != null) {
-        for (var i in rawData["tables"]) {
-          if (i["tableNum"] == tableNum) {
-            /*doğru mekanı bul*/
-
-            /*buldun ama o itemden var mı */
-            for (var j in i["orders"]) {
-              if (j["name"] == itemName) {
-                isItemExits = true;
-              }
-            }
-
-            /*o itemden yoksa yenisini ekle*/
-            if (!isItemExits) {
-              Map<String, dynamic> newItem = {
-                "name": itemName,
-                "quantity": quantity,
-                "price": price,
-              };
-
-              i["orders"].add(newItem); // önce bi kontrol
-              double oldPrice = i["totalPrice"];
-              oldPrice += price;
-              i["totalPrice"] = oldPrice;
-            }
+        final table = _findTable(rawData, tableNum);
+        if (table != null) {
+          final order = _findOrder(table, itemName);
+          if (order != null) {
+            _updateExistingOrder(order, quantity, price);
+          } else {
+            _addNewOrder(table, itemName, quantity, price);
           }
+          table["totalPrice"] += price;
+          await tableDataHandler.writeJsonData(jsonEncode(rawData));
         }
-
-        if (isItemExits) {
-          for (var i in rawData["tables"]) {
-            if (i["tableNum"] == tableNum) {
-              /*bu kısımda doğru tableSetteyiz*/
-
-              for (var j in i["orders"]) {
-                if (j["name"] == itemName) {
-                  int oldQuantity = j["quantity"];
-                  oldQuantity += quantity;
-                  j["quantity"] = oldQuantity;
-
-                  double oldPrice = j["price"];
-                  oldPrice += price;
-                  j["price"] = oldPrice;
-
-                  double oldTotalPrice = i["totalPrice"];
-                  oldTotalPrice += price;
-                  i["totalPrice"] = oldTotalPrice;
-                }
-              }
-            }
-          }
-        }
-
-        await tableDataHandler.writeJsonData(jsonEncode(rawData));
       }
     } catch (e) {
-      print('Yeni ürün eklenirken hata oluştu: $e');
+      print('Error adding new item: $e');
     }
   }
 
   Future<void> resetAllData() async {
     try {
-      ResetTableDatas resetTables = ResetTableDatas();
-      resetTables.createTables(22);
-      await tableDataHandler
-          .writeJsonData(jsonEncode(resetTables.jsonRawDataFirst));
-      print("Başarı ile resetlendi");
+      resetTableDatas.createTables(22);
+      await tableDataHandler.writeJsonData(jsonEncode(resetTableDatas.jsonRawDataFirst));
+      print("Successfully reset all data.");
     } catch (e) {
-      print("Resetlenemedi $e");
+      print("Failed to reset all data: $e");
     }
   }
 
   Future<void> resetOneTable(int tableNum) async {
     try {
-      Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
+      final rawData = await tableDataHandler.getRawData();
 
       if (rawData != null) {
-        for (var table in rawData["tables"]) {
-          if (table["tableNum"] == tableNum) {
-            /*doğru mekanı bul*/
-            print("Doğru tableNum aranıyor ve orders resetleniyor");
-            table["totalPrice"] = 0.0;
-            table["orders"] = [];
-            print(table);
-          }
+        final table = _findTable(rawData, tableNum);
+        if (table != null) {
+          table["totalPrice"] = 0.0;
+          table["orders"] = [];
+          await tableDataHandler.writeJsonData(jsonEncode(rawData));
+          print("Successfully reset table $tableNum.");
         }
       }
-
-      await tableDataHandler.writeJsonData(jsonEncode(rawData));
-      print("Resetledik galiba");
     } catch (e) {
-      print("Resetlenemedi $e");
+      print("Failed to reset table $tableNum: $e");
     }
   }
 
-  Future<void> decreaseItemList(
-      int tableNum, Map<String, int> removeList) async {
+  Future<void> decreaseItemList(int tableNum, Map<String, int> removeList) async {
     try {
-      /*rawdata alındı*/
-      Map<String, dynamic>? rawData = await tableDataHandler.getRawData();
-      List<dynamic> itemsToRemove = [];
+      final rawData = await tableDataHandler.getRawData();
 
       if (rawData != null) {
-        for (var table in rawData["tables"]) {
-          if (table["tableNum"] == tableNum) {
-            print("içinde bulunuduğumuz masa $table \n*\n");
-            /*    doğru masadayız   */
-
-            for (var order in table["orders"]) {
-              /* table orderdaki her table itemi için */
-
-              for (var removeItem in removeList.entries) {
-                if (removeItem.key == order["name"]) {
-                  print("#####$order");
-
-                  double orderPrice = order["price"] / order["quantity"];
-
-                  order["quantity"] = order["quantity"] - removeItem.value;
-
-                  order["price"] =
-                      order["price"] - (orderPrice * removeItem.value);
-
-                  table["totalPrice"] =
-                      table["totalPrice"] - (orderPrice * removeItem.value);
-
-                  if (order["quantity"] == 0) {
-                    itemsToRemove.add(order);
-                  }
-                }
-              }
-            }
-
-            for (var itemToRemove in itemsToRemove) {
-              table["orders"].remove(itemToRemove);
-            }
-          }
+        final table = _findTable(rawData, tableNum);
+        if (table != null) {
+          _decreaseOrders(table, removeList);
+          await tableDataHandler.writeJsonData(jsonEncode(rawData));
         }
-
-        await tableDataHandler.writeJsonData(jsonEncode(rawData));
-
-        /*üst kısımda bir hata çıkarsa*/
       } else {
         print("rawData is null");
       }
     } catch (e) {
-      print("An error occurred: $e");
+      print("Error decreasing items: $e");
     }
-    print("writeTable başarı ile tamamlandı");
+    print("Successfully decreased items.");
+  }
+
+  Map<String, dynamic>? _findTable(Map<String, dynamic> rawData, int tableNum) {
+    return rawData["tables"].firstWhere((table) => table["tableNum"] == tableNum, orElse: () => null);
+  }
+
+  Map<String, dynamic>? _findOrder(Map<String, dynamic> table, String itemName) {
+    return table["orders"].firstWhere((order) => order["name"] == itemName, orElse: () => null);
+  }
+
+  void _addNewOrder(Map<String, dynamic> table, String itemName, int quantity, double price) {
+    final newItem = {
+      "name": itemName,
+      "quantity": quantity,
+      "price": price,
+    };
+    table["orders"].add(newItem);
+  }
+
+  void _updateExistingOrder(Map<String, dynamic> order, int quantity, double price) {
+    order["quantity"] += quantity;
+    order["price"] += price;
+  }
+
+  void _decreaseOrders(Map<String, dynamic> table, Map<String, int> removeList) {
+    final itemsToRemove = [];
+
+    for (final order in table["orders"]) {
+      final itemName = order["name"];
+      if (removeList.containsKey(itemName)) {
+        final quantityToRemove = removeList[itemName]!;
+        final pricePerUnit = order["price"] / order["quantity"];
+
+        order["quantity"] -= quantityToRemove;
+        order["price"] -= pricePerUnit * quantityToRemove;
+        table["totalPrice"] -= pricePerUnit * quantityToRemove;
+
+        if (order["quantity"] <= 0) {
+          itemsToRemove.add(order);
+        }
+      }
+    }
+
+    table["orders"].removeWhere((order) => itemsToRemove.contains(order));
   }
 }

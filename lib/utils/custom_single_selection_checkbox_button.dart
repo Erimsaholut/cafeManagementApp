@@ -63,7 +63,7 @@ class _CustomSingleSelectionButtonState
                             Text(
                               checkboxText,
                               style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Radio(
                               value: checkboxText,

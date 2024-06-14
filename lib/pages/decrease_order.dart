@@ -97,15 +97,13 @@ class DecreaseOrderState extends State<DecreaseOrder> {
                           Map<String, int> separetedItems =
                               buildOrderTexts(bottomStrings);
 
-                          // Diğer işlemleri yap
                           WriteTableData writeTableData = WriteTableData();
+
                           await writeTableData.decreaseItemList(
                               widget.tableNum, separetedItems);
 
-                          // Diğer işlemler tamamlandıktan sonra analizleri JSON'a ekle
                           await addItemToAnalyses(separetedItems);
 
-                          // Diğer işlemler tamamlandıktan sonra işlemleri temizle
                           setState(() {
                             bottomStrings.clear();
                             totalAmount = 0;
@@ -136,6 +134,7 @@ class DecreaseOrderState extends State<DecreaseOrder> {
           await tableDataHandler.getTableSet(widget.tableNum);
       setTableData(data);
     } catch (error) {
+      print(error);
     }
   }
 
