@@ -13,7 +13,7 @@ class ResetAllJsonData {
 
 class ResetMenuDatas {
   Map<String, dynamic> jsonMenuDemoData = {
-    "categories": ["food", "drink", "dessert"],
+    "categories": ["food", "drink", "dessert","services"],
     "menu": [
       {
         "name": "Çay",
@@ -98,7 +98,14 @@ class ResetMenuDatas {
         "profit": 3.5,
         "type": "food",
         "ingredients": []
-      }
+      },
+  {
+  "name": "Test dessert",
+  "price": 7.0,
+  "profit": 3.5,
+  "type": "dessert",
+  "ingredients": []
+}
     ]
   };
 }

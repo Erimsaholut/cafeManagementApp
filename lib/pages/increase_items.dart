@@ -1,10 +1,11 @@
-import '../datas/table_orders_data/write_table_data.dart';
+import 'package:animated_floating_buttons/animated_floating_buttons.dart';
+import '../utils/custom_single_selection_checkbox_button.dart';
 import '../utils/custom_multi_selection_checkbox_button.dart';
+import '../datas/table_orders_data/write_table_data.dart';
 import '../datas/menu_data/read_data_menu.dart';
 import '../constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 import '../constants/styles.dart';
-import '../utils/custom_single_selection_checkbox_button.dart';
 
 class IncreaseOrder extends StatefulWidget {
   const IncreaseOrder(
@@ -19,48 +20,51 @@ class IncreaseOrder extends StatefulWidget {
 
 class _IncreaseOrderState extends State<IncreaseOrder> {
   late Future<void> _future;
-  ReadMenuData readMenuData = ReadMenuData();
-
+  final ReadMenuData _readMenuData = ReadMenuData();
+  Map<String, List<Map<String, dynamic>>> _categorizedItems = {};
   List<String> orders = [];
   double totalPrice = 0;
-  List<Widget> drinksNoIn = [];
-  List<Widget> drinksIn = [];
-  List<Widget> foodsNoIn = [];
-  List<Widget> foodsIn = [];
+  List<String> categories = [];
 
   @override
   void initState() {
     super.initState();
-    _future = initializeMenuData();
+    _future = _initializeMenuData();
   }
 
-  Future<void> initializeMenuData() async {
-    await readMenuData.initialize();
-    createButtons();
-  }
-
-  void createButtons() {
+  Future<void> _initializeMenuData() async {
+    await _readMenuData.initialize();
+    await _readMenuData.separateMenuItemsByCategory();
     setState(() {
-      List<String> drinksNoInItems = readMenuData.getDrinksWithNoIngredients();
-      List<Map<String, dynamic>> drinksInItems = readMenuData.getDrinksWithIngredients();
-      List<String> foodsNoInItems = readMenuData.getFoodsWithNoIngredients();
-      List<Map<String, dynamic>> foodsInItems = readMenuData.getFoodsWithIngredients();
-
-      drinksNoInItems.sort((a, b) => a.compareTo(b));
-      drinksInItems.sort((a, b) => a["name"].compareTo(b["name"]));
-      foodsNoInItems.sort((a, b) => a.compareTo(b));
-      foodsInItems.sort((a, b) => a["name"].compareTo(b["name"]));
-
-      drinksNoIn = makeWidgetsForNoInd(drinksNoInItems);
-      drinksIn = makeWidgetsForIndDrink(drinksInItems);
-      foodsNoIn = makeWidgetsForNoInd(foodsNoInItems);
-      foodsIn = makeWidgetsForIndFood(foodsInItems);
+      _categorizedItems = _readMenuData.getCategorizedItems();
+      categories = _categorizedItems.keys.toList();
     });
+  }
+
+  List<Widget> createFabButtons() {
+    return categories.map((category) {
+      return FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        heroTag: category,
+        tooltip: category,
+        child: Text(category),
+      );
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: categories.length >= 2
+          ? AnimatedFloatingActionButton(
+        fabButtons: createFabButtons(),
+        colorStartAnimation: CustomColors.backGroundColor2,
+        colorEndAnimation: Colors.red,
+        animatedIconData: AnimatedIcons.menu_close,
+      )
+          : null,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -85,71 +89,33 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Hata: ${snapshot.error}'));
             } else {
-              return Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      color: CustomColors.backGroundColor2,
-                      child: ListView(
-                        children: [
-                          buildItemTypeTextContainer("İçecekler"),
-                          const SizedBox(height: 16),
-                          buildGridView(drinksNoIn),
-                          const SizedBox(height: 32),
-                          ...drinksIn,
-                          const SizedBox(height: 16),
-                          buildItemTypeTextContainer("Yiyecekler"),
-                          const SizedBox(height: 16),
-                          buildGridView(foodsNoIn),
-                          const SizedBox(height: 32),
-                          ...foodsIn,
-                        ],
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: (orders.isNotEmpty),
-                    child: Expanded(
-                      flex: 1,
-                      child: Container(
-                        color: CustomColors.selectedColor1,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: _buildOrderWidgets(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                color: CustomColors.selectedColor2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Toplam Fiyat: $totalPrice'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              return ListView(
+                children: categories.expand((category) {
+                  List<Map<String, dynamic>> items = _categorizedItems[category]!;
+                  List<Widget> itemsNoIngredients = [];
+                  List<Widget> itemsWithIngredients = [];
+
+                  for (var item in items) {
+                    if (item['ingredients'] != null && item['ingredients'].isNotEmpty) {
+                      if (category == 'Yiyecekler') {
+                        itemsWithIngredients.add(makeWidgetForIndFood(item));
+                      } else {
+                        itemsWithIngredients.add(makeWidgetForIndDrink(item));
+                      }
+                    } else {
+                      itemsNoIngredients.add(makeWidgetForNoInd(item['name']));
+                    }
+                  }
+
+                  return [
+                    buildItemTypeTextContainer(category),
+                    const SizedBox(height: 16),
+                    buildGridView(itemsNoIngredients),
+                    const SizedBox(height: 16),
+                    ...itemsWithIngredients,
+                    const SizedBox(height: 32),
+                  ];
+                }).toList(),
               );
             }
           },
@@ -158,68 +124,43 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     );
   }
 
-  List<Widget> _buildOrderWidgets() {
-    Map<String, int> itemCounts = {};
-
-    for (String order in orders) {
-      if (itemCounts.containsKey(order)) {
-        itemCounts[order] = (itemCounts[order] ?? 0) + 1;
-      } else {
-        itemCounts[order] = 1;
-      }
-    }
-
-    List<Widget> orderWidgets = [];
-    itemCounts.forEach((item, count) {
-      orderWidgets.add(Text('$count $item    '));
-    });
-
-    return orderWidgets;
+  Widget makeWidgetForNoInd(String itemName) {
+    return TextButton(
+      style: CustomButtonStyles.customMenuItemButtonStyle,
+      onPressed: () {
+        _performAsyncOperations(itemName);
+      },
+      child: Text(itemName),
+    );
   }
 
-  List<Widget> makeWidgetsForNoInd(List<String> items) {
-    return items.map((itemName) {
-      return TextButton(
-        style: CustomButtonStyles.customMenuItemButtonStyle,
-        onPressed: () {
-          _performAsyncOperations(itemName);
-        },
-        child: Text(itemName),
-      );
-    }).toList();
+  Widget makeWidgetForIndFood(Map<String, dynamic> item) {
+    List<String> ingredients = List<String>.from(item["ingredients"]);
+    String name = item["name"];
+    return CustomMultiSelectionButton(
+      buttonText: name,
+      checkboxTexts: ingredients,
+      onPressed: () {
+        _performAsyncOperationsForInd(name, widget.tableNum);
+      },
+    );
   }
 
-  List<Widget> makeWidgetsForIndFood(List<Map<String, dynamic>> items) {
-    return items.map((item) {
-      List<String> ingredients = List<String>.from(item["ingredients"]);
-      String name = item["name"];
-      return CustomMultiSelectionButton(
-        buttonText: name,
-        checkboxTexts: ingredients,
-        onPressed: () {
-          _performAsyncOperationsForInd(name, widget.tableNum);
-        },
-      );
-    }).toList();
-  }
-
-  List<Widget> makeWidgetsForIndDrink(List<Map<String, dynamic>> items) {
-    return items.map((item) {
-      List<String> ingredients = List<String>.from(item["ingredients"]);
-      String name = item["name"];
-      return CustomSingleSelectionButton(
-        buttonText: name,
-        checkboxTexts: ingredients,
-        onPressed: () {
-          _performAsyncOperationsForInd(name, widget.tableNum);
-        },
-      );
-    }).toList();
+  Widget makeWidgetForIndDrink(Map<String, dynamic> item) {
+    List<String> ingredients = List<String>.from(item["ingredients"]);
+    String name = item["name"];
+    return CustomSingleSelectionButton(
+      buttonText: name,
+      checkboxTexts: ingredients,
+      onPressed: () {
+        _performAsyncOperationsForInd(name, widget.tableNum);
+      },
+    );
   }
 
   Future<void> _performAsyncOperations(String itemName) async {
     WriteTableData writeTableData = WriteTableData();
-    double itemPrice = await readMenuData.getItemPrice(itemName);
+    double itemPrice = await _readMenuData.getItemPrice(itemName);
     setState(() {
       orders.add(itemName);
       totalPrice += itemPrice;
@@ -228,7 +169,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   }
 
   Future<void> _performAsyncOperationsForInd(String name, tableNum) async {
-    double itemPrice = await readMenuData.getItemPrice(name);
+    double itemPrice = await _readMenuData.getItemPrice(name);
 
     WriteTableData writeTableData = WriteTableData();
 
@@ -266,3 +207,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     );
   }
 }
+
+//todo alttaki bar gelecek
+//todo ayarlara kategori ekleme silme gelecek
+//kategorisiz itemleri düzenleme gelecek

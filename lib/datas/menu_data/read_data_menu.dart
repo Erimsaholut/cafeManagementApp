@@ -12,6 +12,30 @@ class ReadMenuData {
   final List<Map<String, dynamic>> _foodsWithIngredients = [];
   final List<String> _foodsWithNoIngredients = [];
 
+  /**/
+  final Map<String, List<Map<String, dynamic>>> _categorizedItems = {};
+
+  Future<void> separateMenuItemsByCategory() async {
+    final jsonData = await readJsonData();
+    if (jsonData != null) {
+      List<dynamic> menu = jsonData["menu"];
+      _categorizedItems.clear();
+      for (var item in menu) {
+        String itemType = item["type"];
+        if (!_categorizedItems.containsKey(itemType)) {
+          _categorizedItems[itemType] = [];
+        }
+        _categorizedItems[itemType]?.add(item);
+      }
+    }
+  }
+
+  Map<String, List<Map<String, dynamic>>> getCategorizedItems() {
+    return _categorizedItems;
+  }
+/**/
+
+
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
