@@ -17,11 +17,9 @@ class AddNewItemToMenu extends StatefulWidget {
 
 class AddNewItemToMenuState extends State<AddNewItemToMenu> {
   final TextEditingController beverageNameController = TextEditingController();
-  WriteData writeData = WriteData();
+  WriteMenuData writeData = WriteMenuData();
   CustomItemTypeSelector customItemTypeSelector = CustomItemTypeSelector(
-    question: 'Ürün tipini seçin',
-    option1: 'İçecek',
-    option2: 'Yiyecek',
+    question: 'Ürün kategorisini seçin',
     itemType: "İçecek",
   );
 

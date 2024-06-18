@@ -15,7 +15,7 @@ class ChangeTableCountDialog extends StatefulWidget {
 }
 
 class _ChangeTableCountDialogState extends State<ChangeTableCountDialog> {
-  WriteData writeData = WriteData();
+  WriteMenuData writeData = WriteMenuData();
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -123,7 +123,7 @@ class ChangeCafeNameDialog extends StatefulWidget {
 }
 
 class _ChangeCafeNameDialogState extends State<ChangeCafeNameDialog> {
-  WriteData writeData = WriteData();
+  WriteMenuData writeData = WriteMenuData();
   final TextEditingController _controller = TextEditingController();
 
   @override

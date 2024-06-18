@@ -3,7 +3,7 @@ import 'package:adisso/datas/menu_data/reset_datas_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-class WriteData {
+class WriteMenuData {
   ReadMenuData readData = ReadMenuData();
   ResetMenuDatas demoMenuDatas = ResetMenuDatas();
   RemoveMenuDatas removeMenuDatas = RemoveMenuDatas();
@@ -53,12 +53,6 @@ class WriteData {
   Future<bool?> addNewItemToMenu(String itemName, int moneyValue,
       int pennyValue, List<String> indList, String type,
       {double profit = 0}) async {
-    if (type == "Yiyecek") {
-      type = "food";
-    }
-    if (type == "İçecek") {
-      type = "drink";
-    }
 
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
@@ -101,7 +95,7 @@ class WriteData {
   }
 
   Future<void> setExistingItemInMenu(String itemName, int newPriceMoney,
-      int newPricePenny, List<String> indList,
+      int newPricePenny, List<String> indList,String type,
       {double newProfit = 0}) async {
     try {
       Map<String, dynamic>? rawData = await readData.getRawData();
@@ -129,7 +123,7 @@ class WriteData {
             "name": itemName,
             "price": newPriceMoney + newPricePenny / 100,
             "profit": newProfit,
-            "type": oldItem["type"],
+            "type": type,
             "ingredients": indList,
           };
           print("newItem:$newItem");
@@ -170,4 +164,48 @@ class WriteData {
       print('Ürün silinirken hata oluştu: $e');
     }
   }
+
+  Future<void> addCategory(String categoryName) async {
+    try {
+      Map<String, dynamic>? rawData = await readData.getRawData();
+      if (rawData != null) {
+        List<dynamic> categories = rawData["categories"];
+
+        // Check if the category already exists
+        bool categoryExists = categories.contains(categoryName);
+        if (categoryExists) {
+          print("Bu kategori zaten mevcut.");
+          return;
+        }
+
+        // Add the new category
+        categories.add(categoryName);
+
+        await readData.writeJsonData(json.encode(rawData));
+        print("Yeni kategori başarıyla eklendi: $categoryName");
+      }
+    } catch (e) {
+      print('Kategori eklenirken hata oluştu: $e');
+    }
+  }
+
+  Future<void> removeCategory(String categoryName) async {
+    try {
+      Map<String, dynamic>? rawData = await readData.getRawData();
+      if (rawData != null) {
+        List<dynamic> categories = rawData["categories"];
+
+        // Remove the category if it exists
+        categories.remove(categoryName);
+
+        await readData.writeJsonData(json.encode(rawData));
+        print("Kategori başarıyla silindi: $categoryName");
+      }
+    } catch (e) {
+      print('Kategori silinirken hata oluştu: $e');
+    }
+  }
+
 }
+
+//todo diğer ürünlerdeki kategoriler zorunlu tutulmasın

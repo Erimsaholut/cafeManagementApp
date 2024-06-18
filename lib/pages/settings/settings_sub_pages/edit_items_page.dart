@@ -87,6 +87,7 @@ class _EditItemsPageState extends State<EditItemsPage> {
           price: itemData["price"],
           profit: itemData["profit"],
           ingredients: List<String>.from(itemData["ingredients"]),
+          type: itemData["type"],
         );
         items.add(newItem);
       }
@@ -101,31 +102,24 @@ class EditableItem {
   double price;
   double profit;
   List<String> ingredients;
+  String type;
 
   EditableItem({
     required this.name,
     required this.price,
     required this.profit,
     required this.ingredients,
+    required this.type,
   });
 
-  // fromJson yapıcı yöntemi
   factory EditableItem.fromJson(Map<String, dynamic> json) {
     return EditableItem(
       name: json['name'],
       price: json['price'],
       profit: json['profit'],
       ingredients: List<String>.from(json['ingredients']),
+      type: json['type'],
     );
   }
 
-  // toJson yöntemi (eğer gerekiyorsa)
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'price': price,
-      'profit': profit,
-      'ingredients': ingredients,
-    };
-  }
 }

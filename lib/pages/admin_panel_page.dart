@@ -15,7 +15,7 @@ import '../datas/table_orders_data/write_table_data.dart';
 import '../utils/custom_alert_button.dart';
 
 class AdminPanel extends StatefulWidget {
-  AdminPanel({Key? key}) : super(key: key);
+  const AdminPanel({super.key});
 
   @override
   State<AdminPanel> createState() => _AdminPanelState();

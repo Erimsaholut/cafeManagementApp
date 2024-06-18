@@ -60,7 +60,7 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
       floatingActionButton: categories.length >= 2
           ? AnimatedFloatingActionButton(
         fabButtons: createFabButtons(),
-        colorStartAnimation: CustomColors.backGroundColor2,
+        colorStartAnimation: Colors.blue,
         colorEndAnimation: Colors.red,
         animatedIconData: AnimatedIcons.menu_close,
       )
@@ -89,39 +89,109 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Hata: ${snapshot.error}'));
             } else {
-              return ListView(
-                children: categories.expand((category) {
-                  List<Map<String, dynamic>> items = _categorizedItems[category]!;
-                  List<Widget> itemsNoIngredients = [];
-                  List<Widget> itemsWithIngredients = [];
+              return Column(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      color: CustomColors.backGroundColor2,
+                      child: ListView(
+                        children: categories.expand((category) {
+                          List<Map<String, dynamic>> items = _categorizedItems[category]!;
+                          List<Widget> itemsNoIngredients = [];
+                          List<Widget> itemsWithIngredients = [];
 
-                  for (var item in items) {
-                    if (item['ingredients'] != null && item['ingredients'].isNotEmpty) {
-                      if (category == 'Yiyecekler') {
-                        itemsWithIngredients.add(makeWidgetForIndFood(item));
-                      } else {
-                        itemsWithIngredients.add(makeWidgetForIndDrink(item));
-                      }
-                    } else {
-                      itemsNoIngredients.add(makeWidgetForNoInd(item['name']));
-                    }
-                  }
+                          for (var item in items) {
+                            if (item['ingredients'] != null && item['ingredients'].isNotEmpty) {
+                              if (category == 'Yiyecekler') {
+                                itemsWithIngredients.add(makeWidgetForIndFood(item));
+                              } else {
+                                itemsWithIngredients.add(makeWidgetForIndDrink(item));
+                              }
+                            } else {
+                              itemsNoIngredients.add(makeWidgetForNoInd(item['name']));
+                            }
+                          }
 
-                  return [
-                    buildItemTypeTextContainer(category),
-                    const SizedBox(height: 16),
-                    buildGridView(itemsNoIngredients),
-                    const SizedBox(height: 16),
-                    ...itemsWithIngredients,
-                    const SizedBox(height: 32),
-                  ];
-                }).toList(),
+                          return [
+                            buildItemTypeTextContainer(category),
+                            const SizedBox(height: 16),
+                            buildGridView(itemsNoIngredients),
+                            const SizedBox(height: 16),
+                            ...itemsWithIngredients,
+                            const SizedBox(height: 32),
+                          ];
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: (orders.isNotEmpty),
+                    child: Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: CustomColors.selectedColor1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: _buildOrderWidgets(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                color: CustomColors.selectedColor2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Toplam Fiyat: $totalPrice'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               );
             }
           },
         ),
       ),
     );
+  }
+
+  List<Widget> _buildOrderWidgets() {
+    Map<String, int> itemCounts = {};
+
+    for (String order in orders) {
+      if (itemCounts.containsKey(order)) {
+        itemCounts[order] = (itemCounts[order] ?? 0) + 1;
+      } else {
+        itemCounts[order] = 1;
+      }
+    }
+
+    List<Widget> orderWidgets = [];
+    itemCounts.forEach((item, count) {
+      orderWidgets.add(Text('$count $item    '));
+    });
+
+    return orderWidgets;
   }
 
   Widget makeWidgetForNoInd(String itemName) {
@@ -207,6 +277,9 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
     );
   }
 }
+
+
+
 
 //todo alttaki bar gelecek
 //todo ayarlara kategori ekleme silme gelecek

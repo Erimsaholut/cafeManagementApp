@@ -26,6 +26,9 @@ class _ItemStudioState extends State<ItemStudio> {
   bool isValueEnteredForProfit = true;
   late double profit;
   final TextEditingController itemNameController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+  List<String> categories = [];
+  String selectedCategory = "";
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _ItemStudioState extends State<ItemStudio> {
   @override
   void dispose() {
     itemNameController.dispose();
+    categoryController.dispose();
     super.dispose();
   }
 
@@ -56,7 +60,7 @@ class _ItemStudioState extends State<ItemStudio> {
     }
   }
 
-  Future<void> _deleteItem(WriteData writeData) async {
+  Future<void> _deleteItem(WriteMenuData writeData) async {
     await writeData.removeItemFromMenu(widget.item.name);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Item başarı ile silindi."),
@@ -65,35 +69,84 @@ class _ItemStudioState extends State<ItemStudio> {
 
   Future<bool> _showConfirmationDialog() async {
     return await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Emin misiniz?'),
-              content:
-                  const Text('Bu öğeyi silmek istediğinizden emin misiniz?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: const Text('İptal'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: const Text('Sil'),
-                ),
-              ],
-            );
-          },
-        ) ??
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Emin misiniz?'),
+          content:
+          const Text('Bu öğeyi silmek istediğinizden emin misiniz?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('İptal'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Sil'),
+            ),
+          ],
+        );
+      },
+    ) ??
         false;
+  }
+
+  void _addCategory(String newCategory) {
+    setState(() {
+      categories.add(newCategory);
+    });
+  }
+
+  void _showAddCategoryDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Yeni Kategori Ekle"),
+          content: TextField(
+            controller: categoryController,
+            maxLength: 20,
+            decoration: const InputDecoration(
+              hintText: "Kategori ismi",
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("İptal"),
+            ),
+            TextButton(
+              onPressed: () {
+                String newCategory = categoryController.text.trim();
+                if (newCategory.isNotEmpty && newCategory.length <= 20) {
+                  _addCategory(newCategory);
+                  Navigator.of(context).pop();
+                  categoryController.clear();
+                }
+              },
+              child: const Text("Ekle"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _removeCategory(String category) {
+    setState(() {
+      categories.remove(category);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final WriteData writeData = WriteData();
+    final WriteMenuData writeData = WriteMenuData();
     final Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -118,7 +171,42 @@ class _ItemStudioState extends State<ItemStudio> {
                 },
               ),
               _buildProfitSection(screenSize),
-              _buildIngredientSection("Mevcut Çeşitleri Kaldır", widget.item),
+              Column(
+                children: [
+                  Text(
+                    "Ürünün kategorisini düzenle",
+                    style: CustomTextStyles.blackAndBoldTextStyleXl,
+                  ),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 16,
+                    children: categories.map((category) {
+                      return ChoiceChip(
+                        label: Text(
+                          category,
+                          style: CustomTextStyles.blackAndBoldTextStyleM,
+                        ),
+                        selected: selectedCategory == category,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            if (selected) {
+                              selectedCategory = category;
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _showAddCategoryDialog,
+                    child: const Text("Kategori Ekle"),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+              _buildIngredientSection(
+                  "Mevcut Seçenekleri Kaldır", widget.item),
               _buildAddIngredientSection(screenSize),
               _buildActionButtons(context, writeData),
             ],
@@ -168,13 +256,13 @@ class _ItemStudioState extends State<ItemStudio> {
                     hintText: initialProfit != 0
                         ? "$initialProfit"
                         : (isValueEnteredForProfit
-                            ? "Değer Giriniz"
-                            : "Yüzde giriniz"),
+                        ? "Değer Giriniz"
+                        : "Yüzde giriniz"),
                     errorText: (profit > newMoneyValue)
                         ? "Kâr satış fiyatından fazla olamaz"
                         : (profit < 0)
-                            ? "Kâr sıfırdan küçük olamaz"
-                            : null,
+                        ? "Kâr sıfırdan küçük olamaz"
+                        : null,
                   ),
                   onChanged: (value) {
                     setState(() {
@@ -205,7 +293,7 @@ class _ItemStudioState extends State<ItemStudio> {
       children: [
         Text(
           title,
-          style: CustomTextStyles.blackAndBoldTextStyleL,
+          style: CustomTextStyles.blackAndBoldTextStyleXl,
         ),
         const SizedBox(height: 16),
         Column(
@@ -219,8 +307,8 @@ class _ItemStudioState extends State<ItemStudio> {
     return Column(
       children: [
         Text(
-          "Çeşit Ekle",
-          style: CustomTextStyles.blackAndBoldTextStyleL,
+          "Seçenek Ekle",
+          style: CustomTextStyles.blackAndBoldTextStyleXl,
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -229,11 +317,11 @@ class _ItemStudioState extends State<ItemStudio> {
             controller: itemNameController,
             maxLength: 25,
             decoration: const InputDecoration(
-              hintText: 'Çeşit adı girin',
+              hintText: 'Seçenek adı girin',
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Lütfen bir çeşit adı girin';
+                return 'Lütfen bir seçenek adı girin';
               }
               return null;
             },
@@ -263,7 +351,7 @@ class _ItemStudioState extends State<ItemStudio> {
     );
   }
 
-  Widget _buildActionButtons(BuildContext context, WriteData writeData) {
+  Widget _buildActionButtons(BuildContext context, WriteMenuData writeData) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -290,6 +378,7 @@ class _ItemStudioState extends State<ItemStudio> {
               newMoneyValue,
               newPennyValue,
               widget.item.ingredients,
+              widget.item.type,
               newProfit: profit,
             );
 
@@ -308,7 +397,7 @@ class _ItemStudioState extends State<ItemStudio> {
     List<Widget> indWidgetList = [];
     Size screenSize = MediaQuery.of(context).size;
     if (editableItem.ingredients.isEmpty) {
-      indWidgetList.add(const Text("No ingredient"));
+      indWidgetList.add(const Text("Mevcut seçenek yok"));
     } else {
       for (var i = 0; i < editableItem.ingredients.length; i++) {
         indWidgetList.add(SizedBox(
@@ -321,7 +410,7 @@ class _ItemStudioState extends State<ItemStudio> {
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+                    (Set<MaterialState> states) {
                   return CustomColors.selectedColor1;
                 },
               ),
@@ -353,3 +442,5 @@ class _ItemStudioState extends State<ItemStudio> {
     return indWidgetList;
   }
 }
+//todo buradaki kategori ekleme çıkarma kısmını diğeri ile aynı yap
+//todo test et yeni sistemi
