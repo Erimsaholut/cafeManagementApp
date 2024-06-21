@@ -18,17 +18,12 @@ class AddNewItemToMenu extends StatefulWidget {
 class AddNewItemToMenuState extends State<AddNewItemToMenu> {
   final TextEditingController beverageNameController = TextEditingController();
   WriteMenuData writeData = WriteMenuData();
-  CustomItemTypeSelector customItemTypeSelector = CustomItemTypeSelector(
-    question: 'Ürün kategorisini seçin',
-    itemType: "İçecek",
-  );
-
   List<String> indList = [];
   int moneyValue = 15;
   int pennyValue = 0;
   double profit = 0;
   late String beverageName;
-  String itemType = "Yiyecek";
+  String selectedItemType = "Yiyecek"; // Varsayılan değer
   bool isValueEnteredForProfit = true;
 
   @override
@@ -49,7 +44,14 @@ class AddNewItemToMenuState extends State<AddNewItemToMenu> {
                 buildCustomTextField(
                     "Ürün İsmi", beverageNameController, context),
                 CustomDivider(),
-                customItemTypeSelector,
+                CustomItemTypeSelector(
+                  question: 'Ürün kategorisini seçin',
+                  onItemSelected: (String value) {
+                    setState(() {
+                      selectedItemType = value;
+                    });
+                  },
+                ),
                 CustomDivider(),
                 PricePicker(
                   name: "Ürün Fiyatı Belirle",
@@ -101,11 +103,10 @@ class AddNewItemToMenuState extends State<AddNewItemToMenu> {
                                     ? "Değer Giriniz"
                                     : "Yüzde giriniz",
                                 errorText: (profit > moneyValue)
-                                    //profit değil value ya da profit < moneyvalue
                                     ? "Kâr satış fiyatından fazla olamaz"
                                     : (profit < 0)
-                                        ? "Kâr sıfırdan küçük olamaz"
-                                        : null,
+                                    ? "Kâr sıfırdan küçük olamaz"
+                                    : null,
                               ),
                               onChanged: (value) {
                                 setState(() {
@@ -113,7 +114,7 @@ class AddNewItemToMenuState extends State<AddNewItemToMenu> {
                                     profit = double.tryParse(value) ?? 0.0;
                                   } else {
                                     profit = ((moneyValue * 100 + pennyValue) /
-                                            10000) *
+                                        10000) *
                                         (double.tryParse(value) ?? 0.0 / 100);
                                     profit =
                                         double.parse(profit.toStringAsFixed(2));
@@ -141,8 +142,6 @@ class AddNewItemToMenuState extends State<AddNewItemToMenu> {
                 ElevatedButton(
                   onPressed: () async {
                     beverageName = beverageNameController.text;
-
-                    String selectedItemType = customItemTypeSelector.itemType;
 
                     if (beverageName.isEmpty) {
                       scaffoldMessage("Ürün ismi boş olamaz", context);

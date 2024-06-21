@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:adisso/pages/settings/settings_page_widgets/item_type_selector.dart';
 import '../../../datas/menu_data/write_data_menu.dart';
 import '../../../datas/menu_data/read_data_menu.dart';
 import '../../../constants/custom_colors.dart';
 import '../../../utils/price_picker.dart';
 import '../../../constants/styles.dart';
-import 'package:flutter/material.dart';
 import 'edit_items_page.dart';
 
 class ItemStudio extends StatefulWidget {
@@ -28,7 +29,7 @@ class _ItemStudioState extends State<ItemStudio> {
   final TextEditingController itemNameController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   List<String> categories = [];
-  String selectedCategory = "";
+  late CustomItemTypeSelector customItemTypeSelector;
 
   @override
   void initState() {
@@ -40,6 +41,13 @@ class _ItemStudioState extends State<ItemStudio> {
     newMoneyValue = initialMoneyValue;
     newPennyValue = initialPennyValue;
     profit = initialProfit;
+
+    // Initialize CustomItemTypeSelector
+    customItemTypeSelector = CustomItemTypeSelector(
+      question: "Ürünün kategorisini düzenle",
+      initialItem: widget.item.type,
+    );
+
     _processMenuData();
   }
 
@@ -138,12 +146,6 @@ class _ItemStudioState extends State<ItemStudio> {
     );
   }
 
-  void _removeCategory(String category) {
-    setState(() {
-      categories.remove(category);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final WriteMenuData writeData = WriteMenuData();
@@ -171,40 +173,8 @@ class _ItemStudioState extends State<ItemStudio> {
                 },
               ),
               _buildProfitSection(screenSize),
-              Column(
-                children: [
-                  Text(
-                    "Ürünün kategorisini düzenle",
-                    style: CustomTextStyles.blackAndBoldTextStyleXl,
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 16,
-                    children: categories.map((category) {
-                      return ChoiceChip(
-                        label: Text(
-                          category,
-                          style: CustomTextStyles.blackAndBoldTextStyleM,
-                        ),
-                        selected: selectedCategory == category,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            if (selected) {
-                              selectedCategory = category;
-                            }
-                          });
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _showAddCategoryDialog,
-                    child: const Text("Kategori Ekle"),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ),
+              customItemTypeSelector,
+              const SizedBox(height: 20,),
               _buildIngredientSection(
                   "Mevcut Seçenekleri Kaldır", widget.item),
               _buildAddIngredientSection(screenSize),
@@ -442,5 +412,3 @@ class _ItemStudioState extends State<ItemStudio> {
     return indWidgetList;
   }
 }
-//todo buradaki kategori ekleme çıkarma kısmını diğeri ile aynı yap
-//todo test et yeni sistemi
