@@ -30,6 +30,7 @@ class _ItemStudioState extends State<ItemStudio> {
   final TextEditingController categoryController = TextEditingController();
   List<String> categories = [];
   late CustomItemTypeSelector customItemTypeSelector;
+  String? selectedItemType;
 
   @override
   void initState() {
@@ -46,6 +47,10 @@ class _ItemStudioState extends State<ItemStudio> {
     customItemTypeSelector = CustomItemTypeSelector(
       question: "Ürünün kategorisini düzenle",
       initialItem: widget.item.type,
+      onItemSelected: (String value) {
+        selectedItemType = value;
+
+      },
     );
 
     _processMenuData();

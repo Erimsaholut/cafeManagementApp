@@ -23,8 +23,8 @@ class AddNewItemToMenuState extends State<AddNewItemToMenu> {
   int pennyValue = 0;
   double profit = 0;
   late String beverageName;
-  String selectedItemType = "Yiyecek"; // Varsayılan değer
   bool isValueEnteredForProfit = true;
+  String? selectedItemType;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +151,7 @@ class AddNewItemToMenuState extends State<AddNewItemToMenu> {
                           moneyValue,
                           pennyValue,
                           indList,
-                          selectedItemType,
+                          selectedItemType!,
                           profit: profit);
 
                       if (result != null) {
