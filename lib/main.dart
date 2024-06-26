@@ -157,3 +157,5 @@ class _MyHomePageState extends State<MyHomePage> {
 //todo indirim kısmı ekle masa ödemeye uzun basıp
 // indirim için analiz ekleyebilir misin bak
 //todo nasıl kullanılır kısmı ekle bi salaktan tutorial
+
+//todo kategori ekleme kısmı taşma yapıyor mu baksana çok geldiğinde belki limit eklenebilir

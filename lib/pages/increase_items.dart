@@ -278,9 +278,3 @@ class _IncreaseOrderState extends State<IncreaseOrder> {
   }
 }
 
-
-
-
-//todo alttaki bar gelecek
-//todo ayarlara kategori ekleme silme gelecek
-//kategorisiz itemleri düzenleme gelecek

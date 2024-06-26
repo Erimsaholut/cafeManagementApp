@@ -30,11 +30,12 @@ class _ItemStudioState extends State<ItemStudio> {
   final TextEditingController categoryController = TextEditingController();
   List<String> categories = [];
   late CustomItemTypeSelector customItemTypeSelector;
-  String? selectedItemType;
+  late String selectedItemType;
 
   @override
   void initState() {
     super.initState();
+    selectedItemType = widget.item.type;
     initialMoneyValue = widget.item.price.floor();
     initialPennyValue =
         ((widget.item.price - widget.item.price.floor()) * 100).round();
@@ -48,8 +49,9 @@ class _ItemStudioState extends State<ItemStudio> {
       question: "Ürünün kategorisini düzenle",
       initialItem: widget.item.type,
       onItemSelected: (String value) {
-        selectedItemType = value;
-
+        setState(() {
+          selectedItemType = value;
+        });
       },
     );
 
@@ -353,7 +355,7 @@ class _ItemStudioState extends State<ItemStudio> {
               newMoneyValue,
               newPennyValue,
               widget.item.ingredients,
-              widget.item.type,
+              selectedItemType,
               newProfit: profit,
             );
 
