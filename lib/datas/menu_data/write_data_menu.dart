@@ -105,13 +105,11 @@ class WriteMenuData {
 
         Map<String, dynamic>? oldItem;
 
-        // eski itemı sil
-        for (var item in menu) {
-          if (item["name"] == itemName) {
-            oldItem = item;
-            menu.remove(item);
-            break;
-          }
+        // eski itemi bulup kaldır
+        int index = menu.indexWhere((item) => item["name"] == itemName);
+        if (index != -1) {
+          oldItem = menu[index];
+          menu.removeAt(index);
         }
 
         if (oldItem != null) {
